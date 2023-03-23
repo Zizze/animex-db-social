@@ -1,0 +1,49 @@
+@import "@Assets/styles/variables";
+
+.wrapper {
+	position: relative;
+	width: 60vw;
+	border-radius: 12px;
+	border: 2px solid $light-blue;
+	background-color: $main-bg;
+	max-height: 70vh;
+	overflow: hidden;
+	padding: 0 50px;
+	overflow: auto;
+
+	h5 {
+		margin-top: 25px;
+		letter-spacing: 1px;
+		text-align: center;
+		font-size: 2rem;
+	}
+
+	form {
+		.checkboxesBlock {
+			padding: 25px 0 20px;
+			margin-bottom: 10px;
+			&:not(:last-child) {
+				border-bottom: 1px solid $gray-main;
+			}
+
+			p {
+				color: $light-blue;
+				text-align: center;
+				margin-bottom: 15px;
+			}
+			ul {
+				display: flex;
+				align-items: center;
+				justify-content: space-around;
+				gap: 20px;
+			}
+		}
+		.btns {
+			display: flex;
+			gap: 20px;
+			align-items: center;
+			justify-content: flex-end;
+			padding: 25px;
+		}
+	}
+}

@@ -1,0 +1,60 @@
+@import "@Assets/styles/variables";
+
+.wrapper {
+	.supportBtn {
+		width: 145px;
+		height: 52px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 1.8rem;
+		font-weight: 600;
+		color: $gray-main;
+		background-color: transparent;
+		border: 2px solid $gray-main;
+		border-radius: 12px;
+		gap: 5px;
+		opacity: 0.6;
+
+		transition: all 0.3s ease-in-out;
+
+		&:hover,
+		&:active,
+		&:focus {
+			background-color: $main-bg;
+			border-color: $light-blue;
+			color: $light-blue;
+		}
+		svg {
+			font-size: 3.5rem;
+		}
+	}
+}
+
+.wrapper .supportBtn:hover {
+	-webkit-animation: pulsate-fwd 1s ease-in-out infinite both;
+	animation: pulsate-fwd 1s ease-in-out infinite both;
+	opacity: 1;
+}
+@-webkit-keyframes pulsate-fwd {
+	0% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+@keyframes pulsate-fwd {
+	0% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}

@@ -1,0 +1,132 @@
+@import "@Assets/styles/variables";
+
+.container {
+	height: 50px;
+	width: 370px;
+	position: relative;
+
+	.searchValid {
+		background-color: $sidebar-bg;
+		padding: 5px 10px;
+		text-align: center;
+		border-radius: 5px;
+		width: 220px;
+		color: $not-valid;
+		z-index: 0;
+		bottom: 10px;
+		font-size: 1.8rem;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%) scale(0.5);
+		opacity: 0;
+		transition: bottom 0.3s ease-in-out, transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+	}
+	.searchValid.on {
+		opacity: 1;
+		transform: translateX(-50%) scale(1);
+		bottom: -40px;
+	}
+}
+
+.search {
+	z-index: 1;
+	display: flex;
+	align-items: center;
+	position: relative;
+	height: 100%;
+	width: 100%;
+	border-radius: 10px;
+	background: $sidebar-bg;
+	overflow: hidden;
+
+	input {
+		font-size: 2rem;
+		height: 100%;
+		width: 100%;
+		padding-left: 15px;
+		padding-right: 10px;
+		background-color: transparent;
+
+		font-weight: 700;
+
+		&::placeholder {
+			color: $gray-main;
+		}
+
+		&:focus::placeholder {
+			color: $light-blue;
+		}
+	}
+	.notValid {
+		color: $not-valid;
+	}
+	.valid {
+		color: $light-blue;
+	}
+
+	.btn {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+		background: transparent;
+		color: inherit;
+		width: 70px;
+		transition: color 0.3s ease-in-out;
+
+		svg {
+			font-size: 3.4rem;
+		}
+
+		svg.validIco {
+			color: $not-valid;
+		}
+
+		&::before {
+			content: "";
+			opacity: 0.5;
+			position: absolute;
+			right: 0;
+			height: 50%;
+			width: 1px;
+			background-color: $gray-main;
+			transition: height 0.3s ease-in-out;
+		}
+
+		&:hover,
+		&:focus {
+			color: $light-blue;
+		}
+		&:hover::before {
+			height: 120%;
+		}
+		&:hover,
+		.searchValid.on {
+			-webkit-animation: pulsate-fwd 1s ease-in-out infinite both;
+			animation: pulsate-fwd 1s ease-in-out infinite both;
+		}
+		@-webkit-keyframes pulsate-fwd {
+			0% {
+				transform: translateY(0);
+			}
+			50% {
+				transform: translateY(-10%);
+			}
+			100% {
+				transform: translateY(0);
+			}
+		}
+		@keyframes pulsate-fwd {
+			0% {
+				transform: translateY(0);
+			}
+			50% {
+				transform: translateY(-10%);
+			}
+			100% {
+				transform: translateY(0);
+			}
+		}
+	}
+}

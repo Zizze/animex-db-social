@@ -1,0 +1,152 @@
+@import "@Assets/styles/variables";
+
+.comment {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	background-color: $sidebar-bg;
+	border-radius: 10px;
+	overflow: hidden;
+	border: 1px solid $black-main;
+	padding: 5px 30px;
+
+	&:not(:last-child) {
+		margin-bottom: 20px;
+	}
+
+	.gradeBtns {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 20px;
+
+		button {
+			display: flex;
+			gap: 2px;
+			align-items: center;
+			justify-content: center;
+			background-color: $main-bg;
+			border-radius: 7px;
+			border: 1px solid $black-main;
+			padding: 2px 5px;
+			color: $gray-main;
+			transition: all 0.2s ease-in-out;
+
+			span {
+				font-size: 1.4rem;
+				font-weight: 700;
+			}
+			svg {
+				font-size: 2rem;
+			}
+
+			&:hover {
+				transform: scale(1.05);
+			}
+		}
+		button.active {
+			color: $main-bg;
+			background-color: $light-blue;
+		}
+	}
+
+	.user {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.info {
+			a {
+				display: flex;
+				align-items: center;
+				img {
+					max-width: 50px;
+					max-height: 50px;
+					width: 100%;
+					object-fit: cover;
+					border: 1px solid $black-main;
+					border-radius: 100px;
+					margin-bottom: 5px;
+					margin-right: 10px;
+				}
+				p {
+					color: $light-blue;
+					font-weight: 600;
+				}
+			}
+		}
+		.spoilerBtn {
+			padding: 5px 10px;
+			font-size: 1.7rem;
+			min-width: auto;
+			min-height: auto;
+		}
+		.btns {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+
+			button {
+				border: 1px solid $black-main;
+				border-radius: 100%;
+				padding: 5px;
+				background-color: transparent;
+				color: $gray-main;
+				height: 30px;
+				transition: all 0.3s ease-in-out;
+
+				svg {
+					height: 100%;
+					width: 100%;
+				}
+
+				&:hover {
+					transform: scale(1.1);
+					color: $light-blue;
+					border-color: $light-blue;
+				}
+			}
+		}
+	}
+	.message {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		padding-left: 60px;
+		align-items: flex-start;
+		overflow: hidden;
+		width: 100%;
+
+		.text {
+			color: $white-main;
+			font-size: 2rem;
+			line-height: 15px;
+			font-weight: 400;
+			overflow-wrap: anywhere;
+			line-height: 2.1rem;
+			opacity: 1;
+			transition: margin-top 0.3s ease-in-out, opacity 0.3s ease-in-out;
+
+			.highlight {
+				display: inline-block;
+				background-color: transparent;
+				font-size: 1.8rem;
+				color: $main-bg;
+				font-weight: 700;
+				background-color: $light-blue;
+				padding: 4px 7px;
+				border-radius: 10px;
+			}
+		}
+
+		.text.spoiler {
+			margin-top: -100%;
+			opacity: 0;
+		}
+
+		.date {
+			align-self: flex-end;
+			font-weight: 700;
+			font-size: 1.6rem;
+		}
+	}
+}

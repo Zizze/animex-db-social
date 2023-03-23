@@ -1,0 +1,84 @@
+@import "@Assets/styles/variables";
+
+.list {
+	background-color: $main-bg;
+	border-radius: 10px;
+	border: 1px solid $black-main;
+	padding: 10px;
+	&:not(:last-child) {
+		margin-bottom: 10px;
+	}
+	.info {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.main {
+			a {
+				display: flex;
+				align-items: center;
+				img {
+					border: 1px solid $black-main;
+					width: 40px;
+					object-fit: cover;
+					height: 40px;
+					border-radius: 100%;
+					margin-right: 5px;
+				}
+				h5 {
+					color: $light-blue;
+					letter-spacing: 1px;
+				}
+			}
+		}
+
+		.btns {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+
+			button {
+				border: 1px solid $black-main;
+				border-radius: 100%;
+				padding: 5px;
+				background-color: transparent;
+				color: $gray-main;
+				height: 30px;
+				transition: all 0.3s ease-in-out;
+
+				svg {
+					height: 100%;
+					width: 100%;
+				}
+
+				&:hover {
+					transform: scale(1.1);
+					color: $light-blue;
+					border-color: $light-blue;
+				}
+			}
+		}
+	}
+	.content {
+		margin: 10px;
+		p {
+			color: $white-main;
+			font-size: 1.6rem;
+			line-height: 15px;
+			font-weight: 400;
+			overflow-wrap: break-word;
+
+			.highlight {
+				display: inline-block;
+				background-color: transparent;
+				font-size: 1.4rem;
+				color: $main-bg;
+				font-weight: 700;
+				background-color: $light-blue;
+				padding: 2px 7px;
+
+				border-radius: 10px;
+			}
+		}
+	}
+}

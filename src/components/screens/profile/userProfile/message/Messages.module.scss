@@ -1,0 +1,25 @@
+@import "@Assets/styles/variables";
+
+.message {
+	background-color: $main-bg;
+	padding: 50px;
+	border-radius: 12px;
+	border: 2px solid $black-main;
+	width: 50vw;
+	position: relative;
+
+	.messForm {
+		textarea {
+			border: 1px solid $black-main;
+			border-radius: 7px;
+			font-size: 2rem;
+		}
+	}
+
+	.close {
+		font-size: 3rem;
+		position: absolute;
+		right: 10px;
+		top: 10px;
+	}
+}

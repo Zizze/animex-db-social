@@ -1,0 +1,106 @@
+@import "@Assets/styles/variables";
+
+.action {
+	border-bottom: 1px solid $black-main;
+	padding: 10px;
+	.shortDescr {
+		display: flex;
+		color: $white-main;
+		align-items: center;
+		flex-wrap: wrap;
+		& *:not(:last-child) {
+			margin-right: 5px;
+		}
+		p {
+			font-size: 1.8rem;
+			.untilTimestamp {
+				font-size: 1.5rem;
+				font-weight: 600;
+			}
+		}
+		a {
+			display: flex;
+			align-items: center;
+			color: $light-blue;
+			font-weight: 500;
+			transition: transform 0.3s ease-in-out;
+			img {
+				width: 30px;
+				height: 30px;
+				overflow: hidden;
+				object-fit: cover;
+				border-radius: 50%;
+				border: 2px solid $black-main;
+				margin-right: 2px;
+			}
+			&:hover,
+			&:focus {
+				transform: scale(1.1);
+			}
+		}
+		.userLink {
+			color: $not-valid;
+			img {
+				border-color: $not-valid;
+			}
+		}
+	}
+
+	.messageWrapper {
+		margin-top: 5px;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		div {
+			display: flex;
+			width: 100%;
+			justify-content: space-between;
+			align-items: center;
+			button {
+				align-self: flex-end;
+				padding: 0 5px;
+				text-transform: uppercase;
+				font-size: 1.4rem;
+				border-radius: 5px;
+				font-weight: 800;
+				margin-bottom: 5px;
+				background-color: $gray-main;
+				border: 1px solid $black-main;
+				color: $main-bg;
+				transition: all 0.3s ease-in-out;
+
+				&:hover,
+				&:focus {
+					background-color: $main-bg;
+					border-color: $light-blue;
+					color: $light-blue;
+				}
+			}
+			p {
+				font-size: 1.5rem;
+				font-weight: 600;
+				margin-left: 30px;
+			}
+		}
+
+		.message {
+			background-color: $main-bg;
+			border-radius: 10px;
+			border: 1px solid $black-main;
+			font-size: 1.8rem;
+			max-width: 100%;
+			overflow-wrap: break-word;
+			opacity: 0;
+			max-height: 0;
+			overflow: hidden;
+			transition: opacity 0.3s ease-in-out, max-height 0.2s ease-in-out, padding 0.3s ease-in-out;
+		}
+		.activeMess {
+			padding: 10px;
+			opacity: 1;
+			max-height: 1000px;
+			transition: opacity 0.3s ease-in-out, max-height 0.2s ease-in-out, padding 0.3s ease-in-out;
+		}
+	}
+}

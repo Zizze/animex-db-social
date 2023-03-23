@@ -1,0 +1,40 @@
+@import "@Assets/styles/variables";
+
+.popSuccess {
+	color: $main-bg;
+	font-size: 1.6rem;
+	font-family: $fontFamily;
+	line-height: 0;
+	font-weight: 400;
+
+	div {
+		background-color: $light-blue !important;
+		border-color: $black-main;
+	}
+
+	svg {
+		font-size: 2.3rem;
+		color: $main-bg;
+	}
+}
+
+.popError {
+	color: $main-bg;
+	font-size: 1.6rem;
+	font-family: $fontFamily;
+	line-height: 0;
+	font-weight: 400;
+
+	div {
+		background-color: $not-valid !important;
+		border-color: $black-main;
+		div {
+			background-color: transparent !important;
+		}
+	}
+
+	svg {
+		font-size: 2.3rem;
+		color: $main-bg;
+	}
+}

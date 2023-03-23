@@ -1,0 +1,45 @@
+@import "@Assets/styles/variables";
+
+.accessModal {
+	background-color: $main-bg;
+	padding: 20px;
+	border-radius: 10px;
+	border: 1px solid $black-main;
+	position: relative;
+	max-width: 350px;
+	width: 100%;
+
+	.accessTitle {
+		text-align: center;
+		font-weight: 600;
+		letter-spacing: 1px;
+		color: $white-main;
+		margin-bottom: 10px;
+	}
+	.checkboxes {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		.noRights {
+			text-align: center;
+			color: $not-valid;
+		}
+	}
+	.btns {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		.close {
+			position: absolute;
+			font-size: 3rem;
+			top: 10px;
+			right: 10px;
+		}
+		.accessBtn {
+			position: absolute;
+			bottom: 20px;
+			right: 20px;
+		}
+	}
+}

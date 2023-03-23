@@ -1,0 +1,76 @@
+@import "@Assets/styles/variables";
+
+.wrapper {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	position: relative;
+
+	.chatList {
+		padding-top: 10px;
+		display: flex;
+		flex-direction: column-reverse;
+		justify-content: flex-start;
+		height: 100%;
+		overflow-y: auto;
+		overflow-x: hidden;
+
+		li {
+			align-self: flex-start;
+			flex-shrink: 0;
+			margin: 0 20px 20px;
+			color: $light-blue;
+			max-width: 30vw;
+			font-weight: 400;
+			font-size: 1.8rem;
+			overflow: hidden;
+			background-color: $sidebar-bg;
+			border: 1px solid $light-blue;
+			border-radius: 20px;
+			padding: 10px;
+			overflow: hidden;
+
+			p {
+				word-wrap: normal;
+				overflow-wrap: break-word;
+				white-space: pre-wrap;
+			}
+		}
+		.currUser {
+			align-self: flex-end;
+			background-color: $light-blue;
+			border: 1px solid $light-blue;
+			color: $main-bg;
+			// p {
+
+			// }
+		}
+		.btnMore {
+			margin: 0 auto 20px;
+			padding: 10px 15px;
+			min-height: auto;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: transparent;
+			font-size: 2rem;
+		}
+	}
+
+	.notSelected {
+		z-index: 1;
+		position: absolute;
+		padding: 10px;
+		border-radius: 20px;
+		background-color: $gray-main;
+		color: $main-bg;
+		opacity: 0.8;
+		top: 10%;
+		right: 50%;
+		text-align: center;
+		transform: translateX(50%);
+		font-weight: 500;
+	}
+}

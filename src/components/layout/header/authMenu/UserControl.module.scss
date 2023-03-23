@@ -1,0 +1,106 @@
+@import "@Assets/styles/variables";
+
+.singin {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: $light-blue;
+	border: 1px solid $light-blue;
+	font-weight: 500;
+	border-radius: 10px;
+	height: 45px;
+	width: 100px;
+	margin-left: 50px;
+	transition: all 0.3s ease-in-out;
+	background-color: $sidebar-bg;
+	-webkit-animation: scale-fwd 1s ease-in-out infinite both;
+	animation: scale-fwd 1s ease-in-out infinite both;
+	&:hover {
+		color: $black-main;
+		background-color: $light-blue;
+		border-color: $black-main;
+	}
+}
+
+.userControl {
+	position: relative;
+	min-height: 60px;
+	margin-left: 50px;
+	min-width: 105px;
+
+	.btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: $sidebar-bg;
+		border: 2px solid $sidebar-bg;
+		border-radius: 21px;
+		padding: 2px;
+		transition: box-shadow 0.2s ease-in-out;
+
+		.ava {
+			width: 45px;
+			height: 45px;
+			border-radius: 100%;
+
+			overflow: hidden;
+			transition: transform 0.2s ease-in-out;
+
+			img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+		}
+
+		svg {
+			font-size: 4.5rem;
+			color: $gray-main;
+			transition: color 0.3s ease-in-out, font-size 0.2s ease-in-out;
+		}
+	}
+	.modal {
+		position: absolute;
+		right: 0;
+		top: 105%;
+	}
+}
+
+.btn:hover,
+.btn:focus {
+	-webkit-box-shadow: 0px 1px 4px 0px $light-blue;
+	-moz-box-shadow: 0px 1px 4px 0px $light-blue;
+	box-shadow: 0px 1px 4px 0px $light-blue;
+	position: relative;
+	.ava {
+		transform: scale(1.1);
+	}
+	svg {
+		color: $light-blue;
+		-webkit-animation: pulsate-fwd 1s ease-in-out infinite both;
+		animation: pulsate-fwd 1s ease-in-out infinite both;
+	}
+}
+
+@-webkit-keyframes pulsate-fwd {
+	0% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+@keyframes pulsate-fwd {
+	0% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}

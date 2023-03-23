@@ -1,0 +1,74 @@
+@import "@Assets/styles/variables";
+.navigation {
+	position: relative;
+
+	ul {
+		.list {
+			position: relative;
+			cursor: pointer;
+			z-index: 1;
+			&:not(:last-child) {
+				margin-bottom: 10px;
+			}
+			&:focus,
+			&:hover {
+				color: $light-blue;
+				font-weight: 500px;
+			}
+
+			.linkblock {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 10px 10% 10px 5px;
+				margin-left: 10%;
+				border-radius: 10px 0 0 10px;
+				transition: color 0.3s ease-in-out;
+				cursor: pointer;
+				color: inherit;
+
+				&:focus,
+				&:hover {
+					font-weight: 500;
+				}
+				.linkInfo {
+					display: flex;
+					align-items: center;
+
+					svg {
+						width: 3rem;
+						height: 3rem;
+						opacity: 1;
+						margin-right: 20px;
+					}
+				}
+
+				.counter {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					font-size: 1.5rem;
+					font-weight: 600;
+					background-color: $counters-bg;
+					color: $light-blue;
+					margin-left: 5px;
+					border-radius: 30%;
+					padding: 5px;
+					min-width: 31px;
+				}
+			}
+		}
+
+		.line {
+			position: relative;
+			margin: 15px auto 15px auto;
+			height: 1px;
+			background-color: $gray-main;
+			opacity: 0.4;
+			width: 80%;
+			height: 1px;
+			border-radius: 5px;
+			z-index: 1;
+		}
+	}
+}

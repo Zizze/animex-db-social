@@ -1,0 +1,30 @@
+@import "@Assets/styles/variables";
+
+.statistics {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	color: $white-main;
+	width: 300px;
+
+	ul {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+
+		li {
+			margin-bottom: 20px;
+			padding: 5px;
+			color: $gray-main;
+			font-size: 2.2rem;
+			background-color: transparent;
+			border-bottom: 1px solid $gray-main;
+
+			span {
+				color: $light-blue;
+				font-size: 1.8rem;
+				font-weight: 700;
+			}
+		}
+	}
+}

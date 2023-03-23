@@ -1,0 +1,18 @@
+@import "@Assets/styles/variables";
+
+.rating {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 5px;
+
+	.text {
+		height: 12px;
+		opacity: 0.8;
+		font-size: 1.5rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		color: $light-blue;
+		white-space: nowrap;
+	}
+}

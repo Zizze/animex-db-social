@@ -1,0 +1,103 @@
+@import "@Assets/styles/variables";
+
+.list {
+	position: relative;
+	.userBtn {
+		display: flex;
+		align-items: center;
+		font-size: 1.7rem;
+		padding: 10px;
+		width: 100%;
+		color: $gray-main;
+		background-color: transparent;
+		transition: all 0.3s ease-in-out;
+
+		.avaBlock {
+			min-width: 55px;
+			width: 55px;
+			height: 55px;
+			border-radius: 100%;
+			overflow: hidden;
+			border: 1px solid $black-main;
+			margin-right: 5px;
+			img {
+				object-fit: cover;
+				width: 100%;
+				height: 100%;
+			}
+		}
+
+		.infoBlock {
+			width: 100%;
+
+			.mainInfo {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+
+				h5 {
+					font-weight: 600;
+					letter-spacing: 1px;
+					color: $white-main;
+				}
+				span {
+					font-size: 1.4rem;
+					font-weight: 500;
+				}
+			}
+			.complement {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+
+				// p {
+				// }
+				span {
+					text-align: center;
+					border-radius: 5px;
+					background-color: $gray-main;
+					color: $main-bg;
+					font-size: 1.3rem;
+					font-weight: 700;
+					padding: 0 5px;
+					transition: all 0.3s ease-in-out;
+				}
+			}
+		}
+	}
+}
+
+.list:hover {
+	.userBtn {
+		background-color: $body-bg;
+		color: $white-main;
+
+		.complement {
+			span {
+				background-color: $white-main;
+			}
+		}
+	}
+}
+
+.list.active {
+	.userBtn {
+		background-color: $main-bg;
+		border-top: 1px solid $black-main;
+		border-bottom: 1px solid $black-main;
+		color: $white-main;
+
+		.infoBlock {
+			.mainInfo {
+				h5 {
+					color: $light-blue;
+				}
+			}
+			.complement {
+				span {
+					background-color: $light-blue;
+				}
+			}
+		}
+	}
+}

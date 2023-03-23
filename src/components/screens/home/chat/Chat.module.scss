@@ -1,0 +1,219 @@
+@import "@Assets/styles/variables";
+
+.wrapper {
+	padding: 0px 20px 20px;
+	z-index: 10;
+	position: fixed;
+	right: 2%;
+	bottom: 2%;
+	border: 1px solid $black-main;
+	border-radius: 12px;
+	max-height: 66vh;
+	max-width: 450px;
+	width: 100%;
+	height: 100%;
+	background-color: $sidebar-bg;
+	overflow-y: auto;
+	transition: all 0.3s ease-in-out;
+
+	.headerChat {
+		padding: 10px 0;
+		background-color: $sidebar-bg;
+		position: sticky;
+		top: 0;
+
+		.menu {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 10px;
+
+			.answerTo {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				gap: 5px;
+
+				p {
+					text-transform: uppercase;
+					font-weight: 600;
+					font-size: 1.6rem;
+					color: $white-main;
+				}
+				button {
+					line-height: 0;
+					border: 1px solid $black-main;
+					font-size: 1.8rem;
+					color: $light-blue;
+					background-color: $main-bg;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding: 5px;
+					border-radius: 5px;
+					font-weight: 600;
+					transition: all 0.3s ease-in-out;
+
+					svg {
+						display: inline-block;
+						color: $gray-main;
+						margin-left: 3px;
+						transition: transform 0.4s ease-in-out;
+					}
+					&:hover,
+					&:focus {
+						background-color: $light-blue;
+						color: $main-bg;
+						transform: scale(1.1);
+						svg {
+							transform: rotate(180deg);
+							color: $main-bg;
+						}
+					}
+				}
+			}
+
+			.btns {
+				display: flex;
+				align-items: center;
+				gap: 5px;
+				button {
+					padding: 5px;
+					border: 1px solid $black-main;
+					background-color: $main-bg;
+					color: $light-blue;
+					border-radius: 6px;
+					font-size: 2.5rem;
+					line-height: 0;
+					transition: all 0.3s ease-in-out;
+					&:hover {
+						background-color: $light-blue;
+						color: $main-bg;
+						transform: scale(1.03);
+					}
+				}
+			}
+		}
+	}
+
+	&.full {
+		position: static;
+		max-height: 90%;
+		max-width: 90%;
+	}
+	// .chatList {}
+
+	.loading {
+		position: absolute;
+	}
+
+	.footerBtns {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-top: 10px;
+		gap: 10px;
+
+		.Morebtn,
+		.Hidebtn {
+			padding: 0 5px;
+			min-height: auto;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: transparent;
+			font-size: 2.7rem;
+		}
+
+		.Hidebtn {
+			position: relative;
+
+			&::after,
+			&::before {
+				content: "";
+				position: absolute;
+				transform: rotate(35deg);
+				width: 100%;
+				height: 1px;
+				background-color: $gray-main;
+				transition: all 0.3s ease-in-out;
+			}
+			&::before {
+				transform: rotate(-35deg);
+			}
+
+			&:hover {
+				&::after,
+				&::before {
+					background-color: $light-blue;
+					height: 2px;
+				}
+			}
+		}
+	}
+}
+
+.mainBtn {
+	position: fixed;
+	bottom: 2%;
+	right: 2%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 100%;
+	width: 70px;
+	height: 70px;
+	color: $light-blue;
+	border-color: 1px solid $light-blue;
+
+	transition: all 0.4s ease-in-out;
+	padding: 0 !important;
+
+	span {
+		position: absolute;
+		bottom: 100%;
+		text-transform: uppercase;
+		font-weight: 700;
+		font-size: 1.4rem;
+
+		-webkit-animation: scale 1s ease-in-out infinite both;
+		animation: scale 1s ease-in-out infinite both;
+		text-shadow: 0px 0px 10px $light-blue;
+	}
+
+	svg {
+		font-size: 3.5rem;
+	}
+	&:hover {
+		background-color: $light-blue;
+		color: $main-bg;
+		span {
+			color: $light-blue;
+			-webkit-animation: none;
+			animation: none;
+		}
+	}
+}
+
+@-webkit-keyframes scale {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+@keyframes scale {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
+}

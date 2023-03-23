@@ -1,0 +1,51 @@
+@import "@Assets/styles/variables";
+
+.btn {
+	padding: 10px;
+	border-radius: 10px;
+	background-color: $sidebar-bg;
+	color: inherit;
+	font-weight: 600;
+	font-size: 1.7rem;
+	width: 100%;
+	transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+}
+
+.btn:hover,
+.active {
+	background-color: $light-blue;
+	color: $black-main;
+	transform: scale(1.05);
+}
+
+.active {
+	-webkit-animation: pulsate-fwd 1s ease-in-out infinite both;
+	animation: pulsate-fwd 1s ease-in-out infinite both;
+
+	@-webkit-keyframes pulsate-fwd {
+		0% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-10%);
+		}
+		100% {
+			transform: translateY(0);
+		}
+	}
+	@keyframes pulsate-fwd {
+		0% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-10%);
+		}
+		100% {
+			transform: translateY(0);
+		}
+	}
+}

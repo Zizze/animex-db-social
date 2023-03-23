@@ -1,0 +1,82 @@
+@import "@Assets/styles/variables";
+
+.wrapper {
+	padding-bottom: 10px;
+	background-color: $sidebar-bg;
+	width: 250px;
+	min-width: 250px;
+	height: 100%;
+	border-right: 1px solid $black-main;
+
+	.search {
+		position: relative;
+		padding-top: 10px;
+		width: 100%;
+		background-color: $sidebar-bg;
+
+		input {
+			padding: 0 25px;
+			height: 30px;
+			background-color: $main-bg;
+			font-size: 1.7rem;
+			text-align: center;
+			width: 100%;
+			margin-bottom: 10px;
+			letter-spacing: 1px;
+			color: $light-blue;
+			font-weight: 600;
+			transition: all 0.3s ease-in-out;
+			border-bottom: 1px solid $black-main;
+			border-top: 1px solid $black-main;
+
+			&::placeholder {
+				transition: all 0.3s ease-in-out;
+				text-align: center;
+				color: $gray-main;
+			}
+			&:focus {
+				border-bottom: 1px solid $light-blue;
+				border-top: 1px solid $light-blue;
+				&::placeholder {
+					color: $light-blue;
+				}
+			}
+		}
+		.ico {
+			cursor: pointer;
+			position: absolute;
+			right: 0;
+			bottom: 50%;
+			height: 30px;
+			width: 30px;
+			font-size: 2.5rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: $light-blue;
+			transition: transform 0.3s ease-in-out, opacity 0.5s ease-in-out;
+			transform: scale(0.6) rotate(135deg) translateY(50%);
+			opacity: 0;
+		}
+		.ico.active {
+			transform: scale(1) rotate(0) translateY(50%);
+			opacity: 1;
+		}
+	}
+
+	.usersList {
+		height: calc(100% - 40px);
+		padding-bottom: 20px;
+
+		.btnMore {
+			margin: 10px auto 0;
+			padding: 0 5px;
+			min-height: auto;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: transparent;
+			font-size: 2.7rem;
+		}
+	}
+}

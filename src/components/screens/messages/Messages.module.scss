@@ -1,0 +1,10 @@
+@import "@Assets/styles/variables";
+
+.wrapper {
+	display: flex;
+	align-items: center;
+	height: 85vh;
+	border-radius: 12px;
+	overflow: hidden;
+	border: 1px solid $black-main;
+}

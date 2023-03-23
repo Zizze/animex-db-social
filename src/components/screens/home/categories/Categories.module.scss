@@ -1,0 +1,16 @@
+@import "@Assets/styles/variables";
+
+.categories {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	background-color: $main-bg;
+	z-index: 1;
+
+	li {
+		margin-bottom: 20px;
+		&:not(:last-child) {
+			margin-right: 20px;
+		}
+	}
+}

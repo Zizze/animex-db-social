@@ -1,0 +1,78 @@
+@import "@Assets/styles/variables";
+
+.container {
+	background-color: $sidebar-bg;
+	padding: 20px;
+	border-radius: 10px;
+	border: 1px solid $black-main;
+	max-width: 1000px;
+	.descr {
+		font-weight: 500;
+		text-align: center;
+		color: $white-main;
+		margin-bottom: 10px;
+	}
+	.supportForm {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10px;
+
+		input {
+			width: 100%;
+			font-size: 2rem;
+			padding: 5px 10px;
+			border-radius: 5px;
+			border: 1px solid $black-main;
+			background-color: transparent;
+			color: $light-blue;
+			transition: all 0.3s ease-in-out;
+
+			&::placeholder {
+				color: $gray-main;
+				transition: color 0.3s ease-in-out;
+			}
+			&:hover,
+			&:focus {
+				border-color: $light-blue;
+				background-color: $main-bg;
+				&::placeholder {
+					color: $light-blue;
+				}
+			}
+		}
+		.textField {
+			color: $not-valid;
+			text-align: center;
+		}
+
+		.emailWrapper {
+			width: 100%;
+			.email {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 10px;
+				width: 100%;
+				.checkbox {
+					label {
+						white-space: nowrap;
+					}
+				}
+				input.disabled {
+					width: 0;
+					padding: 0;
+					border: none;
+				}
+			}
+		}
+		.titleWrapper {
+			width: 100%;
+		}
+
+		textarea {
+			border-radius: 5px;
+			border: 1px solid $black-main;
+		}
+	}
+}

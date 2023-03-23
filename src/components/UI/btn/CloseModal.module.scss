@@ -1,0 +1,43 @@
+@import "@Assets/styles/variables";
+
+.closeBtn {
+	background-color: transparent;
+	color: $gray-main;
+	font-size: 4rem;
+	transition: all 0.3s ease-in-out;
+
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+}
+
+.closeBtn:hover,
+.closeBtn:focus {
+	color: $light-blue;
+
+	-webkit-animation: pulsate-fwd 1s ease-in-out infinite both;
+	animation: pulsate-fwd 1s ease-in-out infinite both;
+
+	@-webkit-keyframes pulsate-fwd {
+		0% {
+			transform: scale(1);
+		}
+		50% {
+			transform: scale(1.1);
+		}
+		100% {
+			transform: scale(1);
+		}
+	}
+	@keyframes pulsate-fwd {
+		0% {
+			transform: scale(1);
+		}
+		50% {
+			transform: scale(1.1);
+		}
+		100% {
+			transform: scale(1);
+		}
+	}
+}

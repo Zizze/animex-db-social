@@ -1,0 +1,185 @@
+@import "@Assets/styles/variables";
+
+.right {
+	padding: 0 0 25px;
+
+	.head {
+		display: inline-flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 10px 20px;
+		border-radius: 10px;
+		background-color: $sidebar-bg;
+		margin-bottom: 40px;
+		border: 1px solid $black-main;
+		overflow: hidden;
+
+		li {
+			position: relative;
+			color: $white-main;
+			font-weight: 700;
+
+			&:not(:last-child) {
+				padding-right: 21px;
+				margin-right: 20px;
+
+				&::after {
+					content: "";
+					position: absolute;
+					background-color: $black-main;
+					right: 0;
+					top: -200%;
+					width: 1px;
+					height: 150px;
+				}
+			}
+			span {
+				color: $light-blue;
+			}
+		}
+
+		.rateblock {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			.rate {
+				color: $white-main;
+			}
+			.rateBy {
+				color: $white-main;
+				opacity: 0.6;
+				font-size: 1.5rem;
+			}
+		}
+	}
+
+	.descr {
+		margin-bottom: 20px;
+		.title {
+			display: flex;
+			align-items: center;
+			color: $light-blue;
+			font-weight: 600;
+			span {
+				margin-right: 5px;
+			}
+			svg {
+				-webkit-animation: scale-key 1s ease-in-out infinite both;
+				animation: scale-key 1s ease-in-out infinite both;
+			}
+		}
+		p {
+			margin-top: 10px;
+			color: $white-main;
+			opacity: 0.9;
+		}
+	}
+
+	.backWrapper {
+		.btns {
+			display: flex;
+			gap: 20px;
+			.trailer {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				min-height: auto;
+				height: 100%;
+				text-align: center;
+				font-size: 1.8rem;
+				padding: 5px 10px 5px 10px;
+				font-weight: 500;
+
+				-webkit-animation: scale-key 1s ease-in-out infinite both;
+				animation: scale-key 1s ease-in-out infinite both;
+			}
+			.back {
+				background-color: transparent;
+				position: relative;
+				display: flex;
+				align-items: center;
+				margin-bottom: 10px;
+				color: $gray-main;
+				font-size: 1.8rem;
+				padding: 5px 35px 5px 10px;
+				border-radius: 10px;
+				border: 1px solid $light-blue;
+				transition: all 0.3s ease-in-out;
+
+				&::before {
+					content: "";
+					position: absolute;
+					background-color: $gray-main;
+					right: 10px;
+					width: 15px;
+					height: 3px;
+					border-radius: 10px;
+					transform: rotate(-90deg);
+					transition: all 0.3s ease-in-out;
+				}
+				&::after {
+					content: "";
+					position: absolute;
+					background-color: $gray-main;
+					right: 10px;
+					width: 15px;
+					height: 3px;
+					border-radius: 10px;
+					transform: rotate(180deg);
+					transition: all 0.3s ease-in-out;
+				}
+
+				&.active::after,
+				&.active::before {
+					background-color: $light-blue;
+					transform: rotate(0deg);
+				}
+				&.active {
+					color: $light-blue;
+				}
+				&:hover {
+					transform: scale(1.04);
+				}
+			}
+		}
+
+		.wrapper {
+			overflow: hidden;
+
+			p {
+				transition: margin-top 0.4s ease-in-out;
+				margin-top: -100%;
+				color: $white-main;
+				opacity: 0.8;
+				font-size: 1.8rem;
+			}
+			p.active {
+				margin-top: 0;
+			}
+		}
+	}
+}
+
+@-webkit-keyframes scale-key {
+	0% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+@keyframes scale-key {
+	0% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}

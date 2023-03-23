@@ -1,0 +1,12 @@
+.wrapper {
+	height: 100%;
+	width: 100%;
+	.all {
+		max-height: 100%;
+		overflow: auto;
+		display: grid;
+		gap: 15px;
+		grid-template-columns: repeat(auto-fill, 220px);
+		margin: 25px 0;
+	}
+}

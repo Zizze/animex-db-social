@@ -1,0 +1,13 @@
+@import "@Assets/styles/variables";
+
+.header {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	background-color: $main-bg;
+	padding-right: 50px;
+	height: 120px;
+	position: sticky;
+	top: 0;
+	z-index: 2;
+}

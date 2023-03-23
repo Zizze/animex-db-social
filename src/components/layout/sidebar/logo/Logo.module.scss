@@ -1,0 +1,15 @@
+@import "@Assets/styles/variables";
+
+.logo-block {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: $white-main;
+	font-weight: 700;
+	padding: 45px 5px 0;
+	margin-bottom: 70px;
+
+	img {
+		margin-right: 10px;
+	}
+}

@@ -1,0 +1,18 @@
+@import "@Assets/styles/variables";
+
+.picker {
+	border-color: $main-bg;
+	transition: all 0.3s ease-in-out;
+	font-size: 2rem;
+
+	&:hover {
+		border-color: $light-blue;
+	}
+
+	input,
+	input::placeholder,
+	input:hover,
+	input:focus {
+		color: $main-bg !important;
+	}
+}

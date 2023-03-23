@@ -1,0 +1,16 @@
+@import "@Assets/styles/variables";
+
+.wrapper {
+	height: 65vh;
+	overflow-y: scroll;
+	.users {
+		min-height: 55vh;
+	}
+	.btns {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		margin: 10px;
+	}
+}

@@ -1,0 +1,63 @@
+.menuIndicator {
+	position: absolute;
+	top: 0%;
+	left: 10%;
+	border-radius: 10px 0 0 10px;
+	width: 245px;
+	height: 50px;
+	background: $main-bg;
+	transition: transform 0.3s ease-in-out;
+
+	&:before {
+		content: "";
+		position: absolute;
+		z-index: 0;
+		top: -150%;
+		right: 1%;
+		width: 80px;
+		height: 75px;
+		background: $sidebar-bg;
+		border-radius: 0 0 45px 0;
+		box-shadow: 15px 10px 0 0 $main-bg;
+	}
+	&::after {
+		content: "";
+		position: absolute;
+		z-index: 0;
+		bottom: -150%;
+		right: 1%;
+		width: 80px;
+		height: 75px;
+		// background: blue;
+		// box-shadow: 15px -10px 0px 0px #fff;
+		border-radius: 0 45px 0px 0;
+		background: $sidebar-bg;
+		box-shadow: 15px -10px 0px 0px $main-bg;
+	}
+}
+
+ul li:nth-child(1).active-nav ~ .menuIndicator {
+	transform: translateY(calc(60px * 0));
+}
+
+ul li:nth-child(2).active-nav ~ .menuIndicator {
+	transform: translateY(calc(60px * 1));
+}
+
+ul li:nth-child(3).active-nav ~ .menuIndicator {
+	transform: translateY(calc(60px * 2));
+}
+
+ul li:nth-child(5).active-nav ~ .menuIndicator {
+	transform: translateY(calc(67px * 3));
+}
+
+ul li:nth-child(6).active-nav ~ .menuIndicator {
+	transform: translateY(calc(65.5px * 4));
+}
+ul li:nth-child(7).active-nav ~ .menuIndicator {
+	transform: translateY(calc(64.5px * 5));
+}
+ul li:nth-child(8).active-nav ~ .menuIndicator {
+	transform: translateY(calc(63.5px * 6));
+}

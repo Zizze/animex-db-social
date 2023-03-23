@@ -1,0 +1,33 @@
+@import "@Assets/styles/variables";
+
+.wrapper {
+	padding-top: 20px;
+	background-color: $sidebar-bg;
+	border-radius: 12px;
+	border: 1px solid $black-main;
+	height: 75vh;
+	width: 85vh;
+	overflow-y: auto;
+	position: relative;
+
+	.closeBtn {
+		position: absolute;
+		font-size: 3rem;
+		right: 15px;
+		top: 15px;
+	}
+	.req {
+		font-size: 2.5rem;
+		text-align: center;
+		font-weight: 600;
+		letter-spacing: 2px;
+		margin-bottom: 20px;
+		color: $white-main;
+	}
+	// .users {
+	// }
+	.btns {
+		margin-top: 20px;
+		text-align: center;
+	}
+}

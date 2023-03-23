@@ -1,0 +1,85 @@
+@import "@Assets/styles/variables";
+
+.adminCards {
+	height: 140px;
+	display: flex;
+	gap: 5px;
+
+	.adminCardMini {
+		width: 200px;
+		display: flex;
+		align-items: flex-start;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		gap: 4px;
+		color: $main-bg;
+
+		button {
+			z-index: 2;
+			max-width: calc((100% / 2) - 2px);
+			max-height: calc((100% / 2) - 2px);
+			width: 100%;
+			height: 100%;
+
+			border: 2px solid $light-blue;
+			border-radius: 7px;
+			color: $light-blue;
+			background-color: transparent;
+			transition: all 0.3s ease-in-out;
+			svg {
+				padding: 5px;
+				width: 100%;
+				height: 100%;
+			}
+			&:hover {
+				background-color: $light-blue;
+				border-color: $black-main;
+				color: $main-bg;
+				transform: scale(1.1);
+			}
+		}
+	}
+	.adminCard {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		width: 200px;
+		z-index: 2;
+
+		.adminCardWrapper {
+			background-color: $light-blue;
+			border-radius: 10px;
+			border: 1px solid $black-main;
+			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: calc(100% / 2 - 2px);
+			transition: all 0.3s ease-in-out;
+			color: $main-bg;
+
+			.name {
+				opacity: 0.4;
+				font-size: 1.6rem;
+				letter-spacing: 1px;
+				position: absolute;
+				text-transform: uppercase;
+				font-weight: 800;
+				top: 5px;
+				left: 5px;
+			}
+			.count {
+				font-weight: 700;
+				font-size: 2.5rem;
+			}
+			svg {
+				width: 35px;
+				height: 100%;
+			}
+
+			&:hover {
+				transform: scale(1.05);
+			}
+		}
+	}
+}

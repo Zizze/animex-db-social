@@ -1,0 +1,25 @@
+@import "@Assets/styles/variables";
+.wrapper {
+	padding: 20px 0 50px;
+
+	.textForm {
+		margin-bottom: 5px;
+		textarea {
+			border: 1px solid $black-main;
+			border-radius: 10px;
+		}
+	}
+	.btns {
+		display: flex;
+		justify-content: center;
+		gap: 10px;
+		margin-top: 20px;
+	}
+
+	.spoilerCheckbox {
+		font-size: 1.9rem;
+	}
+	.comments {
+		margin-top: 20px;
+	}
+}

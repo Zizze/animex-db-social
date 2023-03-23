@@ -1,0 +1,78 @@
+@import "@Assets/styles/variables";
+
+.unblock {
+	padding: 25px;
+	border-radius: 10px;
+	border: 1px solid $black-main;
+	max-width: 600px;
+	min-width: 300px;
+
+	background-color: $sidebar-bg;
+	position: relative;
+
+	.titleUnblock {
+		font-size: 2rem;
+		font-weight: 600;
+		text-align: center;
+		margin-bottom: 10px;
+		color: $white-main;
+		span {
+			color: $light-blue;
+		}
+	}
+
+	.info {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+
+		li {
+			display: flex;
+			align-items: center;
+			font-weight: 600;
+			color: $light-blue;
+
+			span {
+				max-width: 75%;
+				overflow-wrap: break-word;
+			}
+			.mainSpan {
+				margin-right: 10px;
+				color: $white-main;
+			}
+			a {
+				transition: transform 0.3s ease-in-out;
+				&:hover {
+					transform: scale(1.05);
+				}
+				div {
+					display: flex;
+					align-items: center;
+					gap: 5px;
+					span {
+						color: $light-blue;
+					}
+					img {
+						border: 1px solid $black-main;
+						object-fit: cover;
+						border-radius: 50%;
+						width: 35px;
+						height: 35px;
+					}
+				}
+			}
+		}
+	}
+	.closeBtn {
+		position: absolute;
+		font-size: 2.5rem;
+		top: 5px;
+		right: 5px;
+	}
+	.btns {
+		margin-top: 15px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}

@@ -1,0 +1,57 @@
+@import "@Assets/styles/variables";
+
+.userMenu,
+.userMenuClose {
+	background-color: $sidebar-bg;
+	padding: 10px 5px;
+	border-radius: 10px;
+	min-width: 150px;
+	border: 1px solid $black-main;
+	transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+	white-space: nowrap;
+
+	li {
+		text-align: center;
+		color: $gray-main;
+		transition: all 0.3s ease-in-out;
+
+		&:not(:last-child) {
+			margin-bottom: 10px;
+		}
+
+		&:hover,
+		&:active,
+		&:focus {
+			position: relative;
+			color: $light-blue;
+			transform: scale(1.05);
+		}
+
+		a {
+			color: inherit;
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
+
+		button {
+			line-height: 0;
+			max-height: 20px;
+			background-color: transparent;
+			color: inherit;
+			text-align: center;
+			color: inherit;
+			font-size: inherit;
+			font-weight: inherit;
+		}
+	}
+}
+
+.userMenu {
+	transform: scale(1);
+	opacity: 1;
+}
+.userMenuClose {
+	transform: scale(0);
+	opacity: 0;
+}

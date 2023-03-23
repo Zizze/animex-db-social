@@ -1,0 +1,72 @@
+@import "@Assets/styles/variables";
+
+.hoverMenu {
+	position: absolute;
+	top: 50%;
+	right: -85%;
+	transform: translateY(-50%);
+	border: 2px solid $light-blue;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	padding: 15px;
+	background-color: $sidebar-bg;
+	z-index: 10;
+	border-radius: 15px;
+	animation: scale-in 0.3s;
+	width: 180px;
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		left: -25px;
+		width: 25px;
+		height: 25px;
+		border-style: solid;
+		border-width: 12.5px 21.7px 12.5px 0;
+		border-color: transparent $light-blue transparent transparent;
+	}
+
+	.menuBlock {
+		background: none;
+		color: $gray-main;
+		font-size: 1.8rem;
+		font-weight: 500;
+		padding: 1px 5px;
+		border-radius: 6px;
+		text-align: center;
+		transition: all 0.3s ease-in-out;
+
+		&:hover {
+			color: $light-blue;
+			transform: scale(1.1);
+			background-color: $modal-back;
+		}
+
+		&:disabled {
+			text-decoration: line-through;
+			opacity: 0.8;
+			&:hover {
+				opacity: 0.8;
+				color: $gray-main;
+				transform: none;
+				background: none;
+				cursor: initial;
+			}
+		}
+	}
+}
+
+@keyframes scale-in {
+	0% {
+		transform: scale(0) translateY(-50%);
+	}
+	50% {
+		transform: scale(0.5) translateY(-50%);
+	}
+	100% {
+		transform: scale(1) translateY(-50%);
+	}
+}

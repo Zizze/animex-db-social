@@ -1,0 +1,124 @@
+@import "@Assets/styles/variables";
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+
+	form {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		background-color: $sidebar-bg;
+		max-width: 600px;
+		width: 100%;
+		padding: 25px 50px;
+		border-radius: 10px;
+		border: 1px solid $black-main;
+
+		.inputValid {
+			background-color: $sidebar-bg;
+			padding: 0 10px;
+			text-align: center;
+			border-radius: 5px;
+			max-width: 400px;
+			width: 100%;
+			color: $not-valid;
+			font-size: 1.8rem;
+			z-index: 0;
+			width: 100%;
+			opacity: 0;
+			transition: opacity 0.3s ease-in-out;
+		}
+		.inputValid.on {
+			opacity: 1;
+		}
+
+		input {
+			position: relative;
+			margin-bottom: 20px;
+			padding: 5px;
+			color: $light-blue;
+			font-size: 2.2rem;
+			text-align: center;
+			background-color: transparent;
+			border-bottom: 1px solid $gray-main;
+			transition: all 0.3s ease-in-out;
+			max-width: 300px;
+			width: 100%;
+
+			&:not(:last-child) {
+				margin-bottom: 50px;
+			}
+
+			&::placeholder {
+				transition: all 0.3s ease-in-out;
+			}
+			&:hover,
+			&:focus {
+				border-color: $light-blue;
+				max-width: 400px;
+
+				&::placeholder {
+					color: $white-main;
+				}
+			}
+		}
+		.btns {
+			width: inherit;
+			display: flex;
+			max-width: 300px;
+			width: 100%;
+			justify-content: space-between;
+			margin-top: -20px;
+			margin-bottom: 20px;
+
+			button:not(:last-child) {
+				margin-right: 5px;
+			}
+		}
+		p {
+			color: $white-main;
+			font-size: 1.8rem;
+
+			a {
+				display: inline-block;
+				color: $light-blue;
+				font-weight: 500;
+				transition: transform 0.3s ease-in-out, margin 0.3s ease-in-out;
+
+				&:hover {
+					margin-left: 2px;
+					transform: scale(1.1);
+				}
+			}
+		}
+	}
+}
+
+@media (max-width: 600px) {
+	.wrapper {
+		padding: 10px;
+
+		form {
+			width: 100%;
+			height: 100vh;
+			padding: 25px 10px;
+
+			input {
+				@media (max-width: 470px) {
+					max-width: 240px;
+				}
+				&:hover,
+				&:focus {
+					@media (max-width: 470px) {
+						max-width: 280px;
+					}
+				}
+			}
+		}
+	}
+} ;

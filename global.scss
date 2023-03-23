@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap");
+@import "@Assets/styles/variables";
+@import "@Assets/styles/normalize";
+@import "@Assets/styles/menuIndicator";
+
+body {
+	font-family: $fontFamily;
+	background-color: $main-bg;
+	color: $gray-main;
+	font-size: 2rem;
+	font-weight: 300;
+	overflow: hidden;
+}
+
+//scrollbar
+.active-nav {
+	color: $light-blue;
+	font-weight: 500;
+	transition: all 0.3 ease-in-out;
+}
+
+* {
+	scrollbar-width: thin;
+	scrollbar-color: $light-blue $main-bg;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+	width: 10px;
+	height: 5px;
+}
+
+*::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color: $light-blue;
+	border-radius: 10px;
+	border: 2px solid $main-bg;
+}
+
+em-emoji-picker {
+	--border-radius: 24px;
+	--category-icon-size: 24px;
+	--font-family: $fontFamily;
+	--font-size: 2rem;
+	--rgb-accent: 127, 220, 222;
+	--rgb-color: 151, 162, 169;
+	--shadow: 5px 5px 15px -8px rgb(22, 3, 41);
+
+	height: 40vh;
+	min-height: 350px;
+	max-height: 800px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+}
+
+input[type="number"] {
+	-moz-appearance: textfield;
+}

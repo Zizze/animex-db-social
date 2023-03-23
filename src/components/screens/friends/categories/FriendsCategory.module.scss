@@ -1,0 +1,30 @@
+@import "@Assets/styles/variables";
+
+.wrapper {
+	height: 65vh;
+	overflow-y: scroll;
+	.users {
+		min-height: 55vh;
+		position: relative;
+
+		.emptyFriend {
+			position: absolute;
+			right: 50%;
+			top: 20%;
+			transform: translateX(50%);
+			text-align: center;
+			font-weight: 800;
+			letter-spacing: 2px;
+			color: $white-main;
+			font-size: 2.5rem;
+		}
+	}
+
+	.btns {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		margin: 10px;
+	}
+}

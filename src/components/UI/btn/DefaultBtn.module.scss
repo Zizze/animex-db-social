@@ -1,0 +1,142 @@
+@import "@Assets/styles/variables";
+
+.btnDefault {
+	min-width: 125px;
+	font-size: 2rem;
+	color: $gray-main;
+	background-color: $sidebar-bg;
+	border-radius: 10px;
+	border: 1px solid $gray-main;
+	min-height: 40px;
+	transition: all 0.3s ease-in-out;
+
+	&.main,
+	&.main-simple,
+	&:hover,
+	&:focus {
+		color: $light-blue;
+		border-color: $light-blue;
+	}
+
+	&:hover,
+	&:focus {
+		background-color: $main-bg;
+	}
+
+	&.main:hover,
+	&.main:focus,
+	&.main-simple:hover,
+	&.main-simple:focus {
+		color: $black-main;
+		border-color: $black-main;
+		background-color: $light-blue;
+	}
+
+	&.main-simple:hover,
+	&.main-simple:focus {
+		-webkit-animation: none;
+		animation: none;
+	}
+
+	&.main:hover,
+	&.main:focus,
+	&:hover,
+	&:focus {
+		-webkit-animation: swing-fwd 1s ease-in-out infinite both;
+		animation: swing-fwd 1s ease-in-out infinite both;
+	}
+
+	&.clear {
+		border: 1px solid $black-main;
+		font-size: 1.8rem;
+		font-weight: 600;
+		min-width: auto;
+		padding: 0 20px;
+	}
+
+	&.clear:hover,
+	&.clear:focus {
+		border-color: $light-blue;
+		-webkit-animation: scale-fwd 1s ease-in-out infinite both;
+		animation: scale-fwd 1s ease-in-out infinite both;
+	}
+
+	&:disabled {
+		color: $black-main !important;
+		border-color: $gray-main !important;
+		background-color: $gray-main;
+		opacity: 0.5;
+		cursor: no-drop;
+
+		&:hover,
+		&:focus {
+			-webkit-animation: none !important;
+			animation: none !important;
+			color: $black-main;
+			border-color: $gray-main;
+			background-color: $gray-main;
+		}
+	}
+
+	&.decline {
+		border: 1px solid $black-main;
+		font-size: 1.8rem;
+		font-weight: 600;
+		min-width: auto;
+		padding: 0 20px;
+		color: $not-valid;
+	}
+	&.decline:hover,
+	&.decline:focus {
+		border-color: $not-valid;
+
+		-webkit-animation: scale-fwd 1s ease-in-out infinite both;
+		animation: scale-fwd 1s ease-in-out infinite both;
+	}
+}
+
+@-webkit-keyframes swing-fwd {
+	0% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+@keyframes swing-fwd {
+	0% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+@-webkit-keyframes scale-fwd {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.05);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+@keyframes scale-fwd {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.05);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
