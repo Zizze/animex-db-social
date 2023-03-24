@@ -9,7 +9,8 @@
 	padding: 50px 0;
 	font-weight: 400;
 	position: relative;
-	.role {
+	.role,
+	.hasBan {
 		position: absolute;
 		top: -10px;
 		z-index: 2;
@@ -23,6 +24,12 @@
 		border-radius: 10px;
 		font-weight: 800;
 	}
+	.hasBan {
+		top: initial;
+		background-color: $not-valid;
+		bottom: -10px;
+	}
+
 	.left {
 		width: 400px;
 		display: flex;

@@ -31,6 +31,8 @@ import {
 import Statistics from "./statistics/Statistics";
 import Messages from "./message/Messages";
 import { userAccessInString } from "@/utils/userAccessInString";
+import { userBanChecker } from "@/utils/userBanChecker";
+import { convertTimestamp } from "@/utils/convertTimestamp";
 
 const UserProfile: FC = () => {
 	const { user } = useAuthContext();
@@ -91,11 +93,24 @@ const UserProfile: FC = () => {
 		});
 	}, [userProfile]);
 
+	const accessUserSettings =
+		userProfile?.settings?.profile === dataSettProfileVisible[0] ||
+		user?.uid === userProfile?.id ||
+		!userProfile?.settings?.profile ||
+		(friendStatus === true && userProfile?.settings?.profile === dataSettProfileVisible[2]);
+
+	const isBanned = userProfile?.blocked && userBanChecker(userProfile?.blocked?.endBan);
+
 	return (
 		<Layout>
 			<>
 				<div className={classes.profile}>
 					<span className={classes.role}>{userAccessInString(userProfile?.access || 0)}</span>
+					{isBanned && (
+						<span className={classes.hasBan}>
+							{`User was banned until ${convertTimestamp(userProfile.blocked?.endBan || null)}`}
+						</span>
+					)}
 					<div className={classes.left}>
 						<p className={classes.name}>{userProfile?.name}</p>
 						<div className={classes.ava}>
@@ -109,10 +124,7 @@ const UserProfile: FC = () => {
 						</div>
 					</div>
 					<div className={classes.right}>
-						{userProfile?.settings?.profile === dataSettProfileVisible[0] ||
-						user?.uid === userProfile?.id ||
-						(friendStatus === true &&
-							userProfile?.settings?.profile === dataSettProfileVisible[2]) ? (
+						{accessUserSettings ? (
 							<Statistics userId={userProfile?.id || ""} />
 						) : (
 							<p className={classes.accessFail}>
