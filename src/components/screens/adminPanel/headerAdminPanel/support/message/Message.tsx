@@ -120,7 +120,7 @@ const Message: FC<{ message: ISupportFirebase }> = ({ message }) => {
 			{ctxMessage}
 			{isLoading && <Loading />}
 			{!hideMess && (
-				<li className={classes.message}>
+				<li className={cn(classes.message, showInfo && classes.visible)}>
 					<div className={classes.theme}>
 						<DefaultBtn
 							className={classes.lock}
@@ -149,11 +149,11 @@ const Message: FC<{ message: ISupportFirebase }> = ({ message }) => {
 							<p className={classes.createDate}>{checkCreateData(message.timestamp.seconds)}</p>
 						</div>
 					</div>
-					<div className={cn(classes.main, showInfo && classes.visible)}>
+					<div className={classes.main}>
 						<p className={classes.userText}>{message.message}</p>
 						{!message.closed && (
 							<TextAreaForm
-								classes={{ cnForm: classes.form }}
+								classes={{ cnForm: classes.textAreaForm, cnEmoji: classes.emojiWindow }}
 								setText={setText}
 								text={text}
 								placeholder="Enter answer..."
@@ -164,7 +164,7 @@ const Message: FC<{ message: ISupportFirebase }> = ({ message }) => {
 						{message.answers && message.answers?.length > 0 && (
 							<div className={classes.responses}>
 								<p>Admins responses</p>
-								<ul>
+								<ul className={classes.adminMessages}>
 									{adminsFullInfo.map((admin, i) => (
 										<AdminResponse key={admin.info.id + i} admin={admin} docId={message.docId} />
 									))}

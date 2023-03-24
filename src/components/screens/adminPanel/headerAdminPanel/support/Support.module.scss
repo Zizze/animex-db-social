@@ -8,6 +8,7 @@
 	border: 1px solid $black-main;
 	border-radius: 10px;
 	overflow-y: auto;
+	position: relative;
 	.empty {
 		color: $white-main;
 		text-align: center;
