@@ -1,87 +1,45 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useMemo } from "react";
 import classes from "./Categories.module.scss";
 import { useAuthContext } from "@/context/useAuthContext";
-import {
-	collection,
-	DocumentData,
-	getDocs,
-	limit,
-	onSnapshot,
-	query,
-	QueryDocumentSnapshot,
-	startAfter,
-	Timestamp,
-	where,
-} from "firebase/firestore";
-import { db } from "@Project/firebase";
+import { Timestamp } from "firebase/firestore";
 import { IUserFirebase } from "@/types/types";
 import User from "../user/User";
 import Loading from "@Components/UI/loading/Loading";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import { dataCategories } from "../usersPanel.data";
+import {
+	useCollectionRealtime,
+	WhereQuery,
+} from "@/services/firebase/adminPanel/useCollectionRealtime";
 
 const Categories: FC<{ categorySelected: string }> = ({ categorySelected }) => {
-	const [isLoading, setIsLoading] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
 	const { user } = useAuthContext();
 
-	const [islastDataUser, setIslastDataUser] = useState<boolean>();
-	const [lastVisibleUser, setLastVisibleUser] = useState<QueryDocumentSnapshot<DocumentData>>();
-	const [reload, setReload] = useState(false);
+	const usersFilter = useMemo(() => {
+		const usersBanned = ["blocked.endBan", ">", Timestamp.now()];
+		const allUsers = ["id", "!=", user?.uid];
+		const admins = ["access", ">", 0];
+		const activeCategory = [];
+		if (categorySelected === dataCategories[0]) activeCategory.push(allUsers);
+		if (categorySelected === dataCategories[1] && user && user.uid) activeCategory.push(admins);
+		if (categorySelected === dataCategories[2]) activeCategory.push(usersBanned);
+		return activeCategory as WhereQuery[];
+	}, [categorySelected, user]);
 
-	const [users, setUsers] = useState<IUserFirebase[]>([]);
-
-	useEffect(() => {
-		const activeCategory = usersFilter();
-		if (!activeCategory || !user) return;
-
-		const collectionRef = query(collection(db, `users`), activeCategory, limit(10));
-		const unsubscribe = onSnapshot(collectionRef, (querySnapshot) => {
-			const lastVisibleUser = querySnapshot.docs[querySnapshot.docs.length - 1];
-			const allAdmins: IUserFirebase[] = [];
-
-			querySnapshot.forEach((doc) => {
-				allAdmins.push(doc.data() as IUserFirebase);
-			});
-
-			setUsers(allAdmins);
-			setLastVisibleUser(lastVisibleUser);
-			setIslastDataUser(querySnapshot.size > 9);
-			setIsLoading(false);
-		});
-
-		return () => unsubscribe();
-	}, [categorySelected, user, reload]);
-
-	const loadMoreUsers = async () => {
-		const activeCategory = usersFilter();
-		if (!activeCategory || !user) return;
-
-		const moreData = query(
-			collection(db, `users`),
-			activeCategory,
-			startAfter(lastVisibleUser),
-			limit(10)
-		);
-
-		const getMoreDocs = await getDocs(moreData);
-		const moreAdmins = getMoreDocs.docs.map((doc) => doc.data() as IUserFirebase);
-
-		setUsers((prev) => [...prev, ...moreAdmins]);
-		setLastVisibleUser(getMoreDocs.docs[getMoreDocs.docs.length - 1]);
-		setIslastDataUser(getMoreDocs.size > 9);
-		setIsLoading(false);
-	};
-
-	function usersFilter() {
-		const usersBanned = where("blocked.endBan", ">", Timestamp.now());
-		const allUsers = where("id", "!=", user?.uid);
-		const admins = where("access", ">", 0);
-		const activeCategory =
-			(categorySelected === dataCategories[0] && allUsers) ||
-			(categorySelected === dataCategories[1] && admins) ||
-			(categorySelected === dataCategories[2] && usersBanned);
-		return activeCategory;
-	}
+	const {
+		data: users,
+		loadMoreData,
+		isLastDocs,
+		onReload,
+	} = useCollectionRealtime<IUserFirebase>(
+		"users",
+		(user && {
+			where: usersFilter,
+			limit: 10,
+		}) ||
+			{}
+	);
 
 	return (
 		<>
@@ -90,7 +48,7 @@ const Categories: FC<{ categorySelected: string }> = ({ categorySelected }) => {
 			) : (
 				<div className={classes.wrapper}>
 					<ul className={classes.users}>
-						{users.length > 0 ? (
+						{users && users.length > 0 ? (
 							users.map((user) => {
 								return <User currUser={user} key={user.id} />;
 							})
@@ -100,13 +58,13 @@ const Categories: FC<{ categorySelected: string }> = ({ categorySelected }) => {
 					</ul>
 
 					<div className={classes.btns}>
-						{islastDataUser && (
-							<DefaultBtn onClickHandler={loadMoreUsers} classMode="clear">
+						{!isLastDocs && (
+							<DefaultBtn onClickHandler={loadMoreData} classMode="clear">
 								More
 							</DefaultBtn>
 						)}
-						{users.length > 10 && (
-							<DefaultBtn onClickHandler={() => setReload((prev) => !prev)} classMode="clear">
+						{users && users.length > 10 && (
+							<DefaultBtn onClickHandler={onReload} classMode="clear">
 								Hide
 							</DefaultBtn>
 						)}

@@ -4,8 +4,6 @@ import classes from "./UsersPanel.module.scss";
 import { FiSearch } from "react-icons/fi";
 import CategoryBtn from "@Components/UI/btn/CategoryBtn";
 import { useAuthContext } from "@/context/useAuthContext";
-import { collection, endAt, onSnapshot, orderBy, query, startAt, where } from "firebase/firestore";
-import { db } from "@Project/firebase";
 import { IUserFirebase } from "@/types/types";
 
 import Loading from "@Components/UI/loading/Loading";
@@ -14,6 +12,7 @@ import User from "./user/User";
 import { dataCategories } from "./usersPanel.data";
 import AddAccount from "./addAccount/AddAccount";
 import Categories from "./categories/Categories";
+import { searchUsers } from "@/services/firebase/searchUsers";
 
 const UsersPanel: FC = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -25,39 +24,15 @@ const UsersPanel: FC = () => {
 
 	const [isActiveModal, setIsActiveModal] = useState(false);
 
-	const onChangeCategory = (categoryName: string) => {
-		setNameCategory(categoryName);
-	};
-
 	const onSearchUser = () => {
-		if (!user) return;
-		if (searchText.length < 3) return;
-		setIsLoading(true);
-
-		const q = query(
-			collection(db, "users"),
-			where("name_lowercase", ">=", searchText.toLowerCase()),
-			where("name_lowercase", "<=", searchText.toLowerCase() + "\uf8ff"),
-			orderBy("name_lowercase"),
-			startAt(searchText.toLowerCase()),
-			endAt(searchText.toLowerCase() + "\uf8ff")
-		);
-
-		const unsubscribe = onSnapshot(q, (querySnapshot) => {
-			const searchData: IUserFirebase[] = [];
-			querySnapshot.forEach((doc) => {
-				if (doc.id === user.uid) return;
-				searchData.push(doc.data() as IUserFirebase);
-			});
-
+		if (!user || searchText.length < 3) return;
+		const setStates = (searchData: IUserFirebase[]) => {
 			setUsers(searchData);
 			setNameCategory("search");
 			setIsLoading(false);
-		});
-
-		return () => {
-			unsubscribe();
 		};
+
+		searchUsers(searchText, setStates, user.uid);
 	};
 
 	return (
@@ -86,7 +61,7 @@ const UsersPanel: FC = () => {
 						return (
 							<CategoryBtn
 								isActive={nameCategory === item}
-								onClickHandler={() => onChangeCategory(item)}
+								onClickHandler={() => setNameCategory(item)}
 								key={item}
 							>
 								{item}
@@ -104,7 +79,7 @@ const UsersPanel: FC = () => {
 					<Categories categorySelected={nameCategory} />
 				)}
 
-				{users.length === 0 && nameCategory === "search" && (
+				{!users.length && nameCategory === "search" && (
 					<h5 className={classes.emptySearch}>There are no such users.</h5>
 				)}
 			</div>

@@ -22,10 +22,7 @@ import { IMessageFirebase, IUserFirebase, IUserSettingsFirebase } from "@/types/
 import { updateDoc } from "firebase/firestore";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import TextAreaForm from "@Components/UI/textareaForm/TextAreaForm";
-import {
-	dataSettFriend,
-	dataSettMess,
-} from "../../../layout/header/userSettings/userSettings.data";
+import { dataSettMess } from "@Components/layout/header/userSettings/userSettings.data";
 
 const UserChat: FC<{ selectedUser: string }> = ({ selectedUser }) => {
 	const { user } = useAuthContext();
@@ -162,7 +159,7 @@ const UserChat: FC<{ selectedUser: string }> = ({ selectedUser }) => {
 					</DefaultBtn>
 				)}
 			</ul>
-			{selectedUser !== "" ? (
+			{selectedUser.length ? (
 				(userSetting?.messages === dataSettMess[2] && friendStatus) ||
 				userSetting?.messages === dataSettMess[0] ||
 				!userSetting ? (
