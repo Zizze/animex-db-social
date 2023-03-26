@@ -1,6 +1,6 @@
 import { IUserFirebase } from "@/types/types";
 import Image from "next/image";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, memo } from "react";
 import classes from "./User.module.scss";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
@@ -102,4 +102,4 @@ const User: FC<IProps> = ({ currUser }) => {
 	);
 };
 
-export default User;
+export default memo(User);

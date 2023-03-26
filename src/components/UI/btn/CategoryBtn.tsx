@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { FC, MouseEvent, ReactNode } from "react";
+import { FC, MouseEvent, ReactNode, memo } from "react";
 import classes from "./CategoryBtn.module.scss";
 
 interface IProps {
@@ -23,4 +23,4 @@ const CategoryBtn: FC<IProps> = ({ onClickHandler, isActive = false, children })
 	);
 };
 
-export default CategoryBtn;
+export default memo(CategoryBtn);

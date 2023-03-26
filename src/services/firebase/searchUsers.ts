@@ -1,4 +1,3 @@
-import { useAuthContext } from "@/context/useAuthContext";
 import { IUserFirebase } from "@/types/types";
 import { db } from "@Project/firebase";
 import { collection, endAt, onSnapshot, orderBy, query, startAt, where } from "firebase/firestore";

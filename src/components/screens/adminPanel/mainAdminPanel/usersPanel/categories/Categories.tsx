@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useMemo } from "react";
+import { FC, memo, useMemo } from "react";
 import classes from "./Categories.module.scss";
 import { useAuthContext } from "@/context/useAuthContext";
 import { Timestamp } from "firebase/firestore";
@@ -7,13 +7,9 @@ import User from "../user/User";
 import Loading from "@Components/UI/loading/Loading";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import { dataCategories } from "../usersPanel.data";
-import {
-	useCollectionRealtime,
-	WhereQuery,
-} from "@/services/firebase/adminPanel/useCollectionRealtime";
+import { useCollectionRealtime, WhereQuery } from "@/hooks/firebase/useCollectionRealtime";
 
 const Categories: FC<{ categorySelected: string }> = ({ categorySelected }) => {
-	const [isLoading, setIsLoading] = useState(false);
 	const { user } = useAuthContext();
 
 	const usersFilter = useMemo(() => {
@@ -32,6 +28,7 @@ const Categories: FC<{ categorySelected: string }> = ({ categorySelected }) => {
 		loadMoreData,
 		isLastDocs,
 		onReload,
+		isLoading,
 	} = useCollectionRealtime<IUserFirebase>(
 		"users",
 		(user && {
@@ -75,4 +72,4 @@ const Categories: FC<{ categorySelected: string }> = ({ categorySelected }) => {
 	);
 };
 
-export default Categories;
+export default memo(Categories);

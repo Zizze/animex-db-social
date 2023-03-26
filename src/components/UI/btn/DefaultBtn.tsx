@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, memo } from "react";
 import classes from "./DefaultBtn.module.scss";
 import cn from "classnames";
 
@@ -43,4 +43,4 @@ const DefaultBtn: FC<IProps> = ({
 	);
 };
 
-export default DefaultBtn;
+export default memo(DefaultBtn);

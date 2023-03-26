@@ -13,7 +13,7 @@ import {
 	where,
 	WhereFilterOp,
 } from "firebase/firestore";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 interface IGetUsersByCategoryReturn<T> {
 	data: T[] | null;
@@ -43,20 +43,7 @@ export const useCollectionRealtime = <T>(
 	const [updateEffect, setUpdateEffect] = useState(false);
 
 	useEffect(() => {
-		let collectionRef: Query<DocumentData> = collection(db, collectionPath);
-		if (queryOptions?.orderBy) {
-			collectionRef = query(
-				collectionRef,
-				orderBy(queryOptions.orderBy[0], queryOptions.orderBy[1])
-			);
-		}
-		if (queryOptions?.where && queryOptions.where) {
-			const queries = queryOptions.where.map(([field, operator, value]) =>
-				where(field, operator, value)
-			);
-			collectionRef = query(collectionRef, ...queries);
-		}
-		if (queryOptions?.limit) collectionRef = query(collectionRef, limit(queryOptions.limit));
+		const collectionRef = buildCollectionRef(collectionPath, queryOptions);
 
 		const unsubscribe = onSnapshot(collectionRef, (querySnapshot) => {
 			const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
@@ -65,34 +52,24 @@ export const useCollectionRealtime = <T>(
 			querySnapshot.forEach((doc) => {
 				collectionData.push(doc.data() as T);
 			});
-			setData(collectionData);
-			setLastDoc(lastVisibleDoc as QueryDocumentSnapshot);
-			setIsLastDocs(collectionData.length < (queryOptions.limit || 0));
+
+			if (JSON.stringify(collectionData) !== JSON.stringify(data)) {
+				setData(collectionData);
+				setLastDoc(lastVisibleDoc as QueryDocumentSnapshot);
+				setIsLastDocs(collectionData.length < (queryOptions.limit || 0));
+			}
 			setIsLoading(false);
 		});
-		console.log("render useEffect");
-		return () => unsubscribe();
-	}, [collectionPath, JSON.stringify(queryOptions)]);
 
-	const loadMoreData = async () => {
+		return () => unsubscribe();
+	}, [collectionPath, JSON.stringify(queryOptions), updateEffect]);
+
+	console.log("HOOK: useCollectionRealtime");
+
+	const loadMoreData = useCallback(async () => {
 		if (!lastDoc || isLastDocs) return;
 		console.log("click loadMore");
-		let collectionRef: Query<DocumentData> = collection(db, collectionPath);
-		if (queryOptions?.orderBy) {
-			collectionRef = query(
-				collectionRef,
-				orderBy(queryOptions.orderBy[0], queryOptions.orderBy[1])
-			);
-		}
-		if (queryOptions?.where) {
-			const queries = queryOptions.where.map(([field, operator, value]) =>
-				where(field, operator, value)
-			);
-			collectionRef = query(collectionRef, ...queries);
-		}
-
-		if (lastDoc) collectionRef = query(collectionRef, startAfter(lastDoc));
-		if (queryOptions?.limit) collectionRef = query(collectionRef, limit(queryOptions.limit));
+		const collectionRef = buildCollectionRef(collectionPath, queryOptions, lastDoc);
 
 		const getMoreDocs = await getDocs(collectionRef);
 		const lastVisibleDoc = getMoreDocs.docs[getMoreDocs.docs.length - 1];
@@ -102,9 +79,9 @@ export const useCollectionRealtime = <T>(
 		setLastDoc(lastVisibleDoc as QueryDocumentSnapshot);
 		setIsLastDocs(moreData.length < (queryOptions.limit || 0));
 		setIsLoading(false);
-	};
+	}, []);
 
-	const onReload = () => setUpdateEffect((prev) => !prev);
+	const onReload = useCallback(() => setUpdateEffect((prev) => !prev), []);
 
 	return {
 		loadMoreData,
@@ -115,3 +92,25 @@ export const useCollectionRealtime = <T>(
 		lastDoc,
 	};
 };
+
+function buildCollectionRef(
+	collectionPath: string,
+	queryOptions?: IQueryOptions,
+	lastDoc?: DocumentData
+) {
+	let collectionRef: Query<DocumentData> = collection(db, collectionPath);
+	if (queryOptions?.orderBy) {
+		collectionRef = query(collectionRef, orderBy(queryOptions.orderBy[0], queryOptions.orderBy[1]));
+	}
+	if (queryOptions?.where && queryOptions.where) {
+		const queries = queryOptions.where.map(([field, operator, value]) =>
+			where(field, operator, value)
+		);
+		collectionRef = query(collectionRef, ...queries);
+	}
+	if (lastDoc) {
+		collectionRef = query(collectionRef, startAfter(lastDoc));
+	}
+	if (queryOptions?.limit) collectionRef = query(collectionRef, limit(queryOptions.limit));
+	return collectionRef;
+}

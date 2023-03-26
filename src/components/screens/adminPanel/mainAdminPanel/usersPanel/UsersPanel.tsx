@@ -1,5 +1,5 @@
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
-import { FC, useState } from "react";
+import { FC, useState, memo, useCallback } from "react";
 import classes from "./UsersPanel.module.scss";
 import { FiSearch } from "react-icons/fi";
 import CategoryBtn from "@Components/UI/btn/CategoryBtn";
@@ -13,27 +13,31 @@ import { dataCategories } from "./usersPanel.data";
 import AddAccount from "./addAccount/AddAccount";
 import Categories from "./categories/Categories";
 import { searchUsers } from "@/services/firebase/searchUsers";
+import useDebounce from "@/hooks/useDebounce";
 
 const UsersPanel: FC = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const { user } = useAuthContext();
 
 	const [searchText, setSearchText] = useState("");
+	const debounceSearchText = useDebounce(searchText, 1000);
+
 	const [nameCategory, setNameCategory] = useState(dataCategories[0]);
 	const [users, setUsers] = useState<IUserFirebase[]>([]);
 
 	const [isActiveModal, setIsActiveModal] = useState(false);
 
-	const onSearchUser = () => {
-		if (!user || searchText.length < 3) return;
+	const onSearchUser = useCallback(() => {
+		if (!user || `${debounceSearchText}`.length < 3) return;
+		setIsLoading(true);
+
 		const setStates = (searchData: IUserFirebase[]) => {
 			setUsers(searchData);
 			setNameCategory("search");
 			setIsLoading(false);
 		};
-
-		searchUsers(searchText, setStates, user.uid);
-	};
+		searchUsers(`${debounceSearchText}`, setStates, user.uid);
+	}, [debounceSearchText]);
 
 	return (
 		<div className={classes.wrapper}>
@@ -45,12 +49,15 @@ const UsersPanel: FC = () => {
 						onChange={(e) => setSearchText(e.target.value)}
 						value={searchText}
 					/>
-					<DefaultBtn onClickHandler={onSearchUser}>
+					<DefaultBtn onClickHandler={useCallback(() => onSearchUser(), [])}>
 						<FiSearch />
 					</DefaultBtn>
 				</div>
 				<div className={classes.requests}>
-					<DefaultBtn classMode="main-simple" onClickHandler={() => setIsActiveModal(true)}>
+					<DefaultBtn
+						classMode="main-simple"
+						onClickHandler={useCallback(() => setIsActiveModal(true), [])}
+					>
 						Add account
 					</DefaultBtn>
 				</div>
@@ -73,7 +80,7 @@ const UsersPanel: FC = () => {
 				{nameCategory === "search" ? (
 					!isLoading &&
 					users.map((user) => {
-						return <User currUser={user} />;
+						return <User key={user.name_lowercase} currUser={user} />;
 					})
 				) : (
 					<Categories categorySelected={nameCategory} />
