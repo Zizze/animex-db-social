@@ -11,6 +11,7 @@ import { useAuthContext } from "@/context/useAuthContext";
 import defaulImage from "@Public/testava.jpg";
 import { dataSettFriend } from "../../../layout/header/userSettings/userSettings.data";
 import Link from "next/link";
+import { useRealtimeDoc } from "@/hooks/firebase/useRealtimeDoc";
 
 interface IProps {
 	currUser: IUserFirebase;
@@ -20,20 +21,22 @@ interface IProps {
 
 const User: FC<IProps> = ({ currUser, requestsPage = false, nameCategory }) => {
 	const [isHideUser, setIsHideUser] = useState(false);
-	const [friendStatus, setFriendStatus] = useState<boolean | string>();
 	const { user } = useAuthContext();
-
 	const { name, photoURL, id, settings } = currUser;
+
+	const { data: friendInfo } = !requestsPage
+		? useRealtimeDoc<IFriendFirebase>(`users/${user?.uid}/friends/${id}`)
+		: { data: null };
 
 	const onClickSent = async () => {
 		if (!user) return;
-		const sendingUserRef = doc(db, `users/${user?.uid}/friends`, `${id}`);
+		const sendingUserRef = doc(db, `users/${user?.uid}/friends/${id}`);
 		await setDoc(sendingUserRef, {
 			friend: false,
 			confirmator: false,
 		});
 
-		const сonfirmUserRef = doc(db, `users/${id}/friends`, `${user?.uid}`);
+		const сonfirmUserRef = doc(db, `users/${id}/friends/${user?.uid}`);
 		await setDoc(сonfirmUserRef, {
 			friend: false,
 			confirmator: true,
@@ -41,25 +44,11 @@ const User: FC<IProps> = ({ currUser, requestsPage = false, nameCategory }) => {
 	};
 
 	const onClickRemove = async () => {
-		await deleteDoc(doc(db, `users/${user?.uid}/friends`, `${id}`));
-		await deleteDoc(doc(db, `users/${id}/friends`, `${user?.uid}`));
+		await deleteDoc(doc(db, `users/${user?.uid}/friends/${id}`));
+		await deleteDoc(doc(db, `users/${id}/friends/${user?.uid}`));
 
 		if (requestsPage || nameCategory) setIsHideUser(true);
 	};
-
-	useEffect(() => {
-		if (!requestsPage) {
-			const unsub = onSnapshot(doc(db, `users/${user?.uid}/friends`, `${id}`), (doc) => {
-				if (doc.exists()) {
-					const getData: IFriendFirebase = doc.data() as IFriendFirebase;
-					setFriendStatus(getData.friend);
-				} else {
-					setFriendStatus("empty");
-				}
-			});
-			return () => unsub();
-		}
-	}, [user]);
 
 	const onClickAccept = async () => {
 		if (!user) return;
@@ -97,7 +86,7 @@ const User: FC<IProps> = ({ currUser, requestsPage = false, nameCategory }) => {
 					</div>
 					{!requestsPage && (
 						<div className={classes.btns}>
-							{friendStatus === "empty" && (
+							{friendInfo === null && (
 								<DefaultBtn
 									disabled={settings?.friends ? settings?.friends !== dataSettFriend[0] : false}
 									classMode="clear"
@@ -111,8 +100,8 @@ const User: FC<IProps> = ({ currUser, requestsPage = false, nameCategory }) => {
 									<AiOutlineUserAdd />
 								</DefaultBtn>
 							)}
-							{friendStatus === false && <p>Under review</p>}
-							{friendStatus === true && (
+							{friendInfo?.friend === false && <p>Under review</p>}
+							{friendInfo?.friend === true && (
 								<DefaultBtn
 									classMode="decline"
 									title="Remove friend"

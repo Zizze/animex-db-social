@@ -5,12 +5,12 @@
 	overflow-y: scroll;
 	.users {
 		min-height: 55vh;
+		margin-bottom: 10px;
 	}
 	.btns {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-
-		margin: 10px;
+		gap: 10px;
 	}
 }

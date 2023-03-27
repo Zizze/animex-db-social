@@ -29,8 +29,8 @@ const Message: FC<{ message: ISupportFirebase }> = ({ message }) => {
 
 	const supportRef = doc(db, `support/${message.docId}`);
 
-	const mess = useRealtimeDoc<ISupportFirebase>(`support/${message.docId}`);
-	const authorProfile = useRealtimeDoc<IUserFirebase>(`users/${message.userId}`);
+	const { data: mess } = useRealtimeDoc<ISupportFirebase>(`support/${message.docId}`);
+	const { data: authorProfile } = useRealtimeDoc<IUserFirebase>(`users/${message.userId}`);
 	const [adminsFullInfo, setAdminsFullInfo] = useState<UserWithSupportMess[]>([]);
 
 	const [text, setText] = useState("");

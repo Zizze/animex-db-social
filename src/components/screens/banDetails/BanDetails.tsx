@@ -10,70 +10,73 @@ import { convertTimestamp } from "@/utils/convertTimestamp";
 import Image from "next/image";
 import defaultImage from "@Public/testava.jpg";
 import SupportForm from "@Components/UI/supportForm/SupportForm";
+import { useRealtimeDoc } from "@/hooks/firebase/useRealtimeDoc";
+import Loading from "@Components/UI/loading/Loading";
 
 const BanDetails: FC = () => {
-	const [isOpenSupport, setIsOpenSupport] = useState(false);
-	const [adminData, setAdminData] = useState<IUserFirebase>();
-	const { user, userStorage } = useAuthContext();
 	const router = useRouter();
+	const [isOpenSupport, setIsOpenSupport] = useState(false);
+
+	const { user, userStorage } = useAuthContext();
+	const { data: adminData, loading } = useRealtimeDoc<IUserFirebase>(
+		`users/${userStorage?.blocked?.adminId}`
+	);
 
 	useEffect(() => {
 		if (!user || user.displayName !== router.query.name || !userStorage?.blocked) {
-			router.push("/");
+			router.replace("/");
 		}
-	}, [router.query.name, user, userStorage]);
-
-	useEffect(() => {
-		if (!userStorage || !userStorage.blocked || !user) return;
-
-		const adminRef = doc(db, `users/${userStorage.blocked.adminId}`);
-		const unsub = onSnapshot(adminRef, (doc) => {
-			setAdminData(doc.data() as IUserFirebase);
-		});
-		return () => unsub();
-	}, [user, userStorage]);
+	}, [router.query.name, user]);
 
 	return (
 		<Layout>
-			<div className={classes.wrapper}>
-				<div className={classes.container}>
-					<h6>Your account is blocked.</h6>
-					{adminData && userStorage && userStorage.blocked && (
-						<ul>
-							<li>
-								Blocked by:
-								<div>
-									<Image
-										src={adminData.photoURL || defaultImage}
-										height={100}
-										width={100}
-										alt={`${adminData.name} ava`}
-									/>
-									<span>{adminData.name}</span>
-								</div>
-							</li>
-							<li>
-								Lock date:
-								<span className={classes.date}>
-									{convertTimestamp(userStorage.blocked.startBan)}
-								</span>
-							</li>
-							<li>
-								End of blocking:
-								<span className={classes.date}>{convertTimestamp(userStorage.blocked.endBan)}</span>
-							</li>
-							<li>
-								Reason: <p>{userStorage.blocked.message}</p>
-							</li>
-							<li className={classes.supportBlock}>
-								If you have any questions, you can contact
-								<button onClick={() => setIsOpenSupport(true)}>Support</button>.
-							</li>
-						</ul>
-					)}
+			{loading ? (
+				<Loading />
+			) : (
+				<div className={classes.wrapper}>
+					<div className={classes.container}>
+						{adminData && userStorage && userStorage.blocked && (
+							<>
+								<h6>Your account is blocked.</h6>
+								<ul>
+									<li>
+										Blocked by:
+										<div>
+											<Image
+												src={adminData.photoURL || defaultImage}
+												height={100}
+												width={100}
+												alt={`${adminData.name} ava`}
+											/>
+											<span>{adminData.name}</span>
+										</div>
+									</li>
+									<li>
+										Lock date:
+										<span className={classes.date}>
+											{convertTimestamp(userStorage.blocked.startBan)}
+										</span>
+									</li>
+									<li>
+										End of blocking:
+										<span className={classes.date}>
+											{convertTimestamp(userStorage.blocked.endBan)}
+										</span>
+									</li>
+									<li>
+										Reason: <p>{userStorage.blocked.message}</p>
+									</li>
+									<li className={classes.supportBlock}>
+										If you have any questions, you can contact
+										<button onClick={() => setIsOpenSupport(true)}>Support</button>.
+									</li>
+								</ul>
+							</>
+						)}
+					</div>
+					<SupportForm isActiveSupport={isOpenSupport} setIsActiveSupport={setIsOpenSupport} />
 				</div>
-				<SupportForm isActiveSupport={isOpenSupport} setIsActiveSupport={setIsOpenSupport} />
-			</div>
+			)}
 		</Layout>
 	);
 };

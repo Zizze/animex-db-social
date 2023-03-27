@@ -1,11 +1,10 @@
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
-import { createUserWithEmailAndPassword, getAuth, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useRouter } from "next/router";
 import { FormEvent, useState, useEffect } from "react";
 import classes from "./SignUp.module.scss";
 import Link from "next/link";
 import { doc, setDoc } from "firebase/firestore";
-import { useAuthContext } from "@/context/useAuthContext";
 import { auth, db } from "@Project/firebase";
 import { useTextField } from "@/hooks/useTextField";
 import { checkExistingUser } from "@/services/firebase/checkExistingUser";
@@ -41,8 +40,6 @@ const SignUp = () => {
 
 	const router = useRouter();
 
-	const { setUser } = useAuthContext();
-
 	const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const checkEmailLogin = await checkExistingUser(name, email);
@@ -52,7 +49,6 @@ const SignUp = () => {
 		try {
 			const { user } = await createUserWithEmailAndPassword(auth, email, password);
 			if (auth.currentUser) await updateProfile(auth.currentUser, { displayName: name });
-			setUser(user);
 
 			await setDoc(doc(db, "users", user.uid), {
 				id: user.uid,

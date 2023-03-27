@@ -1,18 +1,5 @@
-import { db } from "@Project/firebase";
-import {
-	collection,
-	DocumentData,
-	getDocs,
-	limit,
-	onSnapshot,
-	orderBy,
-	query,
-	Query,
-	QueryDocumentSnapshot,
-	startAfter,
-	where,
-	WhereFilterOp,
-} from "firebase/firestore";
+import { buildCollectionRef, IQueryOptions } from "@/utils/firebase/buildCollectionRef";
+import { DocumentData, getDocs, onSnapshot, QueryDocumentSnapshot } from "firebase/firestore";
 import { useState, useEffect, useCallback } from "react";
 
 interface IGetUsersByCategoryReturn<T> {
@@ -22,13 +9,6 @@ interface IGetUsersByCategoryReturn<T> {
 	isLastDocs: boolean;
 	isLoading: boolean;
 	onReload: () => void;
-}
-
-export type WhereQuery = [string, WhereFilterOp, any];
-interface IQueryOptions {
-	limit?: number;
-	orderBy?: [string, "asc" | "desc"];
-	where?: WhereQuery[] | null;
 }
 
 export const useCollectionRealtime = <T>(
@@ -92,25 +72,3 @@ export const useCollectionRealtime = <T>(
 		lastDoc,
 	};
 };
-
-function buildCollectionRef(
-	collectionPath: string,
-	queryOptions?: IQueryOptions,
-	lastDoc?: DocumentData
-) {
-	let collectionRef: Query<DocumentData> = collection(db, collectionPath);
-	if (queryOptions?.orderBy) {
-		collectionRef = query(collectionRef, orderBy(queryOptions.orderBy[0], queryOptions.orderBy[1]));
-	}
-	if (queryOptions?.where && queryOptions.where) {
-		const queries = queryOptions.where.map(([field, operator, value]) =>
-			where(field, operator, value)
-		);
-		collectionRef = query(collectionRef, ...queries);
-	}
-	if (lastDoc) {
-		collectionRef = query(collectionRef, startAfter(lastDoc));
-	}
-	if (queryOptions?.limit) collectionRef = query(collectionRef, limit(queryOptions.limit));
-	return collectionRef;
-}
