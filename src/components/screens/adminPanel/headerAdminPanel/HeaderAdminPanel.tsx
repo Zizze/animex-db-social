@@ -1,36 +1,21 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import classes from "./HeaderAdminPanel.module.scss";
 import { FaUsers } from "react-icons/fa";
 import { AiFillWechat } from "react-icons/ai";
-import { collection, collectionGroup, getCountFromServer } from "firebase/firestore";
-import { db } from "@Project/firebase";
+
 import { TbMessages, TbListDetails, TbHelp } from "react-icons/tb";
 import MassMailing from "./massMailing/MassMailing";
 import AdminsAction from "./adminsAction/AdminsAction";
 import Support from "./support/Support";
+import { useCollectionSize } from "@/hooks/firebase/useCollectionSize";
 
 const HeaderAdminPanel: FC = () => {
 	const [isVisibleMassMailing, setIsVisibleMassMailing] = useState(false);
 	const [isVisibleActions, setIsVisibleActions] = useState(false);
 	const [isVisibleSupport, setIsVisibleSupport] = useState(false);
 
-	const [usersCount, setUsersCount] = useState(0);
-	const [commentsCount, setCommentsCount] = useState(0);
-
-	useEffect(() => {
-		const getUserCount = async () => {
-			const usersRef = collection(db, "users");
-			const snapshot = await getCountFromServer(usersRef);
-			setUsersCount(snapshot.data().count);
-		};
-		const getCommentsCount = async () => {
-			const commentsRef = collectionGroup(db, "dataAnime");
-			const animeDoc = await getCountFromServer(commentsRef);
-			setCommentsCount(animeDoc.data().count);
-		};
-		getUserCount();
-		getCommentsCount();
-	}, []);
+	const usersCount = useCollectionSize("users");
+	const commentsCount = useCollectionSize("dataAnime", true);
 
 	return (
 		<>

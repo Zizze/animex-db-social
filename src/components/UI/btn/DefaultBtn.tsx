@@ -1,4 +1,4 @@
-import { FC, ReactNode, memo } from "react";
+import { FC, ReactNode, KeyboardEvent } from "react";
 import classes from "./DefaultBtn.module.scss";
 import cn from "classnames";
 
@@ -10,6 +10,7 @@ interface IProps {
 	disabled?: boolean;
 	title?: string;
 	className?: string;
+	onKeyDown?: (e: KeyboardEvent) => void;
 }
 
 const DefaultBtn: FC<IProps> = ({
@@ -20,6 +21,7 @@ const DefaultBtn: FC<IProps> = ({
 	type = "button",
 	title,
 	className = "",
+	onKeyDown,
 }) => {
 	const classNames = cn(
 		classes.btnDefault,
@@ -37,10 +39,11 @@ const DefaultBtn: FC<IProps> = ({
 			onClick={onClickHandler}
 			disabled={disabled}
 			title={title}
+			onKeyDown={onKeyDown}
 		>
 			{children}
 		</button>
 	);
 };
 
-export default memo(DefaultBtn);
+export default DefaultBtn;

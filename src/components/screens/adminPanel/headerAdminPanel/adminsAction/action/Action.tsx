@@ -1,43 +1,21 @@
 import { IAdminActionFirebase, IUserFirebase } from "@/types/types";
-import { db } from "@Project/firebase";
-import { doc, getDoc } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import classes from "./Action.module.scss";
 import defaultImage from "@Public/testava.jpg";
 import { userAccessInString } from "@/utils/userAccessInString";
 import cn from "classnames";
 import { convertTimestamp } from "@/utils/convertTimestamp";
 import { checkCreateData } from "@/utils/checkCreateData";
+import { adminActionData } from "./action.data";
+import { useGetDoc } from "@/hooks/firebase/useGetDoc";
 
-const adminActionData = [
-	{ type: "anonce", descr: "made a mass mailing" },
-	{ type: "block", descr: "has blocked user" },
-	{ type: "unblock", descr: "has unblocked user" },
-	{ type: "delete", descr: "deleted a comment from user" },
-	{ type: "access", descr: "user access level to" },
-];
 const Action: FC<{ action: IAdminActionFirebase }> = ({ action }) => {
-	const [adminData, setAdminData] = useState<IUserFirebase>();
-	const [userData, setUserData] = useState<IUserFirebase>();
 	const [showHideToggle, setShowHideToggle] = useState(false);
 
-	useEffect(() => {
-		if (!action) return;
-		const getInfoAction = async () => {
-			const admintRef = doc(db, `users/${action.adminId}`);
-			const adminDoc = await getDoc(admintRef);
-			setAdminData(adminDoc.data() as IUserFirebase);
-
-			if (action.type !== adminActionData[0].type) {
-				const userRef = doc(db, `users/${action.userId}`);
-				const userDoc = await getDoc(userRef);
-				setUserData(userDoc.data() as IUserFirebase);
-			}
-		};
-		getInfoAction();
-	}, []);
+	const { data: adminData } = useGetDoc<IUserFirebase>(`users/${action.adminId}`);
+	const { data: userData } = useGetDoc<IUserFirebase>(`users/${action.userId}`);
 
 	const createdTime = checkCreateData(action.timestamp.seconds);
 

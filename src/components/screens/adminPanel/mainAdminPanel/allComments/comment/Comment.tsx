@@ -1,8 +1,7 @@
 import { ICommentFirebase, IUserFirebase } from "@/types/types";
-import React, { FC, useState } from "react";
+import React, { FC, useState, memo } from "react";
 
-import { useEffect } from "react";
-import { addDoc, collection, deleteDoc, doc, getDoc, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@Project/firebase";
 import classes from "./Comment.module.scss";
 import Image from "next/image";
@@ -14,6 +13,7 @@ import { checkCreateData } from "@/utils/checkCreateData";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import cn from "classnames";
 import Link from "next/link";
+import { useGetDoc } from "@/hooks/firebase/useGetDoc";
 
 interface IProps {
 	comment: ICommentFirebase;
@@ -21,22 +21,12 @@ interface IProps {
 
 const Comment: FC<IProps> = ({ comment }) => {
 	const { user, userStorage } = useAuthContext();
-	const [author, setAuthor] = useState<IUserFirebase>();
 	const { message, id, timestamp, docRef, animeId } = comment;
-	const chekDate = checkCreateData(+timestamp);
+	const chekDate = checkCreateData(timestamp.seconds);
 	const [isDelete, setIsDelete] = useState(false);
 	const [isShowSpoiler, setIsShowSpoiler] = useState(false);
 
-	useEffect(() => {
-		const getUser = async () => {
-			const userRef = doc(db, `users/${id}`);
-			const userDoc = await getDoc(userRef);
-			if (userDoc.exists()) {
-				setAuthor(userDoc.data() as IUserFirebase);
-			}
-		};
-		getUser();
-	}, []);
+	const { data: author } = useGetDoc<IUserFirebase>(`users/${id}`);
 
 	const onDeleteHandler = async () => {
 		if (!docRef || !user) return;
@@ -58,7 +48,7 @@ const Comment: FC<IProps> = ({ comment }) => {
 					});
 				}
 			} catch (error) {
-				console.log("Admin panel: comment deletion error.");
+				console.log(`Admin panel: ${error}.`);
 			}
 		}
 	};
@@ -122,4 +112,4 @@ const Comment: FC<IProps> = ({ comment }) => {
 	);
 };
 
-export default Comment;
+export default memo(Comment);

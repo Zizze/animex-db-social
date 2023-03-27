@@ -1,5 +1,5 @@
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
-import { FC, useState, memo, useCallback } from "react";
+import { FC, useState, useRef, FormEvent } from "react";
 import classes from "./UsersPanel.module.scss";
 import { FiSearch } from "react-icons/fi";
 import CategoryBtn from "@Components/UI/btn/CategoryBtn";
@@ -13,22 +13,23 @@ import { dataCategories } from "./usersPanel.data";
 import AddAccount from "./addAccount/AddAccount";
 import Categories from "./categories/Categories";
 import { searchUsers } from "@/services/firebase/searchUsers";
-import useDebounce from "@/hooks/useDebounce";
+import { enterClick } from "@/utils/enterClick";
 
 const UsersPanel: FC = () => {
+	const searchRef = useRef(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const { user } = useAuthContext();
 
 	const [searchText, setSearchText] = useState("");
-	const debounceSearchText = useDebounce(searchText, 1000);
 
 	const [nameCategory, setNameCategory] = useState(dataCategories[0]);
 	const [users, setUsers] = useState<IUserFirebase[]>([]);
 
 	const [isActiveModal, setIsActiveModal] = useState(false);
 
-	const onSearchUser = useCallback(() => {
-		if (!user || `${debounceSearchText}`.length < 3) return;
+	const onSearchUser = (e: FormEvent) => {
+		e.preventDefault();
+		if (!user || `${searchText}`.length < 3) return;
 		setIsLoading(true);
 
 		const setStates = (searchData: IUserFirebase[]) => {
@@ -36,28 +37,25 @@ const UsersPanel: FC = () => {
 			setNameCategory("search");
 			setIsLoading(false);
 		};
-		searchUsers(`${debounceSearchText}`, setStates, user.uid);
-	}, [debounceSearchText]);
+		searchUsers(`${searchText}`, setStates, user.uid);
+	};
 
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.header}>
-				<div className={classes.search}>
+				<form ref={searchRef} onSubmit={onSearchUser} className={classes.search}>
 					<input
 						type="text"
 						placeholder="Enter user name..."
 						onChange={(e) => setSearchText(e.target.value)}
 						value={searchText}
 					/>
-					<DefaultBtn onClickHandler={useCallback(() => onSearchUser(), [])}>
+					<DefaultBtn onKeyDown={(e) => enterClick(e, { ref: searchRef })}>
 						<FiSearch />
 					</DefaultBtn>
-				</div>
+				</form>
 				<div className={classes.requests}>
-					<DefaultBtn
-						classMode="main-simple"
-						onClickHandler={useCallback(() => setIsActiveModal(true), [])}
-					>
+					<DefaultBtn classMode="main-simple" onClickHandler={() => setIsActiveModal(true)}>
 						Add account
 					</DefaultBtn>
 				</div>

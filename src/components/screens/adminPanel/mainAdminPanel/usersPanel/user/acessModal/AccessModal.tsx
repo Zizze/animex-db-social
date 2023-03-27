@@ -4,12 +4,11 @@ import CloseModal from "@Components/UI/btn/CloseModal";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import Checkbox from "@Components/UI/checkbox/Checkbox";
 import ModalWrapper from "@Components/UI/modal/ModalWrapper";
-import { db } from "@Project/firebase";
-import { addDoc, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import React, { Dispatch, FC, SetStateAction, useState } from "react";
 import classes from "./AccessModal.module.scss";
 import { dataAccess } from "../../usersPanel.data";
 import { popMessage } from "@/utils/popMessage/popMessage";
+import { changeUserAccess } from "@/services/firebase/changeUserAccess";
 
 interface IProps {
 	visibleAccessModal: boolean;
@@ -28,30 +27,20 @@ const AccessModal: FC<IProps> = ({ visibleAccessModal, setVisibleAccessModal, cu
 		const currAccessUser = currUser.access || 0;
 		const adminAccess = userStorage.access || 0;
 		setNoRights(false);
+		if (currAccessUser === accessSelect) return setVisibleAccessModal(false);
 
-		if (currAccessUser === accessSelect) {
-			setVisibleAccessModal(false);
+		if (adminAccess > currAccessUser && adminAccess > accessSelect) {
+			const changeAccess = await changeUserAccess({
+				adminId: userStorage.id,
+				userId: currUser.id,
+				accessSelected: accessSelect,
+			});
+			if (changeAccess) {
+				setVisibleAccessModal(false);
+				popSuccess("Access changed successfully");
+			} else popError("Access changed error");
 		} else {
-			if (adminAccess > currAccessUser && adminAccess > accessSelect) {
-				try {
-					await updateDoc(doc(db, `users/${currUser.id}`), { access: accessSelect });
-					await addDoc(collection(db, "adminsAction"), {
-						type: "access",
-						adminId: userStorage.id,
-						userId: currUser.id,
-						timestamp: serverTimestamp(),
-						access: accessSelect,
-					});
-
-					setVisibleAccessModal(false);
-
-					popSuccess("Access changed successfully");
-				} catch {
-					popError("Access changed error");
-				}
-			} else {
-				setNoRights(true);
-			}
+			setNoRights(true);
 		}
 	};
 

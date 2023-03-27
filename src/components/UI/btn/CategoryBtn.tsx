@@ -23,4 +23,4 @@ const CategoryBtn: FC<IProps> = ({ onClickHandler, isActive = false, children })
 	);
 };
 
-export default memo(CategoryBtn);
+export default CategoryBtn;

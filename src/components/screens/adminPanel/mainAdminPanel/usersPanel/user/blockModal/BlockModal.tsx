@@ -9,6 +9,7 @@ import { useTextField } from "@/hooks/useTextField";
 import { db } from "@Project/firebase";
 import { useAuthContext } from "../../../../../../../context/useAuthContext";
 import { popMessage } from "@/utils/popMessage/popMessage";
+import { blockUser } from "@/services/firebase/blockUser";
 
 interface IProps {
 	visibleBlockModal: boolean;
@@ -33,34 +34,20 @@ const BlockModal: FC<IProps> = ({ setVisibleBlockModal, currUserId, visibleBlock
 		e.preventDefault();
 		if (!user) return;
 		if (!date) return setNoSelectDate("No date selected!");
-
-		try {
-			await updateDoc(doc(db, `users/${currUserId}`), {
-				blocked: {
-					startBan: serverTimestamp(),
-					endBan: date,
-					adminId: user.uid,
-					message: comment,
-				},
-			});
-			await addDoc(collection(db, "adminsAction"), {
-				type: "block",
-				adminId: user.uid,
-				userId: currUserId,
-				message: comment,
-				timestamp: serverTimestamp(),
-				timestampEnd: date,
-			});
+		const blockedUser = await blockUser({
+			endBan: date,
+			currUserId,
+			message: comment,
+			adminId: user.uid,
+		});
+		if (blockedUser) {
+			popSuccess("User banned");
 
 			setComment("");
 			setVisibleBlockModal(false);
 			setNoSelectDate(null);
 			setDate(null);
-
-			popSuccess("User banned");
-		} catch {
-			popError("Banned error");
-		}
+		} else popError("Banned error");
 	};
 
 	return (

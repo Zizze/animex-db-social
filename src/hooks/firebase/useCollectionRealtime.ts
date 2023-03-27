@@ -50,7 +50,7 @@ export const useCollectionRealtime = <T>(
 			const collectionData: T[] = [];
 
 			querySnapshot.forEach((doc) => {
-				collectionData.push(doc.data() as T);
+				collectionData.push({ ...doc.data(), docId: doc.id } as T);
 			});
 
 			if (JSON.stringify(collectionData) !== JSON.stringify(data)) {
@@ -73,13 +73,13 @@ export const useCollectionRealtime = <T>(
 
 		const getMoreDocs = await getDocs(collectionRef);
 		const lastVisibleDoc = getMoreDocs.docs[getMoreDocs.docs.length - 1];
-		const moreData = getMoreDocs.docs.map((doc) => doc.data() as T);
+		const moreData = getMoreDocs.docs.map((doc) => ({ ...doc.data(), docId: doc.id } as T));
 
 		setData((prev) => prev && [...prev, ...moreData]);
 		setLastDoc(lastVisibleDoc as QueryDocumentSnapshot);
 		setIsLastDocs(moreData.length < (queryOptions.limit || 0));
 		setIsLoading(false);
-	}, []);
+	}, [lastDoc, isLastDocs]);
 
 	const onReload = useCallback(() => setUpdateEffect((prev) => !prev), []);
 

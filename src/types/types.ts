@@ -69,7 +69,7 @@ export interface IMessageFirebase {
 export interface ICommentFirebase {
 	id: string;
 	message: null;
-	timestamp: number | string;
+	timestamp: Timestamp;
 	commentId?: number | string;
 	spoiler: boolean;
 	docRef?: DocumentReference<DocumentData>;

@@ -19,7 +19,7 @@ const AdminsResponse: FC<{ admin: UserWithSupportMess; docId: string }> = ({ adm
 	const { user, userStorage } = useAuthContext();
 	const { photoURL, name, access } = admin.info;
 	const { message, timestamp, adminId } = admin.comment;
-	const chekDate = checkCreateData(+timestamp.seconds);
+	const chekDate = checkCreateData(timestamp.seconds);
 
 	const onDeleteHandler = async () => {
 		if (!user && (userStorage || 0) === 0) return;
@@ -44,90 +44,6 @@ const AdminsResponse: FC<{ admin: UserWithSupportMess; docId: string }> = ({ adm
 
 	return (
 		<>
-			<li className={classes.comment}>
-				<div className={classes.user}>
-					<div className={classes.info}>
-						<Link href={`/profile/${name}`}>
-							<Image src={photoURL || defaultImage} height={200} width={200} alt={`${name} ava`} />
-							<p>{name}</p>
-						</Link>
-					</div>
-					{(user?.uid === adminId || checkAcces) && (
-						<div className={classes.btns}>
-							<button title="delete" onClick={onDeleteHandler}>
-								<MdDelete />
-							</button>
-						</div>
-					)}
-				</div>
-				<div className={classes.message}>
-					<p className={classes.text}>{message}</p>
-					<p className={classes.date}>{chekDate}</p>
-				</div>
-			</li>
-			<li className={classes.comment}>
-				<div className={classes.user}>
-					<div className={classes.info}>
-						<Link href={`/profile/${name}`}>
-							<Image src={photoURL || defaultImage} height={200} width={200} alt={`${name} ava`} />
-							<p>{name}</p>
-						</Link>
-					</div>
-					{(user?.uid === adminId || checkAcces) && (
-						<div className={classes.btns}>
-							<button title="delete" onClick={onDeleteHandler}>
-								<MdDelete />
-							</button>
-						</div>
-					)}
-				</div>
-				<div className={classes.message}>
-					<p className={classes.text}>{message}</p>
-					<p className={classes.date}>{chekDate}</p>
-				</div>
-			</li>
-			<li className={classes.comment}>
-				<div className={classes.user}>
-					<div className={classes.info}>
-						<Link href={`/profile/${name}`}>
-							<Image src={photoURL || defaultImage} height={200} width={200} alt={`${name} ava`} />
-							<p>{name}</p>
-						</Link>
-					</div>
-					{(user?.uid === adminId || checkAcces) && (
-						<div className={classes.btns}>
-							<button title="delete" onClick={onDeleteHandler}>
-								<MdDelete />
-							</button>
-						</div>
-					)}
-				</div>
-				<div className={classes.message}>
-					<p className={classes.text}>{message}</p>
-					<p className={classes.date}>{chekDate}</p>
-				</div>
-			</li>
-			<li className={classes.comment}>
-				<div className={classes.user}>
-					<div className={classes.info}>
-						<Link href={`/profile/${name}`}>
-							<Image src={photoURL || defaultImage} height={200} width={200} alt={`${name} ava`} />
-							<p>{name}</p>
-						</Link>
-					</div>
-					{(user?.uid === adminId || checkAcces) && (
-						<div className={classes.btns}>
-							<button title="delete" onClick={onDeleteHandler}>
-								<MdDelete />
-							</button>
-						</div>
-					)}
-				</div>
-				<div className={classes.message}>
-					<p className={classes.text}>{message}</p>
-					<p className={classes.date}>{chekDate}</p>
-				</div>
-			</li>
 			<li className={classes.comment}>
 				<div className={classes.user}>
 					<div className={classes.info}>

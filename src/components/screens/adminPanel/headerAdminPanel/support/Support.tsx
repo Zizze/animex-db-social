@@ -1,4 +1,5 @@
 import { useAuthContext } from "@/context/useAuthContext";
+import { useCollectionRealtime } from "@/hooks/firebase/useCollectionRealtime";
 import { ISupportFirebase } from "@/types/types";
 import CategoryBtn from "@Components/UI/btn/CategoryBtn";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
@@ -26,58 +27,68 @@ interface IProps {
 const categories = ["open", "closed"];
 
 const Support: FC<IProps> = ({ setIsVisibleSupport }) => {
-	const [messages, setMessages] = useState<ISupportFirebase[]>([]);
 	const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
-	const [lastVisibleDoc, setLastVisibleDoc] = useState<QueryDocumentSnapshot<DocumentData>>();
-	const [isLastDocs, setIsLastDoc] = useState(true);
-	const [reload, setReload] = useState(true);
+	// const [messages, setMessages] = useState<ISupportFirebase[]>([]);
+	// const [lastVisibleDoc, setLastVisibleDoc] = useState<QueryDocumentSnapshot<DocumentData>>();
+	// const [isLastDocs, setIsLastDoc] = useState(true);
+	// const [reload, setReload] = useState(true);
 
-	useEffect(() => {
-		const messageStatus = selectedCategory !== "open";
+	const {
+		data: messages,
+		onReload,
+		isLastDocs,
+		isLoading,
+		loadMoreData,
+	} = useCollectionRealtime<ISupportFirebase>("support", {
+		where: [["closed", "==", selectedCategory !== "open"]],
+		orderBy: ["timestamp", "desc"],
+		limit: 10,
+	});
 
-		const suppMessQuery = query(
-			collection(db, "support"),
-			where("closed", "==", messageStatus),
-			orderBy("timestamp", "desc"),
-			limit(10)
-		);
-		const unsubscribe = onSnapshot(suppMessQuery, (querySnapshot) => {
-			setLastVisibleDoc(querySnapshot.docs[querySnapshot.docs.length - 1]);
-			setIsLastDoc(querySnapshot.size < 10);
+	// useEffect(() => {
+	// 	const messageStatus = selectedCategory !== "open";
 
-			const suppMess: ISupportFirebase[] = [];
-			querySnapshot.forEach((doc) => {
-				suppMess.push({ ...(doc.data() as ISupportFirebase), docId: doc.id });
-			});
-			setMessages(suppMess);
-		});
-		return () => unsubscribe();
-	}, [selectedCategory, reload]);
+	// 	const suppMessQuery = query(
+	// 		collection(db, "support"),
+	// 		where("closed", "==", messageStatus),
+	// 		orderBy("timestamp", "desc"),
+	// 		limit(10)
+	// 	);
+	// 	const unsubscribe = onSnapshot(suppMessQuery, (querySnapshot) => {
+	// 		setLastVisibleDoc(querySnapshot.docs[querySnapshot.docs.length - 1]);
+	// 		setIsLastDoc(querySnapshot.size < 10);
 
-	const onLoadMore = async () => {
-		const messageStatus = selectedCategory !== "open";
+	// 		const suppMess: ISupportFirebase[] = [];
+	// 		querySnapshot.forEach((doc) => {
+	// 			suppMess.push({ ...(doc.data() as ISupportFirebase), docId: doc.id });
+	// 		});
+	// 		setMessages(suppMess);
+	// 	});
+	// 	return () => unsubscribe();
+	// }, [selectedCategory, reload]);
 
-		const suppMessQuery = query(
-			collection(db, "support"),
-			where("closed", "==", messageStatus),
-			orderBy("timestamp", "desc"),
-			startAfter(lastVisibleDoc),
-			limit(10)
-		);
+	// const onLoadMore = async () => {
+	// 	const messageStatus = selectedCategory !== "open";
 
-		const getSuppMessDocs = await getDocs(suppMessQuery);
-		const suppMess = getSuppMessDocs.docs.map((doc) => {
-			return { ...(doc.data() as ISupportFirebase), docId: doc.id };
-		});
+	// 	const suppMessQuery = query(
+	// 		collection(db, "support"),
+	// 		where("closed", "==", messageStatus),
+	// 		orderBy("timestamp", "desc"),
+	// 		startAfter(lastVisibleDoc),
+	// 		limit(10)
+	// 	);
 
-		setMessages((prev) => [...prev, ...suppMess]);
-		setLastVisibleDoc(getSuppMessDocs.docs[getSuppMessDocs.docs.length - 1]);
-		setIsLastDoc(getSuppMessDocs.size < 10);
-	};
+	// 	const getSuppMessDocs = await getDocs(suppMessQuery);
+	// 	const suppMess = getSuppMessDocs.docs.map((doc) => {
+	// 		return { ...(doc.data() as ISupportFirebase), docId: doc.id };
+	// 	});
 
-	console.log(messages);
-
+	// 	setMessages((prev) => [...prev, ...suppMess]);
+	// 	setLastVisibleDoc(getSuppMessDocs.docs[getSuppMessDocs.docs.length - 1]);
+	// 	setIsLastDoc(getSuppMessDocs.size < 10);
+	// };
+	if (!messages) return <></>;
 	return (
 		<ModalWrapper onClickHandler={() => setIsVisibleSupport(false)}>
 			<div className={classes.wrapper}>
@@ -103,12 +114,12 @@ const Support: FC<IProps> = ({ setIsVisibleSupport }) => {
 				</ul>
 				<div className={classes.btns}>
 					{!isLastDocs && (
-						<DefaultBtn classMode="clear" onClickHandler={onLoadMore}>
+						<DefaultBtn classMode="clear" onClickHandler={loadMoreData}>
 							More
 						</DefaultBtn>
 					)}
 					{messages.length > 10 && (
-						<DefaultBtn classMode="clear" onClickHandler={() => setReload((prev) => !prev)}>
+						<DefaultBtn classMode="clear" onClickHandler={onReload}>
 							Hide
 						</DefaultBtn>
 					)}

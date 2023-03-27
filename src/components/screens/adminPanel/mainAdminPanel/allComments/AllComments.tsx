@@ -2,21 +2,11 @@ import { FC, useState, useEffect } from "react";
 import classes from "./AllComments.module.scss";
 
 import { useAuthContext } from "@/context/useAuthContext";
-import {
-	collectionGroup,
-	DocumentData,
-	getDocs,
-	limit,
-	orderBy,
-	query,
-	QueryDocumentSnapshot,
-	startAfter,
-} from "firebase/firestore";
-import { db } from "@Project/firebase";
-import { onSnapshot } from "firebase/firestore";
+import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { ICommentFirebase } from "@/types/types";
 import Comment from "./comment/Comment";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
+import { getComments, IAdminPanelCommReturn } from "@/services/firebase/adminPanel/getComments";
 
 const AllComments: FC = () => {
 	const [lastVisibleData, setLastVisibleData] =
@@ -26,49 +16,26 @@ const AllComments: FC = () => {
 
 	const { user } = useAuthContext();
 	const [pressHide, setPressHide] = useState(false);
+	const { getAllComments, loadMoreComments } = getComments();
 
 	useEffect(() => {
-		const commentsRef = collectionGroup(db, "dataAnime");
-		const q = query(commentsRef, orderBy("timestamp", "desc"), limit(10));
-
-		const unsubscribe = onSnapshot(q, (snapshot) => {
-			const comments = snapshot.docs.map((doc) => {
-				const timestamp = doc.data().timestamp && doc.data().timestamp.seconds;
-				return {
-					...(doc.data() as ICommentFirebase),
-					commentId: doc.id,
-					timestamp,
-					docRef: doc.ref,
-				};
-			});
-
-			setLastVisibleData(snapshot.docs[snapshot.docs.length - 1]);
+		const getComments = (data: IAdminPanelCommReturn) => {
+			const { comments, lastDoc, isLastData } = data;
+			setLastVisibleData(lastDoc);
 			setComments(comments);
-			setIsLastData(comments.length < 10);
-		});
+			setIsLastData(isLastData);
+		};
 
-		return unsubscribe;
+		getAllComments(getComments);
 	}, [user, pressHide]);
 
-	const loadMoreComments = async () => {
-		if (!user) return;
+	const moreComments = async () => {
+		if (!user && !lastVisibleData) return;
+		const getMoreData = (await loadMoreComments(lastVisibleData || null)) as IAdminPanelCommReturn;
 
-		const commentsQ = query(
-			collectionGroup(db, "dataAnime"),
-			orderBy("timestamp", "desc"),
-			startAfter(lastVisibleData),
-			limit(10)
-		);
-		const getCommentsDocs = await getDocs(commentsQ);
-
-		const comments = getCommentsDocs.docs.map((doc) => {
-			const timestamp = doc.data().timestamp && doc.data().timestamp.seconds;
-			return { ...(doc.data() as ICommentFirebase), commentId: doc.id, timestamp, docRef: doc.ref };
-		});
-
-		setLastVisibleData(getCommentsDocs.docs[getCommentsDocs.docs.length - 1]);
-		setComments((prev) => [...prev, ...comments]);
-		setIsLastData(comments.length < 10);
+		setLastVisibleData(getMoreData.lastDoc);
+		setComments((prev) => [...prev, ...getMoreData.comments]);
+		setIsLastData(getMoreData.isLastData);
 	};
 
 	return (
@@ -85,7 +52,7 @@ const AllComments: FC = () => {
 						classMode="clear"
 						title="More comments"
 						className={classes.moreBtn}
-						onClickHandler={loadMoreComments}
+						onClickHandler={moreComments}
 					>
 						More comments
 					</DefaultBtn>

@@ -1,5 +1,5 @@
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
-import { createUserWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { FormEvent, useState, FC, Dispatch, SetStateAction } from "react";
 import classes from "./AddAccount.module.scss";
 import { doc, setDoc } from "firebase/firestore";
@@ -38,8 +38,7 @@ const AddAccount: FC<IProps> = ({ setIsActiveModal }) => {
 		e.preventDefault();
 		const checkEmailLogin = await checkExistingUser(name, email);
 		if (checkEmailLogin) return setUserExist(checkEmailLogin);
-		if (!email || !password || !name) return;
-
+		if (errorPassword !== "" || errorEmail !== "" || errorName !== "") return;
 		try {
 			const { user } = await createUserWithEmailAndPassword(auth, email, password);
 			if (auth.currentUser) await updateProfile(auth.currentUser, { displayName: name });
@@ -50,7 +49,6 @@ const AddAccount: FC<IProps> = ({ setIsActiveModal }) => {
 				name_lowercase: user.displayName?.toLowerCase(),
 				email: email.toLowerCase(),
 			});
-			await signOut(auth);
 
 			setIsActiveModal(false);
 			setUserExist(null);

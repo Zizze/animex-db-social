@@ -1,7 +1,7 @@
 import { ISupportAnswerFirebase, ISupportFirebase, IUserFirebase } from "@/types/types";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import { db } from "@Project/firebase";
-import { doc, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import React, { FC, FormEvent, useEffect, useState } from "react";
 import { TbLock, TbLockOpen } from "react-icons/tb";
 import classes from "./Message.module.scss";
@@ -17,6 +17,7 @@ import { checkCreateData } from "@/utils/checkCreateData";
 import { sendEmail } from "@/services/emailJS";
 import { popMessage } from "@/utils/popMessage/popMessage";
 import Loading from "@Components/UI/loading/Loading";
+import { useRealtimeDoc } from "@/hooks/firebase/useRealtimeDoc";
 
 interface UserWithSupportMess {
 	info: IUserFirebase;
@@ -26,7 +27,10 @@ interface UserWithSupportMess {
 const Message: FC<{ message: ISupportFirebase }> = ({ message }) => {
 	const { user, userStorage } = useAuthContext();
 
-	const [authorProfile, setAuthorProfile] = useState<IUserFirebase | null>(null);
+	const supportRef = doc(db, `support/${message.docId}`);
+
+	const mess = useRealtimeDoc<ISupportFirebase>(`support/${message.docId}`);
+	const authorProfile = useRealtimeDoc<IUserFirebase>(`users/${message.userId}`);
 	const [adminsFullInfo, setAdminsFullInfo] = useState<UserWithSupportMess[]>([]);
 
 	const [text, setText] = useState("");
@@ -35,24 +39,9 @@ const Message: FC<{ message: ISupportFirebase }> = ({ message }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [hideMess, setHideMess] = useState(false);
 
-	const [mess, setMess] = useState<ISupportFirebase>();
-
 	useEffect(() => {
-		const docRef = doc(db, `support/${message.docId}`);
-		const unsub = onSnapshot(docRef, (doc) => {
-			if (!doc.exists()) return;
-			setMess(doc.data() as ISupportFirebase);
-		});
-		setHideMess(false);
-		return () => unsub();
-	}, [message]);
-
-	useEffect(() => {
-		const getProfiles = async () => {
+		const getAdminProfileWithMessage = async () => {
 			setIsLoading(true);
-			const authorRef = doc(db, `users/${message.userId}`);
-			const getAuthorDoc = await getDoc(authorRef);
-			setAuthorProfile(getAuthorDoc.data() as IUserFirebase);
 
 			if (mess && mess.answers) {
 				const admProfiles: UserWithSupportMess[] = [];
@@ -67,9 +56,9 @@ const Message: FC<{ message: ISupportFirebase }> = ({ message }) => {
 				setAdminsFullInfo(admProfiles);
 			}
 		};
-		getProfiles();
+		getAdminProfileWithMessage();
 		setIsLoading(false);
-	}, [message, mess]);
+	}, [mess]);
 
 	const onSubmitHandler = async (e: FormEvent) => {
 		e.preventDefault();
@@ -77,7 +66,6 @@ const Message: FC<{ message: ISupportFirebase }> = ({ message }) => {
 		if (user && (userStorage?.access || 0) > 0 && authorProfile) {
 			setIsLoading(true);
 
-			const supportRef = doc(db, `support/${message.docId}`);
 			const supportDoc = await getDoc(supportRef);
 
 			if (supportDoc.exists()) {
@@ -102,15 +90,16 @@ const Message: FC<{ message: ISupportFirebase }> = ({ message }) => {
 					popSuccess("The answer was successfully sent to the mail.");
 				} catch {
 					popError("Failed to send reply email.");
+				} finally {
+					setIsLoading(false);
 				}
-				setIsLoading(false);
 			}
 		}
 	};
 
 	const changeThemeStatus = async () => {
 		if (!user && (userStorage || 0) === 0) return;
-		const supportRef = doc(db, `support/${message.docId}`);
+
 		await updateDoc(supportRef, { closed: !message.closed });
 		setHideMess(true);
 	};
