@@ -6,81 +6,111 @@ import defaulImage from "@Public/testava.jpg";
 import { BsFillCloudArrowUpFill } from "react-icons/bs";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import { useRouter } from "next/router";
-import { getAuth, updateEmail, updatePassword, updateProfile } from "firebase/auth";
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { updateEmail, updatePassword, updateProfile } from "firebase/auth";
 import { useAuthContext } from "@/context/useAuthContext";
 import Loading from "@Components/UI/loading/Loading";
-import { auth, db, storage } from "@Project/firebase";
+import { auth, db } from "@Project/firebase";
 import { doc, updateDoc } from "firebase/firestore";
+import { popMessage } from "@/utils/popMessage/popMessage";
+import { changeProfilePhoto } from "@/services/firebase/changePhoto";
+import { useTextField } from "@/hooks/useTextField";
+import { checkExistingUser } from "@/services/firebase/checkExistingUser";
 
-const EditProfile: FC = ({}) => {
-	const { user } = useAuthContext();
-
+const EditProfile: FC = () => {
 	const router = useRouter();
-
+	const { user, userStorage } = useAuthContext();
+	const { popError, popSuccess, ctxMessage } = popMessage();
 	const [loading, setLoading] = useState(false);
-	const [newName, setNewName] = useState(user?.displayName);
-	const [newEmail, setNewEmail] = useState(user?.email);
-	const [pass, setPass] = useState("");
-	const [confirmPass, setConfirmPass] = useState("");
+	const [errEqualPass, setErrEqualPass] = useState<string | null>(null);
+	const [existEmailName, setExistEmailName] = useState<string | null>(null);
+
+	const {
+		value: newName,
+		setValue: setNewName,
+		setFirstChange: setFirstChangeName,
+		onChange: onChangeName,
+		error: nameErr,
+	} = useTextField({
+		maxLength: 10,
+		minLength: 3,
+		numLettOnly: true,
+	});
+
+	const {
+		value: newEmail,
+		setValue: setNewEmail,
+		setFirstChange: setFirstChangeEmail,
+		onChange: onChangeEmail,
+		error: emailErr,
+	} = useTextField({ allowEmail: true });
+
+	const {
+		value: pass,
+		setFirstChange: setFirstChangePass,
+		onChange: onChangePass,
+		error: passErr,
+	} = useTextField({ minLength: 6, numLettOnly: true, maxLength: 16 });
+
+	const {
+		value: confirmPass,
+		setFirstChange: setFirstChangeConfPass,
+		onChange: onChangeConfPass,
+		error: passConfErr,
+	} = useTextField({ minLength: 6, numLettOnly: true, maxLength: 16 });
 
 	const [file, setFile] = useState<File | null>(null);
-
 	const photoPrewie = file ? URL.createObjectURL(file) : user?.photoURL || defaulImage;
 
 	const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (user) {
-			const userDataRef = doc(db, "users", `${user.uid}`);
+		if (!user) return;
+		const userDataRef = doc(db, `users/${user.uid}`);
 
-			if (file) {
-				const storageRef = ref?.(storage, `avatars/${user.uid}`);
-				const uploadTask = uploadBytesResumable(storageRef, file);
-				uploadTask.on(
-					"state_changed",
-					(snapshot) => {
-						switch (snapshot.state) {
-							case "paused":
-								setLoading(false);
-								break;
-							case "running":
-								setLoading(true);
-								break;
-						}
-					},
-					(error) => {
-						alert("Profile: Error upload");
-						console.log(error);
-					},
-					() => {
-						getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-							if (auth.currentUser)
-								await updateProfile(auth.currentUser, { photoURL: downloadURL });
-							await updateDoc(userDataRef, { photoURL: downloadURL });
+		if (file) {
+			// Update photo
+			changeProfilePhoto({ userId: user.uid, setFile, setLoading, popError, popSuccess, file });
+		}
 
-							setFile(null);
-							setLoading(false);
-						});
-					}
-				);
-			}
+		try {
+			//Update other info
+			if (auth.currentUser) {
+				const nameValid = newName !== user.displayName && !nameErr;
+				const emailValid = newEmail !== user.email && !emailErr;
+				const passEqual = pass === confirmPass;
+				const passwordsValid = passEqual && !passConfErr && !passErr && pass.length;
+				setErrEqualPass(null);
 
-			try {
-				if (auth.currentUser) {
-					if (newName !== user.displayName) {
+				if (nameValid) {
+					const existName = await checkExistingUser(newName, "_");
+					setExistEmailName(existName);
+					if (!existName) {
 						await updateProfile(auth.currentUser, { displayName: newName });
 						await updateDoc(userDataRef, { name: newName, name_lowercase: newName?.toLowerCase() });
 					}
-					if (newEmail !== user.email && newEmail) {
+				}
+
+				if (emailValid) {
+					const existEmail = await checkExistingUser("_", newEmail);
+					setExistEmailName(existEmail);
+					if (!existEmail) {
 						await updateEmail(auth.currentUser, newEmail);
 					}
-					if (pass === confirmPass && pass.trim() !== "")
-						await updatePassword(auth.currentUser, pass);
 				}
-			} catch (err) {
-				alert("Profile: change info err");
-				console.log(err);
+				if (passwordsValid) {
+					await updatePassword(auth.currentUser, pass);
+				}
+				if (nameValid || emailValid || passwordsValid) popSuccess("The change is saved.");
+
+				if (!passEqual) setErrEqualPass(" Password mismatch.");
 			}
+			setFirstChangePass(false);
+			setFirstChangeName(false);
+			setFirstChangeEmail(false);
+			setFirstChangeConfPass(false);
+		} catch (err) {
+			popError("Change info error.");
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -91,66 +121,77 @@ const EditProfile: FC = ({}) => {
 	};
 
 	useEffect(() => {
-		if (!user) router.push("/");
-	}, [user]);
+		if (user?.displayName) setNewName(user.displayName);
+		if (user?.email) setNewEmail(user.email);
+	}, [user, userStorage]);
 
 	return (
 		<>
-			{loading && <Loading />}
+			{ctxMessage}
 			<Layout>
 				{user && (
-					<form className={classes.form} onSubmit={submitHandler}>
-						<div className={classes.left}>
-							<input
-								className={classes.name}
-								maxLength={10}
-								type="text"
-								value={newName || ""}
-								onChange={(e) => setNewName(e.target.value)}
-							/>
-							<div className={classes.ava}>
-								<Image
-									priority={true}
-									src={photoPrewie}
-									width={500}
-									height={500}
-									alt={`avatar ${newName}`}
-								/>
+					<>
+						{existEmailName && <p className={classes.notValid}>{existEmailName}</p>}
+						<form className={classes.form} onSubmit={submitHandler}>
+							{loading && <Loading />}
 
-								<label>
-									<BsFillCloudArrowUpFill className={classes.fileIco} />
-									<input accept="image/*" type="file" name="ava" onChange={(e) => imageChange(e)} />
-								</label>
+							<div className={classes.left}>
+								<p className={classes.notValid}>{nameErr}</p>
+								<input
+									className={classes.name}
+									maxLength={10}
+									type="text"
+									value={newName}
+									onChange={onChangeName}
+								/>
+								<div className={classes.ava}>
+									<Image
+										priority={true}
+										src={photoPrewie}
+										width={500}
+										height={500}
+										alt={`avatar ${newName}`}
+									/>
+
+									<label>
+										<BsFillCloudArrowUpFill className={classes.fileIco} />
+										<input
+											accept="image/*"
+											type="file"
+											name="ava"
+											onChange={(e) => imageChange(e)}
+										/>
+									</label>
+								</div>
 							</div>
-						</div>
-						<div className={classes.right}>
-							<input
-								type="email"
-								onChange={(e) => setNewEmail(e.target.value)}
-								value={newEmail || ""}
-							/>
-							<input
-								type="password"
-								onChange={(e) => setPass(e.target.value)}
-								value={pass}
-								placeholder="New password"
-								autoComplete="new-password"
-							/>
-							<input
-								type="password"
-								onChange={(e) => setConfirmPass(e.target.value)}
-								value={confirmPass}
-								placeholder="Confirm pass"
-								autoComplete="new-password"
-							/>
-							<div className={classes.btns}>
-								<DefaultBtn type="submit" classMode="main">
-									Change
-								</DefaultBtn>
-								<DefaultBtn onClickHandler={() => router.push("/")}>Home</DefaultBtn>
+							<div className={classes.right}>
+								<p className={classes.notValid}>{emailErr}</p>
+								<input type="text" onChange={onChangeEmail} value={newEmail} />
+								<p className={classes.notValid}>{`${passErr || ""}${errEqualPass || ""}`}</p>
+								<input
+									type="text"
+									onChange={onChangePass}
+									value={pass}
+									placeholder="New password"
+									autoComplete="new-password"
+								/>
+								<p className={classes.notValid}>{passConfErr}</p>
+								<input
+									type="text"
+									onChange={onChangeConfPass}
+									value={confirmPass}
+									placeholder="Confirm pass"
+									autoComplete="new-password"
+								/>
+								<div className={classes.btns}>
+									<DefaultBtn type="submit" classMode="main">
+										Change
+									</DefaultBtn>
+									<DefaultBtn onClickHandler={() => router.push("/")}>Home</DefaultBtn>
+								</div>
 							</div>
-						</div>
-					</form>
+						</form>
+					</>
 				)}
 			</Layout>
 		</>

@@ -4,17 +4,19 @@ import Image from "next/image";
 import classes from "./Error.module.scss";
 import { useRouter } from "next/router";
 
+const REDIRECT_TIME = 10;
+
 const Error: FC = () => {
 	const router = useRouter();
-	const [seconds, setSeconds] = useState(5);
+	const [seconds, setSeconds] = useState(REDIRECT_TIME);
 
 	useEffect(() => {
-		if (seconds !== 0) {
-			const time = setInterval(() => {
+		if (!!seconds) {
+			const time = setTimeout(() => {
 				setSeconds((prev) => prev - 1);
 			}, 1000);
 
-			return () => clearInterval(time);
+			return () => clearTimeout(time);
 		} else {
 			router.push("/");
 		}

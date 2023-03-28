@@ -1,5 +1,9 @@
 @import "@Assets/styles/variables";
-
+.notValid {
+	color: $not-valid;
+	text-align: center;
+	font-weight: 400;
+}
 .form {
 	border-radius: 10px;
 	border: 1px solid $black-main;
@@ -14,6 +18,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+
 		.name {
 			max-width: 200px;
 			&:hover,

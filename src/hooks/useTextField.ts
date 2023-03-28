@@ -6,6 +6,7 @@ interface IUseTextFieldProps {
 	numLettOnly?: boolean;
 	allowEmail?: boolean;
 	allowWhitespace?: boolean;
+	defaultValue?: string;
 }
 
 interface IUseTextFieldReturn {
@@ -26,8 +27,9 @@ export const useTextField = ({
 	numLettOnly = false,
 	allowWhitespace = false,
 	allowEmail = false,
+	defaultValue,
 }: IUseTextFieldProps): IUseTextFieldReturn => {
-	const [value, setValue] = useState("");
+	const [value, setValue] = useState(defaultValue || "");
 	const [firstChange, setFirstChange] = useState(false);
 
 	const isValid = (input: string) => {
