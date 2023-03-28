@@ -25,13 +25,19 @@ const TopAnimes = () => {
 	return (
 		<Layout>
 			<div className={classes.wrapper}>
-				{isLoading ? <Loading /> : <Items allAnimeJikan={data?.data} />}
-				<Pagination
-					onChangePage={onChangePage}
-					pageCount={Number(data?.pagination.last_visible_page)}
-					thisPage={Number(data?.pagination.current_page)}
-					existNextPage={data?.pagination.has_next_page}
-				/>
+				{isLoading ? (
+					<Loading />
+				) : (
+					<>
+						<Items allAnimeJikan={data?.data} />
+						<Pagination
+							onChangePage={onChangePage}
+							pageCount={Number(data?.pagination.last_visible_page)}
+							thisPage={Number(data?.pagination.current_page)}
+							existNextPage={data?.pagination.has_next_page}
+						/>
+					</>
+				)}
 			</div>
 		</Layout>
 	);
