@@ -1,12 +1,8 @@
-import MyList from "@Components/screens/myList/MyList";
+import UserList from "@Components/screens/userList/UserList";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 
 const MyListPage: NextPage = () => {
-	const router = useRouter();
-	const animeStateUrl = router.query.status;
-
-	return <MyList />;
+	return <UserList />;
 };
 
 export default MyListPage;

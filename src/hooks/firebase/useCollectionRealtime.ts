@@ -9,6 +9,7 @@ interface IGetUsersByCategoryReturn<T> {
 	isLastDocs: boolean;
 	isLoading: boolean;
 	onReload: () => void;
+	error: boolean;
 }
 
 export const useCollectionRealtime = <T>(
@@ -19,27 +20,33 @@ export const useCollectionRealtime = <T>(
 	const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot | null>(null);
 	const [isLastDocs, setIsLastDocs] = useState(false);
 
+	const [error, setError] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [updateEffect, setUpdateEffect] = useState(false);
 
 	useEffect(() => {
+		setError(false);
 		const collectionRef = buildCollectionRef(collectionPath, queryOptions);
 
-		const unsubscribe = onSnapshot(collectionRef, (querySnapshot) => {
-			const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-			const collectionData: T[] = [];
+		const unsubscribe = onSnapshot(
+			collectionRef,
+			(querySnapshot) => {
+				const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+				const collectionData: T[] = [];
 
-			querySnapshot.forEach((doc) => {
-				collectionData.push({ ...doc.data(), docId: doc.id } as T);
-			});
+				querySnapshot.forEach((doc) => {
+					collectionData.push({ ...doc.data(), docId: doc.id } as T);
+				});
 
-			if (JSON.stringify(collectionData) !== JSON.stringify(data)) {
-				setData(collectionData);
-				setLastDoc(lastVisibleDoc as QueryDocumentSnapshot);
-				setIsLastDocs(collectionData.length < (queryOptions.limit || 0));
-			}
-			setIsLoading(false);
-		});
+				if (JSON.stringify(collectionData) !== JSON.stringify(data)) {
+					setData(collectionData);
+					setLastDoc(lastVisibleDoc as QueryDocumentSnapshot);
+					setIsLastDocs(collectionData.length < (queryOptions.limit || 0));
+				}
+				setIsLoading(false);
+			},
+			() => setError(true)
+		);
 
 		return () => unsubscribe();
 	}, [collectionPath, JSON.stringify(queryOptions), updateEffect]);
@@ -48,17 +55,21 @@ export const useCollectionRealtime = <T>(
 
 	const loadMoreData = useCallback(async () => {
 		if (!lastDoc || isLastDocs) return;
-		console.log("click loadMore");
+		setError(false);
+
 		const collectionRef = buildCollectionRef(collectionPath, queryOptions, lastDoc);
+		try {
+			const getMoreDocs = await getDocs(collectionRef);
+			const lastVisibleDoc = getMoreDocs.docs[getMoreDocs.docs.length - 1];
+			const moreData = getMoreDocs.docs.map((doc) => ({ ...doc.data(), docId: doc.id } as T));
 
-		const getMoreDocs = await getDocs(collectionRef);
-		const lastVisibleDoc = getMoreDocs.docs[getMoreDocs.docs.length - 1];
-		const moreData = getMoreDocs.docs.map((doc) => ({ ...doc.data(), docId: doc.id } as T));
-
-		setData((prev) => prev && [...prev, ...moreData]);
-		setLastDoc(lastVisibleDoc as QueryDocumentSnapshot);
-		setIsLastDocs(moreData.length < (queryOptions.limit || 0));
-		setIsLoading(false);
+			setData((prev) => prev && [...prev, ...moreData]);
+			setLastDoc(lastVisibleDoc as QueryDocumentSnapshot);
+			setIsLastDocs(moreData.length < (queryOptions.limit || 0));
+			setIsLoading(false);
+		} catch {
+			setError(true);
+		}
 	}, [lastDoc, isLastDocs]);
 
 	const onReload = useCallback(() => setUpdateEffect((prev) => !prev), []);
@@ -70,5 +81,6 @@ export const useCollectionRealtime = <T>(
 		isLoading,
 		onReload,
 		lastDoc,
+		error,
 	};
 };

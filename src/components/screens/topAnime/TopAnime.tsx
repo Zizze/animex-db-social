@@ -26,8 +26,7 @@ const TopAnimes = () => {
 	};
 
 	useEffect(() => {
-		if (!error) return;
-		router.push("/404");
+		if (error) router.push("/404");
 	}, [error]);
 
 	return (

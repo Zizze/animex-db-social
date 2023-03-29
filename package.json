@@ -24,7 +24,6 @@
 		"@types/react-dom": "18.0.10",
 		"@types/react-highlight-words": "^0.16.4",
 		"@types/react-star-rating-component": "^1.4.1",
-		"@types/react-textarea-autosize": "^8.0.0",
 		"antd": "^5.1.5",
 		"axios": "^1.2.3",
 		"classnames": "^2.3.2",
