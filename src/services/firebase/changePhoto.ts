@@ -7,7 +7,7 @@ import { Dispatch, SetStateAction } from "react";
 interface IChangePhoto {
 	userId: string;
 	file: File;
-	setLoading: Dispatch<SetStateAction<boolean>>;
+	setIsLoading: Dispatch<SetStateAction<boolean>>;
 	popSuccess: (mess: string, duration?: number) => void;
 	popError: (mess: string, duration?: number) => void;
 	setFile: Dispatch<SetStateAction<File | null>>;
@@ -15,7 +15,7 @@ interface IChangePhoto {
 
 export const changeProfilePhoto = ({
 	userId,
-	setLoading,
+	setIsLoading,
 	popSuccess,
 	popError,
 	file,
@@ -30,10 +30,10 @@ export const changeProfilePhoto = ({
 		(snapshot) => {
 			switch (snapshot.state) {
 				case "paused":
-					setLoading(false);
+					setIsLoading(false);
 					break;
 				case "running":
-					setLoading(true);
+					setIsLoading(true);
 					break;
 			}
 		},
@@ -47,7 +47,7 @@ export const changeProfilePhoto = ({
 
 				popSuccess("Success upload image.");
 				setFile(null);
-				setLoading(false);
+				setIsLoading(false);
 			});
 		}
 	);

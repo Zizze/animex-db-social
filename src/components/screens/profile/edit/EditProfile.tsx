@@ -15,14 +15,20 @@ import { popMessage } from "@/utils/popMessage/popMessage";
 import { changeProfilePhoto } from "@/services/firebase/changePhoto";
 import { useTextField } from "@/hooks/useTextField";
 import { checkExistingUser } from "@/services/firebase/checkExistingUser";
+import Reauthorization from "./reauthorization/Reauthorization";
 
 const EditProfile: FC = () => {
 	const router = useRouter();
-	const { user, userStorage } = useAuthContext();
+	const { user } = useAuthContext();
 	const { popError, popSuccess, ctxMessage } = popMessage();
-	const [loading, setLoading] = useState(false);
+
+	const [isOpemConfirmModal, setIsOpemConfirmModal] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
+
 	const [errEqualPass, setErrEqualPass] = useState<string | null>(null);
 	const [existEmailName, setExistEmailName] = useState<string | null>(null);
+	const [file, setFile] = useState<File | null>(null);
+	const photoPrewie = file ? URL.createObjectURL(file) : user?.photoURL || defaulImage;
 
 	const {
 		value: newName,
@@ -58,49 +64,52 @@ const EditProfile: FC = () => {
 		error: passConfErr,
 	} = useTextField({ minLength: 6, numLettOnly: true, maxLength: 16 });
 
-	const [file, setFile] = useState<File | null>(null);
-	const photoPrewie = file ? URL.createObjectURL(file) : user?.photoURL || defaulImage;
-
 	const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (!user) return;
 		const userDataRef = doc(db, `users/${user.uid}`);
-
-		if (file) {
-			// Update photo
-			changeProfilePhoto({ userId: user.uid, setFile, setLoading, popError, popSuccess, file });
-		}
-
+		// Update photo
+		if (file)
+			changeProfilePhoto({ userId: user.uid, setFile, setIsLoading, popError, popSuccess, file });
+		//Update other info
 		try {
-			//Update other info
 			if (auth.currentUser) {
-				const nameValid = newName !== user.displayName && !nameErr;
-				const emailValid = newEmail !== user.email && !emailErr;
+				const existName = await checkExistingUser(newName, "*");
+				const existEmail = await checkExistingUser("*", newEmail);
+
+				const nameValid = newName !== auth.currentUser.displayName && !nameErr;
+				const emailValid = newEmail !== auth.currentUser.email && !emailErr;
+
 				const passEqual = pass === confirmPass;
 				const passwordsValid = passEqual && !passConfErr && !passErr && pass.length;
 				setErrEqualPass(null);
 
 				if (nameValid) {
-					const existName = await checkExistingUser(newName, "_");
 					setExistEmailName(existName);
 					if (!existName) {
 						await updateProfile(auth.currentUser, { displayName: newName });
-						await updateDoc(userDataRef, { name: newName, name_lowercase: newName?.toLowerCase() });
+						await updateDoc(userDataRef, { name: newName, name_lowercase: newName.toLowerCase() });
 					}
 				}
-
 				if (emailValid) {
-					const existEmail = await checkExistingUser("_", newEmail);
 					setExistEmailName(existEmail);
 					if (!existEmail) {
 						await updateEmail(auth.currentUser, newEmail);
+						await updateDoc(userDataRef, { email: newEmail.toLowerCase() });
 					}
 				}
-				if (passwordsValid) {
-					await updatePassword(auth.currentUser, pass);
-				}
-				if (nameValid || emailValid || passwordsValid) popSuccess("The change is saved.");
 
+				if (passwordsValid) await updatePassword(auth.currentUser, pass);
+
+				const changeTrack = [
+					nameValid && "name",
+					emailValid && "email",
+					passwordsValid && "password",
+				]
+					.filter((name) => name)
+					.join(", ");
+				if ((nameValid && !existName) || (emailValid && !existEmail) || passwordsValid)
+					popSuccess(`New ${changeTrack} is saved.`);
 				if (!passEqual) setErrEqualPass(" Password mismatch.");
 			}
 			setFirstChangePass(false);
@@ -110,7 +119,7 @@ const EditProfile: FC = () => {
 		} catch (err) {
 			popError("Change info error.");
 		} finally {
-			setLoading(false);
+			setIsLoading(false);
 		}
 	};
 
@@ -123,17 +132,17 @@ const EditProfile: FC = () => {
 	useEffect(() => {
 		if (user?.displayName) setNewName(user.displayName);
 		if (user?.email) setNewEmail(user.email);
-	}, [user, userStorage]);
+	}, [user?.email, user?.displayName]);
 
 	return (
 		<>
 			{ctxMessage}
 			<Layout>
-				{user && (
+				{user && !isOpemConfirmModal && (
 					<>
 						{existEmailName && <p className={classes.notValid}>{existEmailName}</p>}
 						<form className={classes.form} onSubmit={submitHandler}>
-							{loading && <Loading />}
+							{isLoading && <Loading />}
 
 							<div className={classes.left}>
 								<p className={classes.notValid}>{nameErr}</p>
@@ -167,7 +176,7 @@ const EditProfile: FC = () => {
 							<div className={classes.right}>
 								<p className={classes.notValid}>{emailErr}</p>
 								<input type="text" onChange={onChangeEmail} value={newEmail} />
-								<p className={classes.notValid}>{`${passErr || ""}${errEqualPass || ""}`}</p>
+								<p className={classes.notValid}>{`${passErr || ""}${errEqualPass || ""}`.trim()}</p>
 								<input
 									type="text"
 									onChange={onChangePass}
@@ -194,6 +203,10 @@ const EditProfile: FC = () => {
 					</>
 				)}
 			</Layout>
+			<Reauthorization
+				setIsOpemConfirmModal={setIsOpemConfirmModal}
+				isOpemConfirmModal={isOpemConfirmModal}
+			/>
 		</>
 	);
 };

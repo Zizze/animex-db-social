@@ -1,0 +1,108 @@
+@import "@Assets/styles/variables";
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: $sidebar-bg;
+	background-color: $sidebar-bg;
+	max-width: 600px;
+	width: 100%;
+	padding: 10px 50px 20px;
+	border-radius: 10px;
+	border: 1px solid $black-main;
+	h4 {
+		color: $white-main;
+		letter-spacing: 1px;
+		font-weight: 600;
+		margin-bottom: 10px;
+	}
+	form {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		width: 100%;
+
+		.inputValid {
+			background-color: $sidebar-bg;
+			padding: 0 10px;
+			text-align: center;
+			border-radius: 5px;
+			max-width: 400px;
+			width: 100%;
+			color: $not-valid;
+			font-size: 1.8rem;
+			z-index: 0;
+			width: 100%;
+			opacity: 0;
+			transition: opacity 0.3s ease-in-out;
+		}
+		.inputValid.on {
+			opacity: 1;
+		}
+
+		input {
+			position: relative;
+			padding: 5px;
+			color: $light-blue;
+			font-size: 2.2rem;
+			text-align: center;
+			background-color: transparent;
+			border-bottom: 1px solid $gray-main;
+			transition: all 0.3s ease-in-out;
+			max-width: 300px;
+			width: 100%;
+			margin-bottom: 10px;
+
+			&::placeholder {
+				transition: all 0.3s ease-in-out;
+			}
+			&:hover,
+			&:focus {
+				border-color: $light-blue;
+				max-width: 400px;
+
+				&::placeholder {
+					color: $white-main;
+				}
+			}
+		}
+		.btns {
+			width: inherit;
+			display: flex;
+			max-width: 300px;
+			width: 100%;
+			justify-content: space-between;
+
+			button:not(:last-child) {
+				margin-right: 5px;
+			}
+		}
+	}
+}
+
+@media (max-width: 600px) {
+	.wrapper {
+		padding: 10px;
+
+		form {
+			width: 100%;
+			height: 100vh;
+			padding: 25px 10px;
+
+			input {
+				@media (max-width: 470px) {
+					max-width: 240px;
+				}
+				&:hover,
+				&:focus {
+					@media (max-width: 470px) {
+						max-width: 280px;
+					}
+				}
+			}
+		}
+	}
+} ;

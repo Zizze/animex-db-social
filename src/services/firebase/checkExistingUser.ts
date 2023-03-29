@@ -6,8 +6,8 @@ export const checkExistingUser = async (name: string, email: string): Promise<st
 	const usersNameQuery = query(usersRef, where("name_lowercase", "==", name.toLowerCase()));
 	const usersEmailQuery = query(usersRef, where("email", "==", email.toLowerCase()));
 
-	const emailSnap = await getDocs(usersEmailQuery);
 	const nameSnap = await getDocs(usersNameQuery);
+	const emailSnap = await getDocs(usersEmailQuery);
 
 	if (!emailSnap.empty && !nameSnap.empty) {
 		return "The name and email address already exists";
