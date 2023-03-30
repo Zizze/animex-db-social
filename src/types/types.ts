@@ -60,7 +60,7 @@ export interface IMainChatFirebase {
 
 export interface IMessageFirebase {
 	checked: boolean;
-	timestamp: number | string;
+	timestamp: Timestamp;
 	message: string;
 	sender: boolean;
 	messageId?: string;

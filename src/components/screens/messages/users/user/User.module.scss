@@ -11,6 +11,8 @@
 		color: $gray-main;
 		background-color: transparent;
 		transition: all 0.3s ease-in-out;
+		border-top: 1px solid transparent;
+		border-bottom: 1px solid transparent;
 
 		.avaBlock {
 			min-width: 55px;
@@ -83,8 +85,8 @@
 .list.active {
 	.userBtn {
 		background-color: $main-bg;
-		border-top: 1px solid $black-main;
-		border-bottom: 1px solid $black-main;
+		border-color: $black-main;
+
 		color: $white-main;
 
 		.infoBlock {

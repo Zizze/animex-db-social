@@ -22,5 +22,5 @@ export const checkCreateData = (timestampFirebaseSeconds: number) => {
 		} else {
 			return null;
 		}
-	}
+	} else null;
 };

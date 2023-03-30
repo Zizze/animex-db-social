@@ -7,15 +7,19 @@ interface IUseRealtimeDocReturn<I> {
 	loading: boolean;
 }
 
-export const useRealtimeDoc = <I>(path: string): IUseRealtimeDocReturn<I> => {
+export const useRealtimeDoc = <I>(path: string, condition = false): IUseRealtimeDocReturn<I> => {
 	const [data, setData] = useState<I | null>(null);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
+		if (condition) return;
 		const docRef = doc(db, path);
 		const unsub = onSnapshot(docRef, (doc) => {
-			if (!doc.exists()) return setData(null);
-			setData(doc.data() as I);
+			if (doc.exists()) {
+				setData(doc.data() as I);
+			} else {
+				return setData(null);
+			}
 		});
 
 		setLoading(false);

@@ -1,8 +1,8 @@
 import Layout from "@Components/layout/Layout";
 import { FC, useState } from "react";
-import ChatUserList from "./chatUserList/ChatUserList";
 import classes from "./Messages.module.scss";
-import UserChat from "./userChat/UserChat";
+import PersonalChat from "./personalChat/PersonalChat";
+import Users from "./users/Users";
 
 const Messages: FC = () => {
 	const [selectedUser, setSelectedUser] = useState("");
@@ -10,8 +10,8 @@ const Messages: FC = () => {
 	return (
 		<Layout>
 			<div className={classes.wrapper}>
-				<ChatUserList setSelectedUser={setSelectedUser} selectedUser={selectedUser} />
-				<UserChat selectedUser={selectedUser} />
+				<Users setSelectedUser={setSelectedUser} selectedUser={selectedUser} />
+				<PersonalChat selectedUser={selectedUser} />
 			</div>
 		</Layout>
 	);

@@ -14,7 +14,8 @@ interface IGetUsersByCategoryReturn<T> {
 
 export const useCollectionRealtime = <T>(
 	collectionPath: string,
-	queryOptions: IQueryOptions
+	queryOptions: IQueryOptions,
+	condition = false
 ): IGetUsersByCategoryReturn<T> => {
 	const [data, setData] = useState<T[] | null>(null);
 	const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot | null>(null);
@@ -25,7 +26,13 @@ export const useCollectionRealtime = <T>(
 	const [updateEffect, setUpdateEffect] = useState(false);
 
 	useEffect(() => {
-		setError(false);
+		if (condition) {
+			isLoading && setIsLoading(false);
+			return;
+		}
+		error && setError(false);
+		!isLoading && setIsLoading(true);
+
 		const collectionRef = buildCollectionRef(collectionPath, queryOptions);
 
 		const unsubscribe = onSnapshot(
@@ -47,15 +54,17 @@ export const useCollectionRealtime = <T>(
 			},
 			() => setError(true)
 		);
-
+		console.log("HOOK: useCollectionRealtime");
 		return () => unsubscribe();
 	}, [collectionPath, JSON.stringify(queryOptions), updateEffect]);
 
-	console.log("HOOK: useCollectionRealtime");
-
 	const loadMoreData = useCallback(async () => {
-		if (!lastDoc || isLastDocs) return;
-		setError(false);
+		if (!lastDoc || isLastDocs || condition) {
+			isLoading && setIsLoading(false);
+			return;
+		}
+		error && setError(false);
+		!isLoading && setIsLoading(true);
 
 		const collectionRef = buildCollectionRef(collectionPath, queryOptions, lastDoc);
 		try {
