@@ -6,7 +6,8 @@ import { useState, useEffect } from "react";
 export const useCollectionSize = (
 	path: string,
 	group = false,
-	queryParams: IQueryOptions
+	queryParams: IQueryOptions,
+	reloadData?: boolean
 ): number => {
 	const [size, setSize] = useState(0);
 
@@ -20,7 +21,7 @@ export const useCollectionSize = (
 			if (size !== docs.size) setSize(docs.size);
 		});
 		return () => unsubscribe();
-	}, [path]);
+	}, [path, reloadData]);
 
 	return size;
 };

@@ -1,4 +1,4 @@
-import { Dispatch, FC, MouseEvent, SetStateAction, useState } from "react";
+import { Dispatch, FC, MouseEvent, SetStateAction, useState, useEffect } from "react";
 import classes from "./User.module.scss";
 import defaultImage from "@Public/testava.jpg";
 import Image from "next/image";
@@ -22,6 +22,8 @@ interface IProps {
 	userContextMenu: string;
 }
 
+const MESS_COUNTER_LIMIT = 30;
+
 const User: FC<IProps> = ({
 	userId,
 	setSelectedUser,
@@ -31,15 +33,18 @@ const User: FC<IProps> = ({
 }) => {
 	const { user } = useAuthContext();
 	const [lastSentDate, setLastSentDate] = useState<string | null>(null);
+	const [reloadSizeCount, setReloadSizeCount] = useState(false);
 	const { popError, popSuccess, ctxMessage } = popMessage();
 
 	const { data: userProfile } = useRealtimeDoc<IUserFirebase>(`users/${userId}`);
-	const dataRef = `users/${user?.uid}/messages/${userProfile?.id}/data`;
+	const dataRef = `users/${user?.uid}/messages/${userId}/data`;
 
-	const getNewMessCounter = useCollectionSize(dataRef, false, {
-		where: [["checked", "==", false]],
-		limit: 30,
-	});
+	const getNewMessCounter = useCollectionSize(
+		dataRef,
+		false,
+		{ where: [["checked", "==", false]], limit: MESS_COUNTER_LIMIT },
+		reloadSizeCount
+	);
 	const newMessCounter = useMemo(
 		() => (getNewMessCounter === 0 ? null : getNewMessCounter),
 		[getNewMessCounter]
@@ -54,17 +59,8 @@ const User: FC<IProps> = ({
 	const onSelectUser = useCallback(async () => {
 		if (!userProfile?.id || !user) return;
 
-		try {
-			await batchWrite(`users/${user.uid}/messages/${userProfile.id}/data`, {
-				dataAction: { checked: true },
-				type: "update",
-				queryOptions: { where: [["checked", "==", false]] },
-			});
-			setUserContextMenu("");
-			setSelectedUser(userProfile.id);
-		} catch (err) {
-			popError("Error messages: notification swap status.");
-		}
+		setUserContextMenu("");
+		setSelectedUser(userProfile.id);
 	}, [userProfile?.id, user?.uid]);
 
 	const onContextMenu = useCallback(
@@ -73,7 +69,6 @@ const User: FC<IProps> = ({
 			e.preventDefault();
 
 			setUserContextMenu(userProfile.id);
-			// setSelectedUser(userProfile.id);
 		},
 		[userProfile]
 	);
@@ -90,6 +85,27 @@ const User: FC<IProps> = ({
 		() => cn(classes.list, selectedUser === userProfile?.id && classes.active),
 		[selectedUser, userProfile?.id]
 	);
+
+	useEffect(() => {
+		if (userProfile) {
+			const checkUserSelected =
+				selectedUser === userProfile.id || userContextMenu === userProfile.id;
+			if (checkUserSelected) {
+				try {
+					batchWrite(`users/${user?.uid}/messages/${userProfile.id}/data`, {
+						dataAction: { checked: true },
+						type: "update",
+						queryOptions: { where: [["checked", "==", false]] },
+					});
+
+					setReloadSizeCount((prev) => !prev);
+				} catch (err) {
+					popError("Error messages: notification swap status.");
+				}
+			}
+		}
+	}, [selectedUser, userProfile?.id, latestMessage, userContextMenu]);
+
 	return (
 		<>
 			{ctxMessage}
@@ -116,7 +132,7 @@ const User: FC<IProps> = ({
 										: latestMessage[0].message}
 								</p>
 							)}
-							{newMessCounter && <span>{newMessCounter}</span>}
+							{newMessCounter && selectedUser !== userProfile?.id && <span>{newMessCounter}</span>}
 						</div>
 					</div>
 				</button>
