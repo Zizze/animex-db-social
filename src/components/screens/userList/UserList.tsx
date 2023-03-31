@@ -16,7 +16,7 @@ const PAGE_LIMIT = 15;
 const UserList: FC = () => {
 	const router = useRouter();
 	const routerPath = router.query.status;
-	const { popError } = popMessage();
+	const { popError, ctxMessage } = popMessage();
 	const { user } = useAuthContext();
 
 	const {
@@ -27,7 +27,7 @@ const UserList: FC = () => {
 		isLastDocs,
 		error,
 	} = useCollectionRealtime<IAnimeFirebase>(`users/${user?.uid}/anime`, {
-		where: [["animeState", "==", routerPath]],
+		where: [["animeState", "==", routerPath || "*"]],
 		orderBy: ["personalRate", "desc"],
 		limit: PAGE_LIMIT,
 	});
@@ -38,11 +38,11 @@ const UserList: FC = () => {
 
 	return (
 		<Layout>
+			{ctxMessage}
+			{isLoading && <Loading />}
 			<Statistics />
 			<div className={classes.container}>
-				{isLoading ? (
-					<Loading />
-				) : userAnimeData && userAnimeData.length ? (
+				{userAnimeData && userAnimeData.length ? (
 					<Items animeFirebase={userAnimeData} />
 				) : (
 					<p className={classes.emptyList}>Nothing's been added yet.</p>
