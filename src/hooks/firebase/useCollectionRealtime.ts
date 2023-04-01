@@ -30,8 +30,8 @@ export const useCollectionRealtime = <T>(
 			isLoading && setIsLoading(false);
 			return;
 		}
-		error && setError(false);
 		!isLoading && setIsLoading(true);
+		error && setError(false);
 
 		const collectionRef = buildCollectionRef(collectionPath, queryOptions);
 
@@ -54,7 +54,7 @@ export const useCollectionRealtime = <T>(
 			},
 			() => setError(true)
 		);
-		console.log("HOOK: useCollectionRealtime");
+
 		return () => unsubscribe();
 	}, [collectionPath, JSON.stringify(queryOptions), updateEffect]);
 

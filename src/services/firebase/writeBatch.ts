@@ -6,9 +6,17 @@ interface IWriteBatch {
 	queryOptions?: IQueryOptions;
 	type: "delete" | "update";
 	dataAction?: any;
+	filterData?: {
+		name: string | number;
+		docKey: string | number;
+		notEqual: string | number;
+	};
 }
 
-export const batchWrite = async (path: string, { queryOptions, type, dataAction }: IWriteBatch) => {
+export const batchWrite = async (
+	path: string,
+	{ queryOptions, type, dataAction, filterData }: IWriteBatch
+) => {
 	const collectionRef = buildCollectionRef(path, queryOptions);
 	const querySnapshot = await getDocs(collectionRef);
 
@@ -19,7 +27,17 @@ export const batchWrite = async (path: string, { queryOptions, type, dataAction 
 				batch.delete(doc.ref);
 				break;
 			case "update":
-				batch.update(doc.ref, dataAction);
+				if (!filterData) {
+					batch.update(doc.ref, dataAction);
+				} else {
+					const { name, docKey, notEqual } = filterData;
+					const docData = doc.data()[docKey];
+					batch.update(doc.ref, {
+						...dataAction,
+						[name]: docData.filter((arr: any) => arr !== notEqual),
+					});
+				}
+
 				break;
 		}
 	});

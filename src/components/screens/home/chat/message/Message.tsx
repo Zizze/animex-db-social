@@ -3,37 +3,47 @@ import Image from "next/image";
 import defaultImage from "@Public/testava.jpg";
 import { MdDelete, MdRecordVoiceOver } from "react-icons/md";
 import classes from "./Message.module.scss";
-import { IMainChatFirebase } from "@/types/types";
+import { IMainChatFirebase, IUserFirebase } from "@/types/types";
 import { deleteDoc, doc, addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@Project/firebase";
 import { useAuthContext } from "@/context/useAuthContext";
 import Highlighter from "react-highlight-words";
 import Link from "next/link";
+import { useRealtimeDoc } from "@/hooks/firebase/useRealtimeDoc";
 
 interface IProps {
 	message: IMainChatFirebase;
 	setAnswerToUser: Dispatch<SetStateAction<string[]>>;
+	popError: (mess: string, duration?: number) => void;
+	popSuccess: (mess: string, duration?: number) => void;
 }
 
-const Message: FC<IProps> = ({ message, setAnswerToUser }) => {
+const Message: FC<IProps> = ({ message, setAnswerToUser, popError, popSuccess }) => {
 	const { user, userStorage } = useAuthContext();
-	const { author, messageId, message: mess, answer } = message;
+	const { id, docId, message: mess } = message;
 	const [isDeleted, setIsDeleted] = useState(false);
 
+	const { data: author } = useRealtimeDoc<IUserFirebase>(`users/${id}`);
+
 	const onDeleteHandler = async () => {
-		if (!messageId || !user || !author) return;
-		await deleteDoc(doc(db, "chat", messageId));
-		if (user.uid !== author.id) {
-			await addDoc(collection(db, "adminsAction"), {
-				adminId: user.uid,
-				message: mess,
-				timestamp: serverTimestamp(),
-				type: "delete",
-				userId: author.id,
-				page: "chat",
-			});
+		if (!docId || !user || !author) return;
+		try {
+			await deleteDoc(doc(db, `chat/${docId}`));
+			if (user.uid !== author.id) {
+				await addDoc(collection(db, "adminsAction"), {
+					adminId: user.uid,
+					message: mess,
+					timestamp: serverTimestamp(),
+					type: "delete",
+					userId: author.id,
+					page: "chat",
+				});
+			}
+			setIsDeleted(true);
+			popSuccess("Delete success.");
+		} catch {
+			popError("Error deleting.");
 		}
-		setIsDeleted(true);
 	};
 
 	const onAnswerHandler = () => {
@@ -49,7 +59,7 @@ const Message: FC<IProps> = ({ message, setAnswerToUser }) => {
 						<div className={classes.main}>
 							<Link href={`profile/${author?.name}`}>
 								<Image
-									src={author?.photoURL ? author.photoURL : defaultImage}
+									src={author?.photoURL || defaultImage}
 									height={100}
 									width={100}
 									alt="User photo"

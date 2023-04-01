@@ -1,12 +1,23 @@
 @import "@Assets/styles/variables";
 
-.formChat {
-	.textArea {
-		border: 1px solid $black-main;
-		border-radius: 10px;
-		background-color: $main-bg;
+.wrapper {
+	position: relative;
+	.formChat {
+		.textArea {
+			border: 1px solid $black-main;
+			border-radius: 10px;
+			background-color: $main-bg;
+		}
+		.emoji {
+			top: 120%;
+		}
 	}
-	.emoji {
-		top: 120%;
+
+	.loading {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
 	}
 }

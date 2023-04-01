@@ -51,7 +51,7 @@ export interface IFriendFirebase {
 
 export interface IMainChatFirebase {
 	message: string;
-	messageId?: string;
+	docId: string;
 	id: string;
 	timestamp: number | string;
 	author?: IUserFirebase;

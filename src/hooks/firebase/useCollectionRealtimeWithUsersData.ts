@@ -21,30 +21,39 @@ interface IGetUsersByCategoryReturn<I> {
 
 export const useCollectionRealtimeWithUsersData = <I>(
 	collectionPath: string,
-	queryOptions: IQueryOptions
+	queryOptions: IQueryOptions,
+	condition = false
 ): IGetUsersByCategoryReturn<I> => {
 	const [data, setData] = useState<I[] | null>(null);
 	const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot | null>(null);
 	const [isLastDocs, setIsLastDocs] = useState(false);
 
+	const [error, setError] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [updateEffect, setUpdateEffect] = useState(false);
 
 	useEffect(() => {
+		if (condition) {
+			isLoading && setIsLoading(false);
+			return;
+		}
+		error && setError(false);
+		isLoading && setIsLoading(true);
+
 		const collectionRef = buildCollectionRef(collectionPath, queryOptions);
 
 		const unsubscribe = onSnapshot(collectionRef, (querySnapshot) => {
 			const lastVisibleDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
 			const promises: Promise<I>[] = [];
 
-			querySnapshot.forEach((user) => {
+			querySnapshot.forEach((document) => {
 				promises.push(
 					new Promise<I>((resolve, reject) => {
-						onSnapshot(doc(db, `users`, `${user.id}`), (userData) => {
-							if (userData.exists()) {
-								resolve(userData.data() as I);
+						onSnapshot(doc(db, `users/${document.id}`), (user) => {
+							if (user.exists()) {
+								resolve(user.data() as I);
 							} else {
-								reject(`Document does not exist: ${userData.id}`);
+								reject(`Document does not exist: ${user.id}`);
 							}
 						});
 					})
@@ -52,17 +61,19 @@ export const useCollectionRealtimeWithUsersData = <I>(
 			});
 
 			Promise.all(promises)
-				.then((allFriendsData) => {
-					if (JSON.stringify(allFriendsData) !== JSON.stringify(data)) {
-						setData(allFriendsData);
+				.then((firebaseData) => {
+					if (JSON.stringify(firebaseData) !== JSON.stringify(data)) {
+						setData(firebaseData);
 						setLastDoc(lastVisibleDoc);
 						setIsLastDocs(querySnapshot.docs.length < 10);
 					}
 				})
-				.catch((error) => {
-					console.error(`Friends error: ${error}`);
+				.catch(() => {
+					setError(true);
+				})
+				.finally(() => {
+					setIsLoading(false);
 				});
-			setIsLoading(false);
 		});
 
 		return () => {
@@ -70,10 +81,15 @@ export const useCollectionRealtimeWithUsersData = <I>(
 		};
 	}, [collectionPath, JSON.stringify(queryOptions), updateEffect]);
 
-	console.log("HOOK: useCollectionRealtime");
-
 	const loadMoreData = useCallback(async () => {
 		if (!lastDoc || isLastDocs) return;
+		if (condition) {
+			isLoading && setIsLoading(false);
+			return;
+		}
+		error && setError(false);
+		isLoading && setIsLoading(true);
+
 		const collectionRef = buildCollectionRef(collectionPath, queryOptions, lastDoc);
 
 		const querySnapshot = await getDocs(collectionRef);

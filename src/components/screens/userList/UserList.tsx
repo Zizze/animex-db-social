@@ -15,7 +15,7 @@ const PAGE_LIMIT = 15;
 
 const UserList: FC = () => {
 	const router = useRouter();
-	const routerPath = router.query.status;
+	const listName = router.query.status;
 	const { popError, ctxMessage } = popMessage();
 	const { user } = useAuthContext();
 
@@ -26,11 +26,15 @@ const UserList: FC = () => {
 		isLoading,
 		isLastDocs,
 		error,
-	} = useCollectionRealtime<IAnimeFirebase>(`users/${user?.uid}/anime`, {
-		where: [["animeState", "==", routerPath || "*"]],
-		orderBy: ["personalRate", "desc"],
-		limit: PAGE_LIMIT,
-	});
+	} = useCollectionRealtime<IAnimeFirebase>(
+		`users/${user?.uid}/anime`,
+		{
+			where: [["animeState", "==", listName || "*"]],
+			orderBy: ["personalRate", "desc"],
+			limit: PAGE_LIMIT,
+		},
+		!user?.uid
+	);
 
 	useEffect(() => {
 		if (error) popError("List loading error.");
@@ -40,11 +44,10 @@ const UserList: FC = () => {
 		<Layout>
 			{ctxMessage}
 			{isLoading && <Loading />}
-			<Statistics />
+			{!isLoading && <Statistics />}
 			<div className={classes.container}>
-				{userAnimeData && userAnimeData.length ? (
-					<Items animeFirebase={userAnimeData} />
-				) : (
+				{userAnimeData && <Items animeFirebase={userAnimeData} />}
+				{!isLoading && !userAnimeData?.length && (
 					<p className={classes.emptyList}>Nothing's been added yet.</p>
 				)}
 
