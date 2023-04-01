@@ -8,12 +8,16 @@ interface IUseGetDocReturn<I> {
 	error: boolean;
 }
 
-export const useGetDoc = <I>(path: string): IUseGetDocReturn<I> => {
+export const useGetDoc = <I>(path: string, condition = false): IUseGetDocReturn<I> => {
 	const [data, setData] = useState<I | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(false);
 
 	useEffect(() => {
+		if (condition) {
+			isLoading && setIsLoading(false);
+			return;
+		}
 		let isMounted = true;
 		const docGet = async () => {
 			const docRef = doc(db, path);

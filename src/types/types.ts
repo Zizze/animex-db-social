@@ -76,6 +76,7 @@ export interface ICommentFirebase {
 	animeId: string | number;
 	likes: string[];
 	dislikes: string[];
+	docId: string;
 }
 
 export interface IAdminActionFirebase {

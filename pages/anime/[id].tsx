@@ -1,15 +1,13 @@
-import { useGetByIdAnimeJikanQuery } from "@Store/animeJikan/animeJikan.api";
-import { useRouter } from "next/router";
-import MainInfoAnime from "@Components/screens/mainInfoItem/MainInfoItem";
 import { NextPage } from "next";
+import AnimeDetails from "@Components/screens/animeDetails/AnimeDetails";
+import { useRouter } from "next/router";
 
 const MainInfoAnimePage: NextPage = () => {
-	const router = useRouter();
-	const { data, isError, isLoading } = useGetByIdAnimeJikanQuery(Number(router.query.id));
+	const { query } = useRouter();
+	const animeId = Number(query?.id);
 
-	if (!data) return <></>;
-
-	return <MainInfoAnime anime={data.data} />;
+	if (isNaN(animeId)) return <></>;
+	return <AnimeDetails animeId={animeId} />;
 };
 
 export default MainInfoAnimePage;

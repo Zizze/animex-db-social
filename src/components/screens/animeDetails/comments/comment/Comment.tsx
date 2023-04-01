@@ -1,8 +1,6 @@
-import { ICommentFirebase } from "@/types/types";
+import { ICommentFirebase, IUserFirebase } from "@/types/types";
 import React, { Dispatch, FC, SetStateAction, useState } from "react";
-import { IUserFirebase } from "../../../../../types/types";
-import { useEffect } from "react";
-import { deleteDoc, doc, getDoc, runTransaction, onSnapshot } from "firebase/firestore";
+import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "@Project/firebase";
 import classes from "./Comment.module.scss";
 import Image from "next/image";
@@ -15,6 +13,9 @@ import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import cn from "classnames";
 import Link from "next/link";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
+import { useGetDoc } from "@/hooks/firebase/useGetDoc";
+import { changeGrade } from "@/services/firebase/changeGrade";
+import { popMessage } from "@/utils/popMessage/popMessage";
 
 interface IProps {
 	comment: ICommentFirebase;
@@ -24,41 +25,17 @@ interface IProps {
 
 const Comment: FC<IProps> = ({ comment, setCommentTxt, animeId }) => {
 	const { user } = useAuthContext();
-	const [author, setAuthor] = useState<IUserFirebase>();
-	const { message, id, timestamp, commentId } = comment;
-	const chekDate = checkCreateData(+timestamp);
+	const { popError, ctxMessage } = popMessage();
+	const { message, id, timestamp, docId, likes, dislikes } = comment;
+	const chekDate = checkCreateData(timestamp.seconds);
 	const [isDelete, setIsDelete] = useState(false);
 	const [isShowSpoiler, setIsShowSpoiler] = useState(false);
 
-	const [likes, setLikes] = useState<string[]>([]);
-	const [dislikes, setDislikes] = useState<string[]>([]);
-
-	useEffect(() => {
-		const getUser = async () => {
-			const userRef = doc(db, `users/${id}`);
-			const userDoc = await getDoc(userRef);
-			if (userDoc.exists()) {
-				setAuthor(userDoc.data() as IUserFirebase);
-			}
-		};
-
-		getUser();
-	}, []);
-
-	useEffect(() => {
-		const unsub = onSnapshot(doc(db, `comments/${animeId}/dataAnime/${commentId}`), (doc) => {
-			const comment = doc.data() as ICommentFirebase;
-			if (comment) {
-				setLikes(comment.likes);
-				setDislikes(comment.dislikes);
-			}
-		});
-		return () => unsub();
-	}, []);
+	const { data: author } = useGetDoc<IUserFirebase>(`users/${id}`);
 
 	const onDeleteHandler = async () => {
-		if (!commentId) return;
-		await deleteDoc(doc(db, `comments/${animeId}/dataAnime/${commentId}`));
+		if (!docId) return;
+		await deleteDoc(doc(db, `comments/${animeId}/dataAnime/${docId}`));
 		setIsDelete(true);
 	};
 
@@ -71,46 +48,23 @@ const Comment: FC<IProps> = ({ comment, setCommentTxt, animeId }) => {
 
 	const onClickGrade = async (grade: string) => {
 		if (!user) return;
-		const commentRef = doc(db, `comments/${animeId}/dataAnime/${commentId}`);
-
-		await runTransaction(db, async (transaction) => {
-			const hasLiked = likes.includes(user.uid);
-			const hasDisliked = dislikes.includes(user.uid);
-
-			if (grade === "like") {
-				if (!hasLiked) {
-					transaction.update(commentRef, { likes: [...likes, user.uid] });
-					if (hasDisliked) {
-						transaction.update(commentRef, {
-							dislikes: dislikes.filter((userId: string) => userId !== user.uid),
-						});
-					}
-				} else {
-					transaction.update(commentRef, {
-						likes: likes.filter((userId: string) => userId !== user.uid),
-					});
-				}
-			} else if (grade === "dislike") {
-				if (!hasDisliked) {
-					transaction.update(commentRef, { dislikes: [...dislikes, user.uid] });
-					if (hasLiked) {
-						transaction.update(commentRef, {
-							likes: likes.filter((userId: string) => userId !== user.uid),
-						});
-					}
-				} else {
-					transaction.update(commentRef, {
-						dislikes: dislikes.filter((userId: string) => userId !== user.uid),
-					});
-				}
-			}
-		});
+		try {
+			await changeGrade(`comments/${animeId}/dataAnime/${docId}`, {
+				userId: user.uid,
+				gradeSelect: grade,
+				likesArray: likes,
+				dislikedArray: dislikes,
+			});
+		} catch {
+			popError("Error changing grade.");
+		}
 	};
 
 	return (
 		<>
 			{!isDelete && (
 				<li className={classes.comment}>
+					{ctxMessage}
 					<div className={classes.user}>
 						<div className={classes.info}>
 							<Link href={`/profile/${author?.name}`}>

@@ -41,18 +41,19 @@
 			height: 100%;
 		}
 	}
-	p {
-		color: $white-main;
-		font-weight: 400;
-		&:not(:last-child) {
-			margin-bottom: 10px;
-		}
-		span {
-			color: $light-blue;
-			font-weight: 600;
+	.details {
+		li {
+			color: $white-main;
+			font-weight: 400;
+			&:not(:last-child) {
+				margin-bottom: 10px;
+			}
+			span {
+				color: $light-blue;
+				font-weight: 600;
+			}
 		}
 	}
-
 	.btnContol {
 		margin: 10px 0;
 

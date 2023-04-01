@@ -1,16 +1,16 @@
 import { IDataAnime } from "@Store/animeJikan/IAnime.interface";
 import { FC, useState } from "react";
-import classes from "./RightInfo.module.scss";
+import classes from "./RightDetails.module.scss";
 import { FaArrowDown } from "react-icons/fa";
 import cn from "classnames";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
-import Trailer from "../trailer/Trailer";
+import Trailer from "./trailer/Trailer";
 
 interface IProps {
 	anime: IDataAnime;
 }
 
-const RightInfo: FC<IProps> = ({ anime }) => {
+const RightDetails: FC<IProps> = ({ anime }) => {
 	const [activeBackground, setActiveBackground] = useState(false);
 	const [activeTrailer, setActiveTrailer] = useState(false);
 
@@ -80,10 +80,9 @@ const RightInfo: FC<IProps> = ({ anime }) => {
 					<p className={cn(activeBackground && classes.active)}>{background}</p>
 				</div>
 			</div>
-
 			{activeTrailer && <Trailer trailer={trailer} setActiveTrailer={setActiveTrailer} />}
 		</div>
 	);
 };
 
-export default RightInfo;
+export default RightDetails;

@@ -148,14 +148,15 @@
 			overflow: hidden;
 
 			p {
-				transition: margin-top 0.4s ease-in-out;
-				margin-top: -100%;
+				transition: max-height 0.3s ease-in-out, opacity 0.4s ease-in-out;
+				max-height: 0px;
 				color: $white-main;
-				opacity: 0.8;
+				opacity: 0;
 				font-size: 1.8rem;
 			}
 			p.active {
-				margin-top: 0;
+				max-height: 2000px;
+				opacity: 1;
 			}
 		}
 	}
