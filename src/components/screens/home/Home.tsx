@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useRef } from "react";
 import Layout from "@Components/layout/Layout";
 import Categories from "./categories/Categories";
 import Items from "./items/Items";
@@ -39,19 +39,28 @@ const Home: FC = () => {
 		topRef.current?.scrollIntoView({ behavior: "smooth" });
 	};
 
+	const pagination = {
+		last: Number(data?.pagination.last_visible_page),
+		current: Number(data?.pagination.current_page),
+		hasNext: data?.pagination.has_next_page,
+	};
+
+	const existNextPageConditions =
+		pagination.hasNext || (activePage === pagination.last && pagination.last !== 1);
+
 	return (
 		<Layout>
+			{isLoading && <Loading />}
 			<div className={classes.container} ref={topRef}>
 				<Categories setIsShow={setIsShow} />
-
-				{isLoading ? <Loading /> : <Items allAnimeJikan={data?.data} />}
+				<Items allAnimeJikan={data?.data} />
 				<Chat />
 			</div>
 			<Pagination
 				onChangePage={onChangePage}
-				pageCount={Number(data?.pagination.last_visible_page)}
-				thisPage={Number(data?.pagination.current_page)}
-				existNextPage={data?.pagination.has_next_page}
+				pageCount={pagination.last}
+				thisPage={pagination.current}
+				existNextPage={existNextPageConditions}
 			/>
 
 			<GenreThemeModal isShow={isShow} setIsShow={setIsShow} />

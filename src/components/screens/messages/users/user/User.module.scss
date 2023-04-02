@@ -52,8 +52,12 @@
 				align-items: center;
 				justify-content: space-between;
 
-				// p {
-				// }
+				p {
+					text-align: left;
+					width: 150px;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
 				span {
 					text-align: center;
 					border-radius: 5px;

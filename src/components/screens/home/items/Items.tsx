@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, RefObject } from "react";
 import classes from "./Items.module.scss";
 import Item from "./item/Item";
 import { IDataAnime } from "@Store/animeJikan/IAnime.interface";

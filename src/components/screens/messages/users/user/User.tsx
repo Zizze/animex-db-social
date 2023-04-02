@@ -33,18 +33,15 @@ const User: FC<IProps> = ({
 }) => {
 	const { user } = useAuthContext();
 	const [lastSentDate, setLastSentDate] = useState<string | null>(null);
-	const [reloadSizeCount, setReloadSizeCount] = useState(false);
 	const { popError, popSuccess, ctxMessage } = popMessage();
 
 	const { data: userProfile } = useRealtimeDoc<IUserFirebase>(`users/${userId}`);
 	const dataRef = `users/${user?.uid}/messages/${userId}/data`;
 
-	const getNewMessCounter = useCollectionSize(
-		dataRef,
-		false,
-		{ where: [["checked", "==", false]], limit: MESS_COUNTER_LIMIT },
-		reloadSizeCount
-	);
+	const getNewMessCounter = useCollectionSize(dataRef, false, {
+		where: [["checked", "==", false]],
+		limit: MESS_COUNTER_LIMIT,
+	});
 	const newMessCounter = useMemo(
 		() => (getNewMessCounter === 0 ? null : getNewMessCounter),
 		[getNewMessCounter]
@@ -97,8 +94,6 @@ const User: FC<IProps> = ({
 						type: "update",
 						queryOptions: { where: [["checked", "==", false]] },
 					});
-
-					setReloadSizeCount((prev) => !prev);
 				} catch (err) {
 					popError("Error messages: notification swap status.");
 				}
@@ -125,13 +120,7 @@ const User: FC<IProps> = ({
 							{latestMessage && <span>{lastSentDate}</span>}
 						</div>
 						<div className={classes.complement}>
-							{latestMessage && latestMessage[0] && (
-								<p>
-									{latestMessage[0].message.length > 10
-										? `${latestMessage[0].message.slice(0, 6)}...`
-										: latestMessage[0].message}
-								</p>
-							)}
+							{latestMessage && latestMessage[0] && <p>{latestMessage[0].message}</p>}
 							{newMessCounter && selectedUser !== userProfile?.id && <span>{newMessCounter}</span>}
 						</div>
 					</div>
