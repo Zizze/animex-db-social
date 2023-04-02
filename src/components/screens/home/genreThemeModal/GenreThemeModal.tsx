@@ -1,13 +1,12 @@
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { useAppSelector } from "@/hooks/useAppSelector";
 import CloseModal from "@Components/UI/btn/CloseModal";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import ModalWrapper from "@Components/UI/modal/ModalWrapper";
 import { setCategories } from "@Store/animeJikan/animeJikanSlice";
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, FC, SetStateAction, useState, useCallback } from "react";
 
 import Genres from "./genres/Genres";
-import classes from "./SetGenres.module.scss";
+import classes from "./GenreThemeModal.module.scss";
 import Themes from "./themes/Themes";
 
 interface IProps {
@@ -15,36 +14,31 @@ interface IProps {
 	setIsShow: Dispatch<SetStateAction<boolean>>;
 }
 
-const SetGenres: FC<IProps> = ({ isShow, setIsShow }) => {
-	const [genres, setGenres] = useState<string[]>([]);
+const GenreThemeModal: FC<IProps> = ({ isShow, setIsShow }) => {
+	const [genreTheme, setGenreTheme] = useState<string[]>([]);
 	const dispatch = useAppDispatch();
-	const { orderBy, status, activePage, search, startDate, mainHomeCategoryActive } = useAppSelector(
-		(state) => state.animeJikan
+
+	const onConfirmModal = useCallback(() => {
+		if (genreTheme.length > 0) {
+			dispatch(setCategories(genreTheme));
+			setGenreTheme([]);
+		}
+		setIsShow(false);
+	}, [genreTheme]);
+
+	const selectedCheckbox = useCallback(
+		(id: string) => {
+			const include = genreTheme.includes(id);
+			if (include) {
+				setGenreTheme((prev) => prev.filter((i) => i !== id));
+			} else {
+				setGenreTheme((prev) => [...prev, id]);
+			}
+		},
+		[genreTheme]
 	);
 
-	const onCloseModal = () => {
-		setIsShow(false);
-	};
-
-	const onConfirmModal = () => {
-		if (genres.length > 0) {
-			dispatch(setCategories(genres));
-			setGenres([]);
-		}
-		setIsShow(false);
-	};
-
-	const selectedCheckbox = (id: string) => {
-		const include = genres.includes(id);
-		if (include) {
-			setGenres((prev) => prev.filter((i) => i !== id));
-			return;
-		} else {
-			setGenres((prev) => [...prev, id]);
-			return;
-		}
-	};
-
+	const onCloseModal = useCallback(() => setIsShow(false), []);
 	return (
 		<>
 			{isShow && (
@@ -68,4 +62,4 @@ const SetGenres: FC<IProps> = ({ isShow, setIsShow }) => {
 	);
 };
 
-export default SetGenres;
+export default GenreThemeModal;

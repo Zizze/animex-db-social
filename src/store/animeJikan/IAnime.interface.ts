@@ -129,3 +129,14 @@ export interface IGetParams {
 	type: string;
 	startDate: string;
 }
+
+interface IGenreThemeData {
+	mal_id: number;
+	name: string;
+	url: string;
+	count: number;
+}
+
+export interface IGenreTheme {
+	data: IGenreThemeData[];
+}

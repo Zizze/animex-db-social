@@ -8,10 +8,11 @@ import Pagination from "@Components/UI/pagination/Pagination";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { changePageHome } from "@Store/animeJikan/animeJikanSlice";
-import SetGenres from "./setGenres/SetGenres";
+
 import { useOutside } from "@/hooks/useOutside";
 import Loading from "@Components/UI/loading/Loading";
 import Chat from "./chat/Chat";
+import GenreThemeModal from "./genreThemeModal/GenreThemeModal";
 
 const Home: FC = () => {
 	const dispatch = useAppDispatch();
@@ -38,13 +39,6 @@ const Home: FC = () => {
 		topRef.current?.scrollIntoView({ behavior: "smooth" });
 	};
 
-	// useEffect(() => {
-	// 	const timeoutID = setTimeout(() => {
-	// 		topRef.current?.scrollIntoView({ behavior: "smooth" });
-	// 	}, 100);
-	// 	return () => clearTimeout(timeoutID);
-	// }, [activePage]);
-
 	return (
 		<Layout>
 			<div className={classes.container} ref={topRef}>
@@ -60,7 +54,7 @@ const Home: FC = () => {
 				existNextPage={data?.pagination.has_next_page}
 			/>
 
-			<SetGenres isShow={isShow} setIsShow={setIsShow} />
+			<GenreThemeModal isShow={isShow} setIsShow={setIsShow} />
 		</Layout>
 	);
 };

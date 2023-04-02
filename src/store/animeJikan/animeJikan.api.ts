@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IAnimeJikan, IJitakFullAnime } from "./IAnime.interface";
-import { IGenres } from "../../components/screens/home/setGenres/genres.interface";
+import { IAnimeJikan, IJitakFullAnime, IGenreTheme } from "./IAnime.interface";
 
 export interface IGetParams {
 	search?: string;
@@ -52,7 +51,7 @@ export const animeJikanApi = createApi({
 			providesTags: ["Jikan"],
 		}),
 
-		getGenresAnimeJikan: build.query<IGenres, string>({
+		getGenresAnimeJikan: build.query<IGenreTheme, string>({
 			query: (filter: string) => ({
 				url: `/genres/anime`,
 				params: {
