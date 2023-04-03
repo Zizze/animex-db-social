@@ -76,7 +76,7 @@ const AnimeDetails: FC<{ animeId: number }> = ({ animeId }) => {
 
 	if (animeFetchLoading || animeInUserDbLoading) return <Loading />;
 	return (
-		<Layout>
+		<>
 			{ctxMessage}
 			{anime && (
 				<div className={classes.container}>
@@ -114,7 +114,7 @@ const AnimeDetails: FC<{ animeId: number }> = ({ animeId }) => {
 					{commentsIsVisible && <Comments animeId={anime.mal_id} />}
 				</div>
 			)}
-		</Layout>
+		</>
 	);
 };
 

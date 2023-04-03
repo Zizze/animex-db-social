@@ -1,5 +1,4 @@
 import { FC, useEffect } from "react";
-import Layout from "@Components/layout/Layout";
 import Items from "../home/items/Items";
 import { useAuthContext } from "@/context/useAuthContext";
 import { IAnimeFirebase } from "@/types/types";
@@ -41,7 +40,7 @@ const UserList: FC = () => {
 	}, [error]);
 
 	return (
-		<Layout>
+		<>
 			{ctxMessage}
 			{isLoading && <Loading />}
 			{!isLoading && <Statistics />}
@@ -62,7 +61,7 @@ const UserList: FC = () => {
 					)}
 				</div>
 			</div>
-		</Layout>
+		</>
 	);
 };
 

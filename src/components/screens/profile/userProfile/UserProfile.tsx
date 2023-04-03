@@ -1,5 +1,4 @@
 import { IFriendFirebase, IUserFirebase } from "@/types/types";
-import Layout from "@Components/layout/Layout";
 import { db } from "@Project/firebase";
 import { doc, deleteDoc, setDoc } from "firebase/firestore";
 import { AiOutlineUserAdd, AiOutlineUserDelete, AiOutlineSend } from "react-icons/ai";
@@ -97,7 +96,7 @@ const UserProfile: FC = () => {
 	if (!userProfile || !userProfile[0]) return <></>;
 
 	return (
-		<Layout>
+		<>
 			{isLoading ? (
 				<Loading />
 			) : (
@@ -213,7 +212,7 @@ const UserProfile: FC = () => {
 					)}
 				</>
 			)}
-		</Layout>
+		</>
 	);
 };
 

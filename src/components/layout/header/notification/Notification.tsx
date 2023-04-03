@@ -59,7 +59,7 @@ const Notification: FC = () => {
 
 					<MiniModal addClass={classes.modal} isShow={isShow}>
 						{notifications.map(({ title, value, href }) => {
-							if (!href.includes("messages") && pathname.includes("messages")) return;
+							if (href.includes("messages") && pathname.includes("messages")) return;
 							if (!!value) {
 								return (
 									<li>

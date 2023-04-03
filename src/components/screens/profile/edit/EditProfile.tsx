@@ -1,4 +1,3 @@
-import Layout from "@Components/layout/Layout";
 import { ChangeEvent, FC, FormEvent, useState, useEffect } from "react";
 import classes from "./EditProfile.module.scss";
 import Image from "next/image";
@@ -137,72 +136,65 @@ const EditProfile: FC = () => {
 	return (
 		<>
 			{ctxMessage}
-			<Layout>
-				{user && !isOpemConfirmModal && (
-					<>
-						{existEmailName && <p className={classes.notValid}>{existEmailName}</p>}
-						<form className={classes.form} onSubmit={submitHandler}>
-							{isLoading && <Loading />}
+			{user && !isOpemConfirmModal && (
+				<>
+					{existEmailName && <p className={classes.notValid}>{existEmailName}</p>}
+					<form className={classes.form} onSubmit={submitHandler}>
+						{isLoading && <Loading />}
 
-							<div className={classes.left}>
-								<p className={classes.notValid}>{nameErr}</p>
-								<input
-									className={classes.name}
-									maxLength={10}
-									type="text"
-									value={newName}
-									onChange={onChangeName}
+						<div className={classes.left}>
+							<p className={classes.notValid}>{nameErr}</p>
+							<input
+								className={classes.name}
+								maxLength={10}
+								type="text"
+								value={newName}
+								onChange={onChangeName}
+							/>
+							<div className={classes.ava}>
+								<Image
+									priority={true}
+									src={photoPrewie}
+									width={500}
+									height={500}
+									alt={`avatar ${newName}`}
 								/>
-								<div className={classes.ava}>
-									<Image
-										priority={true}
-										src={photoPrewie}
-										width={500}
-										height={500}
-										alt={`avatar ${newName}`}
-									/>
 
-									<label>
-										<BsFillCloudArrowUpFill className={classes.fileIco} />
-										<input
-											accept="image/*"
-											type="file"
-											name="ava"
-											onChange={(e) => imageChange(e)}
-										/>
-									</label>
-								</div>
+								<label>
+									<BsFillCloudArrowUpFill className={classes.fileIco} />
+									<input accept="image/*" type="file" name="ava" onChange={(e) => imageChange(e)} />
+								</label>
 							</div>
-							<div className={classes.right}>
-								<p className={classes.notValid}>{emailErr}</p>
-								<input type="text" onChange={onChangeEmail} value={newEmail} />
-								<p className={classes.notValid}>{`${passErr || ""}${errEqualPass || ""}`.trim()}</p>
-								<input
-									type="text"
-									onChange={onChangePass}
-									value={pass}
-									placeholder="New password"
-									autoComplete="new-password"
-								/>
-								<p className={classes.notValid}>{passConfErr}</p>
-								<input
-									type="text"
-									onChange={onChangeConfPass}
-									value={confirmPass}
-									placeholder="Confirm pass"
-									autoComplete="new-password"
-								/>
-								<div className={classes.btns}>
-									<DefaultBtn type="submit" classMode="main">
-										Change
-									</DefaultBtn>
-									<DefaultBtn onClickHandler={() => router.push("/")}>Home</DefaultBtn>
-								</div>
+						</div>
+						<div className={classes.right}>
+							<p className={classes.notValid}>{emailErr}</p>
+							<input type="text" onChange={onChangeEmail} value={newEmail} />
+							<p className={classes.notValid}>{`${passErr || ""}${errEqualPass || ""}`.trim()}</p>
+							<input
+								type="text"
+								onChange={onChangePass}
+								value={pass}
+								placeholder="New password"
+								autoComplete="new-password"
+							/>
+							<p className={classes.notValid}>{passConfErr}</p>
+							<input
+								type="text"
+								onChange={onChangeConfPass}
+								value={confirmPass}
+								placeholder="Confirm pass"
+								autoComplete="new-password"
+							/>
+							<div className={classes.btns}>
+								<DefaultBtn type="submit" classMode="main">
+									Change
+								</DefaultBtn>
+								<DefaultBtn onClickHandler={() => router.push("/")}>Home</DefaultBtn>
 							</div>
-						</form>
-					</>
-				)}
-			</Layout>
+						</div>
+					</form>
+				</>
+			)}
 			<Reauthorization
 				setIsOpemConfirmModal={setIsOpemConfirmModal}
 				isOpemConfirmModal={isOpemConfirmModal}

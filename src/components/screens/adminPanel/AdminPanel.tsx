@@ -6,10 +6,10 @@ import MainAdminPanel from "./mainAdminPanel/MainAdminPanel";
 
 const AdminPanel: FC = () => {
 	return (
-		<Layout>
+		<>
 			<HeaderAdminPanel />
 			<MainAdminPanel />
-		</Layout>
+		</>
 	);
 };
 

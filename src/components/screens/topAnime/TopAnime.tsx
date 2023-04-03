@@ -1,6 +1,5 @@
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
-import Layout from "@Components/layout/Layout";
 import Loading from "@Components/UI/loading/Loading";
 import Pagination from "@Components/UI/pagination/Pagination";
 import { useGetAnimeJikanQuery } from "@Store/animeJikan/animeJikan.api";
@@ -30,7 +29,7 @@ const TopAnimes = () => {
 	}, [error]);
 
 	return (
-		<Layout>
+		<>
 			<div className={classes.wrapper}>
 				{isLoading ? (
 					<Loading />
@@ -46,7 +45,7 @@ const TopAnimes = () => {
 					</>
 				)}
 			</div>
-		</Layout>
+		</>
 	);
 };
 

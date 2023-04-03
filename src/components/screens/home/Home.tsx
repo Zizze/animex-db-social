@@ -1,5 +1,5 @@
 import { FC, useRef } from "react";
-import Layout from "@Components/layout/Layout";
+
 import Categories from "./categories/Categories";
 import Items from "./items/Items";
 import { useGetAnimeJikanQuery } from "@Store/animeJikan/animeJikan.api";
@@ -49,7 +49,7 @@ const Home: FC = () => {
 		pagination.hasNext || (activePage === pagination.last && pagination.last !== 1);
 
 	return (
-		<Layout>
+		<>
 			{isLoading && <Loading />}
 			<div className={classes.container} ref={topRef}>
 				<Categories setIsShow={setIsShow} />
@@ -64,7 +64,7 @@ const Home: FC = () => {
 			/>
 
 			<GenreThemeModal isShow={isShow} setIsShow={setIsShow} />
-		</Layout>
+		</>
 	);
 };
 

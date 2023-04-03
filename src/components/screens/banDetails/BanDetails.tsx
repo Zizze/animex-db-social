@@ -4,8 +4,6 @@ import classes from "./BanDetails.module.scss";
 import { useRouter } from "next/router";
 import Layout from "@Components/layout/Layout";
 import { IUserFirebase } from "@/types/types";
-import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "@Project/firebase";
 import { convertTimestamp } from "@/utils/convertTimestamp";
 import Image from "next/image";
 import defaultImage from "@Public/testava.jpg";
@@ -29,7 +27,7 @@ const BanDetails: FC = () => {
 	}, [router.query.name, user]);
 
 	return (
-		<Layout>
+		<>
 			{loading ? (
 				<Loading />
 			) : (
@@ -77,7 +75,7 @@ const BanDetails: FC = () => {
 					<SupportForm isActiveSupport={isOpenSupport} setIsActiveSupport={setIsOpenSupport} />
 				</div>
 			)}
-		</Layout>
+		</>
 	);
 };
 
