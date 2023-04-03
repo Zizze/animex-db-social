@@ -19,25 +19,6 @@
 	}
 
 	form {
-		.checkboxesBlock {
-			padding: 25px 0 20px;
-			margin-bottom: 10px;
-			&:not(:last-child) {
-				border-bottom: 1px solid $gray-main;
-			}
-
-			p {
-				color: $light-blue;
-				text-align: center;
-				margin-bottom: 15px;
-			}
-			ul {
-				display: flex;
-				align-items: center;
-				justify-content: space-around;
-				gap: 20px;
-			}
-		}
 		.btns {
 			display: flex;
 			gap: 20px;

@@ -7,42 +7,56 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { FC, Dispatch, SetStateAction, useState, FormEvent, useEffect } from "react";
 import { dataSettFriend, dataSettMess, dataSettProfileVisible } from "./userSettings.data";
 import classes from "./UserSettings.module.scss";
-import { IUserFirebase } from "../../../../types/types";
+import { IUserFirebase } from "@/types/types";
+import { popMessage } from "@/utils/popMessage/popMessage";
+import CheckboxGroup from "@Components/UI/checkbox/сheckboxGroup/CheckboxGroup";
+import Loading from "@Components/UI/loading/Loading";
 
 interface IProps {
 	setActiveSetings: Dispatch<SetStateAction<boolean>>;
 }
 
 const UserSettings: FC<IProps> = ({ setActiveSetings }) => {
-	const { user } = useAuthContext();
-	const [messSetting, setMessSetting] = useState<boolean | string>("");
-	const [friendSetting, setFriendSetting] = useState<boolean | string>("");
-	const [profileSett, setProfileSett] = useState<boolean | string>("");
+	const { user, userStorage } = useAuthContext();
+	const { popError, popSuccess, ctxMessage } = popMessage();
+	const [isLoading, setIsLoading] = useState(false);
 
-	useEffect(() => {
-		if (!user) return;
-		const getUserSettings = async () => {
-			const userRef = doc(db, `users/${user.uid}`);
-			const userDoc = await getDoc(userRef);
-			const { settings } = userDoc.data() as IUserFirebase;
-			setFriendSetting(settings?.friends || dataSettFriend[0]);
-			setMessSetting(settings?.messages || dataSettMess[0]);
-			setProfileSett(settings?.profile || dataSettProfileVisible[0]);
-		};
-		getUserSettings();
-	}, []);
+	const currentSettings = {
+		friends: userStorage?.settings?.friends || dataSettFriend[0],
+		messages: userStorage?.settings?.messages || dataSettMess[0],
+		profile: userStorage?.settings?.profile || dataSettProfileVisible[0],
+	};
+
+	const [messSetting, setMessSetting] = useState<boolean | string>(currentSettings.messages);
+	const [friendSetting, setFriendSetting] = useState<boolean | string>(currentSettings.friends);
+	const [profileSetting, setProfileSetting] = useState<boolean | string>(currentSettings.profile);
 
 	const onSubmitSettings = async (e: FormEvent) => {
 		e.preventDefault();
-		if (!user) return;
-		const userRef = doc(db, `users/${user.uid}`);
-		await updateDoc(userRef, {
-			settings: {
-				friends: friendSetting,
-				messages: messSetting,
-				profile: profileSett,
-			},
-		});
+		const settings = {
+			friends: friendSetting,
+			messages: messSetting,
+			profile: profileSetting,
+		};
+		const notChanged = JSON.stringify(currentSettings) === JSON.stringify(settings);
+		if (!user || notChanged) return;
+
+		setIsLoading(true);
+		try {
+			const userRef = doc(db, `users/${user.uid}`);
+			await updateDoc(userRef, {
+				settings: {
+					friends: friendSetting,
+					messages: messSetting,
+					profile: profileSetting,
+				},
+			});
+			popSuccess("Changes saved.");
+		} catch {
+			popError("Change error.");
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const onChangeFriendSett = (name: string) => {
@@ -54,66 +68,44 @@ const UserSettings: FC<IProps> = ({ setActiveSetings }) => {
 	};
 
 	const onChangeProfileSett = (name: string) => {
-		setProfileSett(name);
+		setProfileSetting(name);
 	};
 
 	return (
-		<ModalWrapper onClickHandler={() => setActiveSetings(false)}>
-			<div className={classes.wrapper}>
-				<h5>Settings</h5>
-				<form onSubmit={onSubmitSettings}>
-					<div className={classes.checkboxesBlock}>
-						<p>Who can invite you to be friends?</p>
-						<ul className={classes.checkbox}>
-							{dataSettFriend.map((sett) => (
-								<Checkbox
-									onlyOneMode={true}
-									name={sett}
-									id={sett}
-									onChangeHandler={onChangeFriendSett}
-									disabled={sett === friendSetting}
-									key={sett}
-								/>
-							))}
-						</ul>
-					</div>
-					<div className={classes.checkboxesBlock}>
-						<p>Who can write letters to me?</p>
-						<ul className={classes.checkbox}>
-							{dataSettMess.map((sett) => (
-								<Checkbox
-									onlyOneMode={true}
-									name={sett}
-									id={sett}
-									onChangeHandler={onChangeMessSett}
-									disabled={sett === messSetting}
-									key={sett}
-								/>
-							))}
-						</ul>
-					</div>
-					<div className={classes.checkboxesBlock}>
-						<p>Who can see basic information on my profile?</p>
-						<ul className={classes.checkbox}>
-							{dataSettProfileVisible.map((sett) => (
-								<Checkbox
-									onlyOneMode={true}
-									name={sett}
-									id={sett}
-									onChangeHandler={onChangeProfileSett}
-									disabled={sett === profileSett}
-									key={sett}
-								/>
-							))}
-						</ul>
-					</div>
-					<div className={classes.btns}>
-						<DefaultBtn type="submit">Save</DefaultBtn>
-						<DefaultBtn onClickHandler={() => setActiveSetings(false)}>Close</DefaultBtn>
-					</div>
-				</form>
-			</div>
-		</ModalWrapper>
+		<>
+			{ctxMessage}
+			<ModalWrapper onClickHandler={() => setActiveSetings(false)}>
+				{isLoading && <Loading />}
+				<div className={classes.wrapper}>
+					<h5>Settings</h5>
+					<form onSubmit={onSubmitSettings}>
+						<CheckboxGroup
+							options={dataSettFriend}
+							selectedOption={friendSetting}
+							onChangeHandler={onChangeFriendSett}
+							title={"Who can invite you to be friends?"}
+						/>
+						<CheckboxGroup
+							options={dataSettMess}
+							selectedOption={messSetting}
+							onChangeHandler={onChangeMessSett}
+							title={"Who can write letters to me?"}
+						/>
+						<CheckboxGroup
+							options={dataSettProfileVisible}
+							selectedOption={profileSetting}
+							onChangeHandler={onChangeProfileSett}
+							title={"Who can see basic information on my profile?"}
+						/>
+
+						<div className={classes.btns}>
+							<DefaultBtn type="submit">Save</DefaultBtn>
+							<DefaultBtn onClickHandler={() => setActiveSetings(false)}>Close</DefaultBtn>
+						</div>
+					</form>
+				</div>
+			</ModalWrapper>
+		</>
 	);
 };
 

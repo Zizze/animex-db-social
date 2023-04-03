@@ -12,8 +12,9 @@
 		border-radius: 5px;
 		width: 220px;
 		color: $not-valid;
-		z-index: 0;
-		bottom: 10px;
+		z-index: 1;
+
+		top: 0%;
 		font-size: 1.8rem;
 		position: absolute;
 		left: 50%;
@@ -24,7 +25,8 @@
 	.searchValid.on {
 		opacity: 1;
 		transform: translateX(-50%) scale(1);
-		bottom: -40px;
+		top: 110%;
+		transition: bottom 0.3s ease-in-out, transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 	}
 }
 
@@ -103,30 +105,31 @@
 		}
 		&:hover,
 		.searchValid.on {
-			-webkit-animation: pulsate-fwd 1s ease-in-out infinite both;
-			animation: pulsate-fwd 1s ease-in-out infinite both;
+			-webkit-animation: pulsate 1s ease-in-out infinite both;
+			animation: pulsate 1s ease-in-out infinite both;
 		}
-		@-webkit-keyframes pulsate-fwd {
-			0% {
-				transform: translateY(0);
-			}
-			50% {
-				transform: translateY(-10%);
-			}
-			100% {
-				transform: translateY(0);
-			}
-		}
-		@keyframes pulsate-fwd {
-			0% {
-				transform: translateY(0);
-			}
-			50% {
-				transform: translateY(-10%);
-			}
-			100% {
-				transform: translateY(0);
-			}
-		}
+	}
+}
+
+@-webkit-keyframes pulsate {
+	0% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+@keyframes pulsate {
+	0% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10%);
+	}
+	100% {
+		transform: translateY(0);
 	}
 }

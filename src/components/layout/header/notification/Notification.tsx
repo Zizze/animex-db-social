@@ -1,71 +1,31 @@
 import { useAuthContext } from "@/context/useAuthContext";
 import { useOutside } from "@/hooks/useOutside";
-import { IMessageFirebase } from "@/types/types";
 import MiniModal from "@Components/UI/miniModal/MiniModal";
-import { db } from "@Project/firebase";
-import { Unsubscribe } from "firebase/auth";
-import { collection, onSnapshot, query, where, getDocs, DocumentData } from "firebase/firestore";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useEffect, useMemo, useState } from "react";
 import { MdNotifications } from "react-icons/md";
 import classes from "./Notification.module.scss";
+import { getMessagesNotification } from "@/services/firebase/notifications/getMessages";
+import { useCollectionSize } from "@/hooks/firebase/useCollectionSize";
 
 const Notification: FC = () => {
 	const { pathname } = useRouter();
 	const { user } = useAuthContext();
-	const { isShow, setIsShow, ref } = useOutside(false);
-	const [friendsRequests, setFriendsRequests] = useState(0);
 	const [newMessages, setNewMessages] = useState(0);
-	const [newChatMess, setNewChatMess] = useState(0);
+
+	const { isShow, setIsShow, ref } = useOutside(false);
+
+	const friendsRequests = useCollectionSize(`users/${user?.uid}/friends`, false, {
+		where: [["confirmator", "==", true]],
+	});
+	const newChatMess = useCollectionSize("chat", false, {
+		where: [["answer", "array-contains", user?.displayName || "*"]],
+	});
 
 	useEffect(() => {
 		if (!user) return;
-
-		const qFriends = query(
-			collection(db, `users/${user.uid}/friends`),
-			where("confirmator", "==", true)
-		);
-		const unsubscribeFriend = onSnapshot(qFriends, (querySnapshot) => {
-			const friendsReqCount = querySnapshot.size;
-			setFriendsRequests(friendsReqCount);
-		});
-
-		const qMainChat = query(
-			collection(db, "chat"),
-			where("answer", "array-contains", user.displayName)
-		);
-		const unsubscribeChat = onSnapshot(qMainChat, (qSnapshot) => {
-			const chatMessCount = qSnapshot.size;
-			setNewChatMess(chatMessCount);
-		});
-
-		const messCollectionQuery = query(collection(db, `users/${user.uid}/messages`));
-		const unsubscribeMess = onSnapshot(messCollectionQuery, (messSnapshot) => {
-			let promises: Promise<DocumentData>[] = [];
-			messSnapshot.forEach((messDoc) => {
-				const dataCollection = query(
-					collection(messDoc.ref, "data"),
-					where("checked", "==", false)
-				);
-				const uncheckedMessDocs = getDocs(dataCollection);
-				promises.push(uncheckedMessDocs);
-			});
-
-			Promise.all(promises).then((snapshots) => {
-				let count = 0;
-				snapshots.forEach((uncheckMessSnapshot) => {
-					count += uncheckMessSnapshot.size;
-				});
-				setNewMessages(count);
-			});
-		});
-
-		return () => {
-			unsubscribeFriend();
-			unsubscribeMess();
-			unsubscribeChat();
-		};
+		getMessagesNotification(user.uid, setNewMessages);
 	}, [user]);
 
 	const disabledStatus = useMemo(() => {
@@ -74,10 +34,14 @@ const Notification: FC = () => {
 	}, [newMessages, friendsRequests, newChatMess]);
 
 	const onClickHandler = () => {
-		if (!disabledStatus) {
-			setIsShow((prev) => !prev);
-		}
+		if (!disabledStatus) setIsShow((prev) => !prev);
 	};
+
+	const notifications = [
+		{ title: "Friend requests", value: friendsRequests, href: "/friends" },
+		{ title: "New messages", value: newMessages, href: "/messages" },
+		{ title: "Сhat replies", value: newChatMess, href: "#" },
+	];
 
 	return (
 		<>
@@ -94,27 +58,18 @@ const Notification: FC = () => {
 					</button>
 
 					<MiniModal addClass={classes.modal} isShow={isShow}>
-						{friendsRequests > 0 && (
-							<li>
-								<Link href="/friends">
-									Friend requests: <span className={classes.count}>{friendsRequests}</span>
-								</Link>
-							</li>
-						)}
-						{newMessages > 0 && !pathname.includes("messages") && (
-							<li>
-								<Link href="/messages">
-									New messages: <span className={classes.count}>{newMessages}</span>
-								</Link>
-							</li>
-						)}
-						{newChatMess > 0 && (
-							<li>
-								<Link href="#">
-									Сhat replies: <span className={classes.count}>{newChatMess}</span>
-								</Link>
-							</li>
-						)}
+						{notifications.map(({ title, value, href }) => {
+							if (!href.includes("messages") && pathname.includes("messages")) return;
+							if (!!value) {
+								return (
+									<li>
+										<Link href={href}>
+											{title}: <span className={classes.count}>{value}</span>
+										</Link>
+									</li>
+								);
+							}
+						})}
 					</MiniModal>
 				</div>
 			)}

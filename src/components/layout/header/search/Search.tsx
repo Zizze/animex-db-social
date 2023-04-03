@@ -1,29 +1,27 @@
-import { ChangeEvent, FC, MouseEvent, useEffect, useState } from "react";
+import { FC, useEffect, useRef, FormEvent } from "react";
 import classes from "./Search.module.scss";
 import { FiSearch } from "react-icons/fi";
 import cn from "classnames";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { useAppSelector } from "@/hooks/useAppSelector";
 import { searchValueData, changeHomeMode } from "@Store/animeJikan/animeJikanSlice";
 import { useRouter } from "next/router";
+import { useTextField } from "@/hooks/useTextField";
 
 const Search: FC = () => {
 	const router = useRouter();
-	const { search } = useAppSelector((state) => state.animeJikan);
+	const searchRef = useRef<HTMLFormElement>(null);
 	const dispatch = useAppDispatch();
 
-	const [validSearch, setValidSearch] = useState(true);
-	const [value, setValue] = useState<string>(search);
+	const { value, onChange, error, setFirstChange } = useTextField({
+		minLength: 3,
+		allowWhitespace: true,
+	});
 
-	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-		setValue(e.target.value);
-		setValidSearch(true);
-	};
+	const onSubmitHandler = async (e: FormEvent) => {
+		e.preventDefault();
 
-	const onClickHandler = async (e: MouseEvent<HTMLButtonElement>) => {
-		if (value.trim().length <= 3) {
-			setValidSearch(false);
-			return;
+		if (error === null || error.length) {
+			return setFirstChange(true);
 		} else {
 			await router.push("/");
 			dispatch(changeHomeMode("Home"));
@@ -31,27 +29,37 @@ const Search: FC = () => {
 		}
 	};
 
-	// useEffect(() => {
+	const handleClick = (e: Event) => {
+		if (!error || !error.length) return;
+		if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+			setFirstChange(false);
+		}
+	};
 
-	// }, [value]);
+	useEffect(() => {
+		document.addEventListener("click", handleClick);
+		return () => {
+			document.removeEventListener("click", handleClick);
+		};
+	}, [error]);
 
-	const classNames = cn(classes.searchValid, !validSearch && classes.on);
+	const classNames = cn(classes.searchValid, error?.length && classes.on);
 
 	return (
 		<div className={classes.container}>
-			<div className={classes.search}>
-				<button className={classes.btn} onClick={onClickHandler}>
-					<FiSearch className={cn(!validSearch && classes.validIco)} />
+			<form onSubmit={onSubmitHandler} className={classes.search} ref={searchRef}>
+				<button className={classes.btn} type="submit">
+					<FiSearch className={cn(error?.length && classes.validIco)} />
 				</button>
 				<input
-					className={validSearch ? classes.valid : classes.notValid}
+					className={!error?.length ? classes.valid : classes.notValid}
 					type="text"
 					value={value}
 					placeholder="Anime, actions..."
-					onChange={onChangeHandler}
+					onChange={onChange}
 				/>
-			</div>
-			<span className={classNames}>It's too short a name.</span>
+			</form>
+			<span className={classNames}>{error}</span>
 		</div>
 	);
 };

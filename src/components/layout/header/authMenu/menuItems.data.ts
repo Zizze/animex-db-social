@@ -1,10 +1,10 @@
-export interface IUserMenu {
+export interface IMenuItems {
 	name: string;
 	href?: string;
 	image?: "string" | React.ReactNode;
 }
 
-export const userMenu: IUserMenu[] = [
+export const menuItems: IMenuItems[] = [
 	{
 		name: "My profile",
 		href: "/profile",
