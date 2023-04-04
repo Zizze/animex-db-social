@@ -9,6 +9,9 @@ import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import Statistics from "./statistics/Statistics";
 import { useCollectionRealtime } from "@/hooks/firebase/useCollectionRealtime";
 import { popMessage } from "@/utils/popMessage/popMessage";
+import { userNavData } from "@Components/layout/sidebar/navigation/navList.data";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { changeHomeMode } from "@Store/animeJikan/animeJikanSlice";
 
 const PAGE_LIMIT = 15;
 
@@ -17,6 +20,7 @@ const UserList: FC = () => {
 	const listName = router.query.status;
 	const { popError, ctxMessage } = popMessage();
 	const { user } = useAuthContext();
+	const dispatch = useAppDispatch();
 
 	const {
 		data: userAnimeData,
@@ -34,6 +38,14 @@ const UserList: FC = () => {
 		},
 		!user?.uid
 	);
+
+	useEffect(() => {
+		userNavData.forEach((userItem) => {
+			if (listName === userItem.name.toLowerCase()) {
+				dispatch(changeHomeMode(userItem.name));
+			}
+		});
+	}, []);
 
 	useEffect(() => {
 		if (error) popError("List loading error.");
