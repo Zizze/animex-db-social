@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { FC, MouseEvent, useEffect, useState } from "react";
+import { FC, MouseEvent, useEffect, useState, useMemo } from "react";
 import classes from "../Navigation.module.scss";
-import { INavList } from "../List.data";
+import { INavList } from "../navList.data";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import cn from "classnames";
 import { changeHomeMode } from "@Store/animeJikan/animeJikanSlice";
@@ -9,6 +9,7 @@ import { useAuthContext } from "@/context/useAuthContext";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "@Project/firebase";
 import { IAnimeFirebase } from "@/types/types";
+import { useCollectionSize } from "@/hooks/firebase/useCollectionSize";
 
 interface IListProps {
 	item: INavList;
@@ -16,36 +17,27 @@ interface IListProps {
 	animeFirebase?: IAnimeFirebase[];
 }
 
-const CenterList: FC<IListProps> = ({ item, listName }) => {
+const UserNav: FC<IListProps> = ({ item, listName }) => {
 	const { user } = useAuthContext();
-	const { href, name, img } = item;
 	const dispatch = useAppDispatch();
-	const active = cn(classes.list, listName === name && "active-nav");
-
 	const [animeFirebase, setAnimeFirebase] = useState<number>(0);
+	const { href, name, img } = item;
 
 	useEffect(() => {
 		if (!user) return;
-
-		const q = query(
+		const userListRef = query(
 			collection(db, `users/${user.uid}/anime`),
 			where("animeState", "==", name.toLowerCase())
 		);
-
-		const unsubscribe = onSnapshot(q, (querySnapshot) => {
-			setAnimeFirebase(querySnapshot.docs.length);
+		const unsubscribe = onSnapshot(userListRef, (querySnapshot) => {
+			setAnimeFirebase(querySnapshot.size);
 		});
-
 		return () => unsubscribe();
 	}, [user]);
 
-	const onClickHandler = (e: MouseEvent) => {
-		e.stopPropagation();
-		dispatch(changeHomeMode(name));
-	};
-
+	const active = cn(classes.list, listName === name && "active-nav");
 	return (
-		<li className={`${active}`} key={name} onClick={(e) => onClickHandler(e)}>
+		<li className={`${active}`} key={name} onClick={() => dispatch(changeHomeMode(name))}>
 			<Link href={href} className={classes.linkblock}>
 				<div className={classes.linkInfo}>
 					{img}
@@ -57,4 +49,4 @@ const CenterList: FC<IListProps> = ({ item, listName }) => {
 	);
 };
 
-export default CenterList;
+export default UserNav;

@@ -6,7 +6,7 @@ import classes from "./Logo.module.scss";
 const Logo: FC = () => {
 	return (
 		<div className={classes["logo-block"]}>
-			<Image src={mainLogo} alt="main logo" width={30} height={30} />
+			<Image src={mainLogo} alt="AnimeX logo" width={30} height={30} />
 			<span>AnimeX</span>
 		</div>
 	);

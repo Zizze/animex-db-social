@@ -1,7 +1,6 @@
 import {
 	RiHome5Fill,
 	RiPieChart2Fill,
-	RiPauseCircleFill,
 	RiDraftFill,
 	RiFileCloudFill,
 	RiFileForbidFill,
@@ -9,15 +8,7 @@ import {
 } from "react-icons/ri";
 import { BsFillQuestionDiamondFill } from "react-icons/bs";
 
-export interface INavList {
-	id: Number;
-	name: string;
-	href: string;
-	img: "string" | React.ReactNode;
-	count?: number;
-}
-
-export const dataListTop: INavList[] = [
+export const mainNavData = [
 	{
 		id: 1,
 		name: "Home",
@@ -38,7 +29,7 @@ export const dataListTop: INavList[] = [
 	},
 ];
 
-export const dataListCenter = [
+export const userNavData = [
 	{
 		id: 1,
 		name: "Completed",
@@ -64,3 +55,11 @@ export const dataListCenter = [
 		href: "/my-list/dropped",
 	},
 ];
+
+export interface INavList {
+	id: Number;
+	name: string;
+	href: string;
+	img: "string" | React.ReactNode;
+	count?: number;
+}

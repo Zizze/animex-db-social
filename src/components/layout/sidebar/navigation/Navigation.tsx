@@ -1,27 +1,39 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import classes from "./Navigation.module.scss";
-import { dataListTop, dataListCenter } from "./List.data";
-import TopList from "./topList/TopList";
-import CenterList from "./centerList/CenterList";
+import { mainNavData, userNavData } from "./navList.data";
+import MainNav from "./mainNav/MainNav";
+import UserNav from "./userNav/UserNav";
 import { useAppSelector } from "@/hooks/useAppSelector";
-import { useAuthContext } from "@/context/useAuthContext";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useRouter } from "next/router";
+import { changeHomeMode } from "@Store/animeJikan/animeJikanSlice";
 
 const Navigation: FC = () => {
+	const router = useRouter();
+	const currentPath = router.asPath;
+	const dispatch = useAppDispatch();
 	const { mainHomeMode } = useAppSelector((state) => state.animeJikan);
-	const { user } = useAuthContext();
+
+	useEffect(() => {
+		mainNavData.forEach((mainItem) => {
+			if (currentPath === mainItem.href) {
+				dispatch(changeHomeMode(mainItem.name));
+			}
+		});
+	}, []);
 
 	return (
 		<nav className={classes.navigation}>
 			<ul>
 				<>
-					{dataListTop.map((item) => {
-						return <TopList item={item} key={item.name} listName={mainHomeMode} />;
+					{mainNavData.map((item) => {
+						return <MainNav item={item} key={item.name} listName={mainHomeMode} />;
 					})}
 
 					<div className={classes.line} />
 
-					{dataListCenter.map((item) => {
-						return <CenterList item={item} key={item.name} listName={mainHomeMode} />;
+					{userNavData.map((item) => {
+						return <UserNav item={item} key={item.name} listName={mainHomeMode} />;
 					})}
 
 					<div className={"menuIndicator"} />

@@ -24,8 +24,8 @@
 		color: $light-blue;
 		width: 50px;
 		z-index: 13;
-		right: -10px;
-		top: 15px;
+		right: -5px;
+		top: 5px;
 
 		display: flex;
 		flex-direction: column;
@@ -34,12 +34,13 @@
 		gap: 10px;
 
 		font-size: 2rem;
-		opacity: 0.6;
+		opacity: 0.8;
 		transition: all 0.7s ease-in-out, opacity 0.3s ease-in-out;
 
 		.arrow {
 			display: inline-block;
 			line-height: 0;
+			font-size: 3.5rem;
 			-webkit-animation: run 1s ease-in-out infinite both;
 			animation: run 1s ease-in-out infinite both;
 		}
@@ -64,7 +65,7 @@
 		transform: translateX(0);
 	}
 	50% {
-		transform: translateX(-15%);
+		transform: translateX(-5%);
 	}
 	100% {
 		transform: translateX(0);
@@ -75,7 +76,7 @@
 		transform: translateX(0);
 	}
 	50% {
-		transform: translateX(-15%);
+		transform: translateX(-5%);
 	}
 	100% {
 		transform: translateX(0);

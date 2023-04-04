@@ -62,7 +62,7 @@ const Notification: FC = () => {
 							if (href.includes("messages") && pathname.includes("messages")) return;
 							if (!!value) {
 								return (
-									<li>
+									<li key={title}>
 										<Link href={href}>
 											{title}: <span className={classes.count}>{value}</span>
 										</Link>
