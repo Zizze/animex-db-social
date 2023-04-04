@@ -53,7 +53,8 @@ const Home: FC = () => {
 			{isLoading && <Loading />}
 			<div className={classes.container} ref={topRef}>
 				<Categories setIsShow={setIsShow} />
-				<Items allAnimeJikan={data?.data} />
+				{error && <p className={classes.errLoading}>Error loading anime.</p>}
+				{!error && <Items allAnimeJikan={data?.data} />}
 				<Chat />
 			</div>
 			<Pagination

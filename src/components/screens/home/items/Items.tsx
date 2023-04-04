@@ -1,4 +1,4 @@
-import React, { FC, RefObject } from "react";
+import React, { FC } from "react";
 import classes from "./Items.module.scss";
 import Item from "./item/Item";
 import { IDataAnime } from "@Store/animeJikan/IAnime.interface";
@@ -13,6 +13,7 @@ const Items: FC<Iprops> = ({ allAnimeJikan, animeFirebase }) => {
 	return (
 		<div className={classes.wrapper}>
 			<ul className={classes.all}>
+				{!allAnimeJikan?.length && <p className={classes.nothing}>Nothing found.</p>}
 				{allAnimeJikan &&
 					allAnimeJikan?.map((anime) => {
 						return <Item anime={anime} key={anime.mal_id} />;

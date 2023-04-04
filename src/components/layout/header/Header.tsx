@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import UserControl from "./authMenu/UserControl";
+import UserControl from "./userControl/UserControl";
 import classes from "./Header.module.scss";
 import Notification from "./notification/Notification";
 import Search from "./search/Search";
@@ -14,7 +14,7 @@ const Header: FC = () => {
 		<header className={classes.header} id="header">
 			<Search />
 			<Notification />
-			{user && <UserControl setActiveSetings={setActiveSetings} />}
+			<UserControl setActiveSetings={setActiveSetings} />
 			{activeSetings && user && <UserSettings setActiveSetings={setActiveSetings} />}
 		</header>
 	);

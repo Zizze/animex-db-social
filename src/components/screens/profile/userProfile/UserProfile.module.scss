@@ -1,6 +1,7 @@
 @import "@Assets/styles/variables";
 
 .profile {
+	margin: 10px 0px;
 	border-radius: 10px;
 	border: 1px solid $black-main;
 	display: flex;
@@ -9,11 +10,12 @@
 	padding: 50px 0;
 	font-weight: 400;
 	position: relative;
+
 	.role,
 	.hasBan {
+		z-index: 2;
 		position: absolute;
 		top: -10px;
-		z-index: 2;
 		left: 50%;
 		transform: translateX(-50%);
 		font-size: 1.6rem;
