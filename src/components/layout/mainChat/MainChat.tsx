@@ -1,5 +1,5 @@
-import { FC, useState, useEffect, MouseEvent, useCallback } from "react";
-import classes from "./Chat.module.scss";
+import { FC, useState, useEffect, useCallback } from "react";
+import classes from "./MainChat.module.scss";
 import Message from "./message/Message";
 import { IMainChatFirebase } from "@/types/types";
 
@@ -20,7 +20,7 @@ import { popMessage } from "@/utils/popMessage/popMessage";
 
 const CHAT_LIMIT = 10;
 
-const Chat: FC = () => {
+const MainChat: FC = () => {
 	const { user } = useAuthContext();
 	const { popError, popSuccess, ctxMessage } = popMessage();
 	const [fullscreenActive, setFullscreenActive] = useState(false);
@@ -169,4 +169,4 @@ const Chat: FC = () => {
 	);
 };
 
-export default Chat;
+export default MainChat;

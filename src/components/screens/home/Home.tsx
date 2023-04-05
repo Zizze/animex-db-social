@@ -1,5 +1,4 @@
 import { FC, useRef } from "react";
-
 import Categories from "./categories/Categories";
 import Items from "./items/Items";
 import { useGetAnimeJikanQuery } from "@Store/animeJikan/animeJikan.api";
@@ -8,10 +7,8 @@ import Pagination from "@Components/UI/pagination/Pagination";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { changePageHome } from "@Store/animeJikan/animeJikanSlice";
-
 import { useOutside } from "@/hooks/useOutside";
 import Loading from "@Components/UI/loading/Loading";
-import Chat from "./chat/Chat";
 import GenreThemeModal from "./genreThemeModal/GenreThemeModal";
 
 const Home: FC = () => {
@@ -55,7 +52,6 @@ const Home: FC = () => {
 				<Categories setIsShow={setIsShow} />
 				{error && <p className={classes.errLoading}>Error loading anime.</p>}
 				{!error && <Items allAnimeJikan={data?.data} />}
-				<Chat />
 			</div>
 			<Pagination
 				onChangePage={onChangePage}
