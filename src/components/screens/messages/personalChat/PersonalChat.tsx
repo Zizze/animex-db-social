@@ -5,7 +5,7 @@ import { useAuthContext } from "@/context/useAuthContext";
 import { IMessageFirebase, IUserFirebase, IFriendFirebase } from "@/types/types";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import TextAreaForm from "@Components/UI/textareaForm/TextAreaForm";
-import { dataSettMess } from "@Components/layout/header/userSettings/userSettings.data";
+import { messagesSettingsOptions } from "@Components/layout/header/userSettings/settingsOptions.data";
 import { useCollectionRealtime } from "@/hooks/firebase/useCollectionRealtime";
 import { useRealtimeDoc } from "@/hooks/firebase/useRealtimeDoc";
 import { sendPersonalMessage } from "@/services/firebase/sendPersonalMessage";
@@ -89,8 +89,8 @@ const PersonalChat: FC<{ selectedUser: string }> = ({ selectedUser }) => {
 				)}
 			</ul>
 			{selectedUser.length ? (
-				selectedUserSettings?.messages === dataSettMess[0] ||
-				(selectedUserSettings?.messages === dataSettMess[2] && friendStatus) ||
+				selectedUserSettings?.messages === messagesSettingsOptions[0] ||
+				(selectedUserSettings?.messages === messagesSettingsOptions[2] && friendStatus) ||
 				!selectedUserSettings ? (
 					<TextAreaForm
 						onSubmitHandler={onSubmitHandler}
@@ -101,7 +101,7 @@ const PersonalChat: FC<{ selectedUser: string }> = ({ selectedUser }) => {
 				) : (
 					selectedUser !== "AnimeX" && (
 						<p className={classes.notSelected}>
-							{selectedUserSettings?.messages === dataSettMess[2]
+							{selectedUserSettings?.messages === messagesSettingsOptions[2]
 								? "Only friends can write to this user."
 								: "This user has closed his mail from everyone."}
 						</p>

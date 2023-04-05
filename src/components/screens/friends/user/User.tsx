@@ -1,17 +1,17 @@
 import { IFriendFirebase, IUserFirebase } from "@/types/types";
 import Image from "next/image";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import classes from "./User.module.scss";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import { AiOutlineUserAdd, AiOutlineUserDelete } from "react-icons/ai";
 import { MdPersonAdd, MdPersonAddDisabled } from "react-icons/md";
-import { doc, setDoc, deleteDoc, onSnapshot } from "firebase/firestore";
+import { doc, setDoc, deleteDoc } from "firebase/firestore";
 import { db } from "@Project/firebase";
 import { useAuthContext } from "@/context/useAuthContext";
 import defaulImage from "@Public/testava.jpg";
-import { dataSettFriend } from "../../../layout/header/userSettings/userSettings.data";
 import Link from "next/link";
 import { useRealtimeDoc } from "@/hooks/firebase/useRealtimeDoc";
+import { friendsSettingsOptions } from "@Components/layout/header/userSettings/settingsOptions.data";
 
 interface IProps {
 	currUser: IUserFirebase;
@@ -88,10 +88,12 @@ const User: FC<IProps> = ({ currUser, requestsPage = false, nameCategory }) => {
 						<div className={classes.btns}>
 							{friendInfo === null && (
 								<DefaultBtn
-									disabled={settings?.friends ? settings?.friends !== dataSettFriend[0] : false}
+									disabled={
+										settings?.friends ? settings?.friends !== friendsSettingsOptions[0] : false
+									}
 									classMode="clear"
 									title={
-										settings?.friends && settings?.friends !== dataSettFriend[0]
+										settings?.friends && settings?.friends !== friendsSettingsOptions[0]
 											? "The user has blocked adding to friends."
 											: "Add to friends"
 									}

@@ -34,6 +34,7 @@ export interface IUserSettingsFirebase {
 	messages: string | boolean;
 	friends: string | boolean;
 	profile: string | boolean;
+	chat: string | boolean;
 }
 
 export interface IUserBannedFirebase {

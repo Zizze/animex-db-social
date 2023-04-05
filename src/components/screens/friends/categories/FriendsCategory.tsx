@@ -1,7 +1,6 @@
-import { FC, useState, useEffect } from "react";
+import { FC } from "react";
 import classes from "./FriendsCategory.module.scss";
 import { useAuthContext } from "@/context/useAuthContext";
-import { DocumentData } from "firebase/firestore";
 import { IUserFirebase } from "@/types/types";
 import User from "../user/User";
 import Loading from "@Components/UI/loading/Loading";

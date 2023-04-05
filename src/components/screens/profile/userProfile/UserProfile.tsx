@@ -13,10 +13,10 @@ import Image from "next/image";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import { useAuthContext } from "@/context/useAuthContext";
 import {
-	dataSettFriend,
-	dataSettMess,
-	dataSettProfileVisible,
-} from "@Components/layout/header/userSettings/userSettings.data";
+	friendsSettingsOptions,
+	messagesSettingsOptions,
+	profileSettingsOptions,
+} from "@Components/layout/header/userSettings/settingsOptions.data";
 import Statistics from "./statistics/Statistics";
 import Messages from "./message/Messages";
 import { userAccessInString } from "@/utils/userAccessInString";
@@ -78,10 +78,10 @@ const UserProfile: FC = () => {
 	const accessUserSettings = useMemo(() => {
 		if (!userProfile || !userProfile[0]) return;
 		const notConfigured = !userProfile[0].settings?.profile;
-		const openProfile = userProfile[0].settings?.profile === dataSettProfileVisible[0];
+		const openProfile = userProfile[0].settings?.profile === profileSettingsOptions[0];
 		const myProfile = user?.uid === userProfile[0].id;
 		const onlyFriends =
-			friendData?.friend && userProfile[0].settings?.profile === dataSettProfileVisible[2];
+			friendData?.friend && userProfile[0].settings?.profile === profileSettingsOptions[2];
 
 		return notConfigured || myProfile || openProfile || onlyFriends;
 	}, [userProfile, user?.uid]);
@@ -128,9 +128,9 @@ const UserProfile: FC = () => {
 								<Statistics userId={userProfile[0].id || ""} />
 							) : (
 								<p className={classes.accessFail}>
-									{userProfile[0].settings?.profile === dataSettProfileVisible[1] &&
+									{userProfile[0].settings?.profile === profileSettingsOptions[1] &&
 										"The user has closed access to all users."}
-									{userProfile[0].settings?.profile === dataSettProfileVisible[2] &&
+									{userProfile[0].settings?.profile === profileSettingsOptions[2] &&
 										"Viewing the profile is available only to the user's friends."}
 								</p>
 							)}
@@ -151,13 +151,13 @@ const UserProfile: FC = () => {
 										<DefaultBtn
 											disabled={
 												userProfile[0].settings?.friends
-													? userProfile[0]?.settings?.friends !== dataSettFriend[0]
+													? userProfile[0]?.settings?.friends !== friendsSettingsOptions[0]
 													: false
 											}
 											classMode="clear"
 											title={
 												userProfile[0].settings?.friends &&
-												userProfile[0].settings?.friends !== dataSettFriend[0]
+												userProfile[0].settings?.friends !== friendsSettingsOptions[0]
 													? "The user has blocked adding to friends."
 													: "Add to friends"
 											}
@@ -183,16 +183,17 @@ const UserProfile: FC = () => {
 									<DefaultBtn
 										classMode="clear"
 										title={
-											userProfile[0].settings?.messages === dataSettMess[0]
+											userProfile[0].settings?.messages === messagesSettingsOptions[0]
 												? "Send message"
-												: userProfile[0].settings?.messages === dataSettMess[1]
+												: userProfile[0].settings?.messages === messagesSettingsOptions[1]
 												? "The user has disabled sending messages."
 												: "Send messages only to friends"
 										}
 										onClickHandler={() => setIsActiveMess(true)}
 										disabled={
-											userProfile[0].settings?.messages === dataSettMess[1] ||
-											(userProfile[0].settings?.messages === dataSettMess[2] && !friendData?.friend)
+											userProfile[0].settings?.messages === messagesSettingsOptions[1] ||
+											(userProfile[0].settings?.messages === messagesSettingsOptions[2] &&
+												!friendData?.friend)
 										}
 									>
 										<AiOutlineSend />
@@ -202,8 +203,9 @@ const UserProfile: FC = () => {
 						</div>
 					</div>
 					{(!userProfile[0].settings?.messages ||
-						userProfile[0].settings?.messages === dataSettMess[0] ||
-						(friendData?.friend && userProfile[0].settings?.messages === dataSettMess[2])) && (
+						userProfile[0].settings?.messages === messagesSettingsOptions[0] ||
+						(friendData?.friend &&
+							userProfile[0].settings?.messages === messagesSettingsOptions[2])) && (
 						<Messages
 							isActiveMess={isActiveMess}
 							setIsActiveMess={setIsActiveMess}

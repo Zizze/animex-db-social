@@ -16,7 +16,7 @@ import AllUsers from "./categories/AllUsers";
 import { useCollectionSize } from "@/hooks/firebase/useCollectionSize";
 import { searchUsers } from "@/services/firebase/searchUsers";
 import { enterClick } from "@/utils/enterClick";
-import { useTextField } from "../../../hooks/useTextField";
+import { useTextField } from "@/hooks/useTextField";
 
 const Friends: FC = () => {
 	const searchRef = useRef<HTMLFormElement>(null);
@@ -26,7 +26,6 @@ const Friends: FC = () => {
 
 	const {
 		value: searchText,
-		setValue,
 		onChange,
 		error,
 	} = useTextField({
