@@ -12,7 +12,7 @@ interface IProps {
 }
 
 const MenuItem: FC<IProps> = ({ item, setActiveSetings, setIsShowModal }) => {
-	const { user } = useAuthContext();
+	const { user, setUser } = useAuthContext();
 	const auth = getAuth();
 
 	const onClickHandler = (e: MouseEvent) => {
@@ -20,10 +20,13 @@ const MenuItem: FC<IProps> = ({ item, setActiveSetings, setIsShowModal }) => {
 		switch (item.name) {
 			case "Logout":
 				signOut(auth);
+				setUser(null);
 				setIsShowModal(false);
+				return;
 			case "Settings":
 				setActiveSetings(true);
 				setIsShowModal(false);
+				return;
 		}
 	};
 

@@ -3,7 +3,7 @@ import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import ModalWrapper from "@Components/UI/modal/ModalWrapper";
 import { db } from "@Project/firebase";
 import { doc, updateDoc } from "firebase/firestore";
-import { FC, Dispatch, SetStateAction, useState, FormEvent, useEffect } from "react";
+import { FC, Dispatch, SetStateAction, useState, FormEvent } from "react";
 import {
 	friendsSettingsOptions,
 	messagesSettingsOptions,

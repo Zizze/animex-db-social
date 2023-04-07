@@ -1,8 +1,8 @@
-import Error from "@Components/screens/error/Error";
+import Error404 from "@Components/screens/error-rights/error404/Error404";
 import { NextPage } from "next";
 
-const ErrorPage: NextPage = () => {
-	return <Error />;
+const Error404Page: NextPage = () => {
+	return <Error404 />;
 };
 
-export default ErrorPage;
+export default Error404Page;

@@ -73,7 +73,7 @@ const Reauthorization: FC<IReauthorization> = ({ setIsOpemConfirmModal, isOpemCo
 								<DefaultBtn classMode="main" type="submit">
 									Confirm
 								</DefaultBtn>
-								<DefaultBtn onClickHandler={() => router.push(`/profile/${user?.uid}`)}>
+								<DefaultBtn onClickHandler={() => router.push(`/profile/${user?.displayName}`)}>
 									Back
 								</DefaultBtn>
 							</div>

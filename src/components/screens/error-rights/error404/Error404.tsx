@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from "react";
 import errorImage from "@Public/error.png";
 import Image from "next/image";
-import classes from "./Error.module.scss";
+import classes from "./Error404.module.scss";
 import { useRouter } from "next/router";
 
 const REDIRECT_TIME = 10;
 
-const Error: FC = () => {
+const Error404: FC = () => {
 	const router = useRouter();
 	const [seconds, setSeconds] = useState(REDIRECT_TIME);
 
@@ -26,7 +26,7 @@ const Error: FC = () => {
 		<div className={classes.wrapper}>
 			<div className={classes.container}>
 				<h4>Error! Page not found, please try again.</h4>
-				<Image src={errorImage} width={500} height={500} alt="Error image" />
+				<Image src={errorImage} width={500} height={500} priority alt="Error image" />
 				<p>
 					Redirect to homepage after <span>{seconds}</span> seconds.
 				</p>
@@ -35,4 +35,4 @@ const Error: FC = () => {
 	);
 };
 
-export default Error;
+export default Error404;
