@@ -58,7 +58,7 @@ const UserList: FC = () => {
 			{!isLoading && <Statistics />}
 			<div className={classes.container}>
 				{userAnimeData && <Items animeFirebase={userAnimeData} />}
-				{!isLoading && !userAnimeData?.length && (
+				{!isLoading && !userAnimeData?.length && !error && (
 					<p className={classes.emptyList}>Nothing's been added yet.</p>
 				)}
 

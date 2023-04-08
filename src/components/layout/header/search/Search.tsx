@@ -6,13 +6,14 @@ import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { searchValueData, changeHomeMode } from "@Store/animeJikan/animeJikanSlice";
 import { useRouter } from "next/router";
 import { useTextField } from "@/hooks/useTextField";
+import { MdClose } from "react-icons/md";
 
 const Search: FC = () => {
 	const router = useRouter();
 	const searchRef = useRef<HTMLFormElement>(null);
 	const dispatch = useAppDispatch();
 
-	const { value, onChange, error, setFirstChange } = useTextField({
+	const { value, onChange, error, setFirstChange, setValue } = useTextField({
 		minLength: 3,
 		allowWhitespace: true,
 	});
@@ -43,6 +44,11 @@ const Search: FC = () => {
 		};
 	}, [error]);
 
+	const onClearSearch = () => {
+		setValue("");
+		setFirstChange(false);
+	};
+
 	const classNames = cn(classes.searchValid, error?.length && classes.on);
 
 	return (
@@ -58,6 +64,12 @@ const Search: FC = () => {
 					placeholder="Anime, actions..."
 					onChange={onChange}
 				/>
+				<span
+					className={cn(classes.ico, value.length > 0 && classes.active)}
+					onClick={onClearSearch}
+				>
+					<MdClose />
+				</span>
 			</form>
 			<span className={classNames}>{error}</span>
 		</div>

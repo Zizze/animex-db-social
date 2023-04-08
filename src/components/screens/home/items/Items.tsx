@@ -13,7 +13,9 @@ const Items: FC<Iprops> = ({ allAnimeJikan, animeFirebase }) => {
 	return (
 		<div className={classes.wrapper}>
 			<ul className={classes.all}>
-				{!allAnimeJikan?.length && <p className={classes.nothing}>Nothing found.</p>}
+				{allAnimeJikan && !allAnimeJikan?.length && (
+					<p className={classes.nothing}>Nothing found.</p>
+				)}
 				{allAnimeJikan &&
 					allAnimeJikan?.map((anime) => {
 						return <Item anime={anime} key={anime.mal_id} />;
