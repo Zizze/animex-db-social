@@ -60,7 +60,7 @@ const TextAreaForm: FC<IProps> = ({
 
 		if (minLenght > 0) {
 			const minLenghtCheck =
-				e.target.value.length < minLenght && `Minimum field length ${minLenght} characters.`;
+				e.target.value.trim().length < minLenght && `Minimum field length ${minLenght} characters.`;
 			setMessErr(minLenghtCheck);
 		}
 	};

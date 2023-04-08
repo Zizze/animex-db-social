@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 export const useCollectionSize = (
 	path: string,
 	group = false,
-	queryParams: IQueryOptions
+	queryParams?: IQueryOptions
 ): number => {
 	const [size, setSize] = useState(0);
 
