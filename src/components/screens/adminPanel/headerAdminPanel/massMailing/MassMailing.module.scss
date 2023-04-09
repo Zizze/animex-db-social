@@ -35,4 +35,19 @@
 		border: 1px solid $black-main;
 		border-radius: 5px;
 	}
+
+	@media screen and (max-width: 420px) {
+		.textareaForm {
+			textarea {
+				padding-right: 85px !important;
+			}
+			.textareaBtns {
+				right: 0;
+				button {
+					font-size: 3rem !important ;
+					margin-right: 10px !important;
+				}
+			}
+		}
+	}
 }

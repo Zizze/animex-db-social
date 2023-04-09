@@ -56,11 +56,12 @@ const MassMailing: FC<IProps> = ({ setIsVisibleMassMailing, isVisibleMassMailing
 						{!validTxt && <p className={classes.notValid}>Min message lenght {MIN_MESS_LENGHT}</p>}
 						<TextAreaForm
 							minRows={1}
-							maxRows={10}
+							maxRows={4}
 							text={messTxt}
 							setText={setMessTxt}
 							placeholder="Your message..."
 							onSubmitHandler={onSubmitMassMailing}
+							classes={{ cnForm: classes.textareaForm, cnBtns: classes.textareaBtns }}
 						/>
 						<CloseModal
 							className={classes.closeBtn}

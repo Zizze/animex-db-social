@@ -12,6 +12,7 @@
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	transition: all 1s ease-in-out;
+	z-index: 9;
 
 	.bottom {
 		margin: 0 auto;
@@ -51,13 +52,13 @@
 	}
 	&.hiden {
 		margin-left: -270px;
+		z-index: 0;
 
 		.hideBtn {
 			right: -40px;
 			transform: scaleX(-1);
 		}
 	}
-	z-index: 9;
 }
 
 @-webkit-keyframes run {

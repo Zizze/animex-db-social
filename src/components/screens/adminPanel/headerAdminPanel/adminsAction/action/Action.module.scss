@@ -103,4 +103,25 @@
 			transition: opacity 0.3s ease-in-out, max-height 0.2s ease-in-out, padding 0.3s ease-in-out;
 		}
 	}
+
+	@media screen and (max-width: 560px) {
+		.shortDescr {
+			.userLink {
+				margin-top: 5px;
+			}
+		}
+	}
+
+	.messageWrapper {
+		div {
+			button {
+				margin-left: 5px;
+				font-size: 1.3rem;
+			}
+			p {
+				font-size: 1.4rem;
+				font-weight: 700;
+			}
+		}
+	}
 }

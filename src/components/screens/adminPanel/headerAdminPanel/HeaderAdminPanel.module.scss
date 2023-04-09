@@ -15,7 +15,6 @@
 		color: $main-bg;
 
 		button {
-			z-index: 2;
 			max-width: calc((100% / 2) - 2px);
 			max-height: calc((100% / 2) - 2px);
 			width: 100%;
@@ -44,7 +43,6 @@
 		flex-direction: column;
 		gap: 4px;
 		width: 200px;
-		z-index: 2;
 
 		.adminCardWrapper {
 			background-color: $light-blue;
@@ -71,6 +69,7 @@
 			.count {
 				font-weight: 700;
 				font-size: 2.5rem;
+				margin-right: 5px;
 			}
 			svg {
 				width: 35px;
@@ -79,6 +78,24 @@
 
 			&:hover {
 				transform: scale(1.05);
+			}
+		}
+	}
+
+	@media screen and (max-width: 420px) {
+		.adminCard {
+			width: 100%;
+			max-width: 120px;
+			.adminCardWrapper {
+				.name {
+					font-size: 1.5rem;
+				}
+				.count {
+					font-size: 2rem;
+				}
+				svg {
+					width: 30px;
+				}
 			}
 		}
 	}

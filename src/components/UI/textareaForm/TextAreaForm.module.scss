@@ -44,7 +44,8 @@
 		.emoji {
 			position: absolute;
 			right: 1%;
-			bottom: 110%;
+			bottom: 100%;
+			z-index: 5;
 		}
 		.btns {
 			display: flex;

@@ -119,7 +119,14 @@ const TextAreaForm: FC<IProps> = ({
 				</div>
 				{isOpenSmiles && (
 					<div className={checkedClass.cnEmoji}>
-						<EmojiPicker data={data} onEmojiSelect={onEmojiClick} previewPosition="none" />
+						<EmojiPicker
+							emojiSize={20}
+							emojiButtonSize={30}
+							dynamicWidth={true}
+							data={data}
+							onEmojiSelect={onEmojiClick}
+							previewPosition="none"
+						/>
 					</div>
 				)}
 			</div>

@@ -3,5 +3,9 @@
 	display: flex;
 	gap: 10px;
 	max-height: calc(100vh - 280px);
-	overflow: hidden;
+	height: 100%;
+
+	@media screen and (max-width: 920px) {
+		flex-wrap: wrap;
+	}
 }

@@ -8,8 +8,6 @@
 	background-color: $main-bg;
 	border-radius: 12px;
 	padding: 10px 20px;
-	margin-right: 20px;
-	margin-left: 20px;
 	position: relative;
 	&:not(:last-child) {
 		margin-bottom: 10px;
@@ -92,5 +90,39 @@
 	}
 	&:hover .userAccess {
 		opacity: 1;
+	}
+
+	@media screen and (max-width: 450px) {
+		padding: 10px;
+		.userAccess {
+			font-size: 1.2rem;
+		}
+
+		.info {
+			a {
+				.image {
+					margin-right: 5px;
+					img {
+						width: 40px;
+						height: 40px;
+						object-fit: cover;
+					}
+				}
+
+				.nameWrapper {
+					.name {
+						letter-spacing: 1px;
+					}
+				}
+			}
+		}
+		.btns {
+			button {
+				padding: 5px;
+				&:not(:last-child) {
+					margin-right: 5px;
+				}
+			}
+		}
 	}
 }

@@ -5,10 +5,10 @@ import MainAdminPanel from "./mainAdminPanel/MainAdminPanel";
 
 const AdminPanel: FC = () => {
 	return (
-		<>
+		<div className={classes.wrapper}>
 			<HeaderAdminPanel />
 			<MainAdminPanel />
-		</>
+		</div>
 	);
 };
 

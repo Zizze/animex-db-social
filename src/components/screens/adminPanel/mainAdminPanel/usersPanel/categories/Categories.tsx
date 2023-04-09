@@ -7,7 +7,8 @@ import User from "../user/User";
 import Loading from "@Components/UI/loading/Loading";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import { dataCategories } from "../usersPanel.data";
-import { useCollectionRealtime, WhereQuery } from "@/hooks/firebase/useCollectionRealtime";
+import { useCollectionRealtime } from "@/hooks/firebase/useCollectionRealtime";
+import { WhereQuery } from "@/utils/firebase/buildCollectionRef";
 
 const Categories: FC<{ categorySelected: string }> = ({ categorySelected }) => {
 	const { user } = useAuthContext();

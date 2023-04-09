@@ -50,15 +50,17 @@ const UsersPanel: FC = () => {
 						onChange={(e) => setSearchText(e.target.value)}
 						value={searchText}
 					/>
-					<DefaultBtn onKeyDown={(e) => enterClick(e, { ref: searchRef })}>
+					<DefaultBtn type="submit" onKeyDown={(e) => enterClick(e, { ref: searchRef })}>
 						<FiSearch />
 					</DefaultBtn>
 				</form>
-				<div className={classes.requests}>
-					<DefaultBtn classMode="main-simple" onClickHandler={() => setIsActiveModal(true)}>
-						Add account
-					</DefaultBtn>
-				</div>
+				<DefaultBtn
+					className={classes.addAcc}
+					classMode="main-simple"
+					onClickHandler={() => setIsActiveModal(true)}
+				>
+					Add account
+				</DefaultBtn>
 			</div>
 			<div className={classes.main}>
 				<div className={classes.categories}>
@@ -76,10 +78,13 @@ const UsersPanel: FC = () => {
 				</div>
 
 				{nameCategory === "search" ? (
-					!isLoading &&
-					users.map((user) => {
-						return <User key={user.name_lowercase} currUser={user} />;
-					})
+					!isLoading && (
+						<ul className={classes.usersList}>
+							{users.map((user) => {
+								return <User key={user.name_lowercase} currUser={user} />;
+							})}
+						</ul>
+					)
 				) : (
 					<Categories categorySelected={nameCategory} />
 				)}

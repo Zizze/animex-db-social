@@ -53,4 +53,8 @@
 		justify-content: center;
 		gap: 20px;
 	}
+
+	@media screen and (max-width: 420px) {
+		width: 100%;
+	}
 }
