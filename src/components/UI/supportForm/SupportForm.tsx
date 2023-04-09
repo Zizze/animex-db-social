@@ -110,12 +110,14 @@ const SupportForm: FC<ISupportForm> = ({ setIsActiveSupport, isActiveSupport }) 
 										className={cn(emailChekbox && classes.disabled)}
 									/>
 
-									<Checkbox
-										classnames={classes.checkbox}
-										name="Use account email"
-										onChangeHandler={onChangeCheckbox}
-										id="test"
-									/>
+									{user && (
+										<Checkbox
+											classnames={classes.checkbox}
+											name="Use account email"
+											onChangeHandler={onChangeCheckbox}
+											id="test"
+										/>
+									)}
 								</div>
 							</div>
 						</TextAreaForm>
