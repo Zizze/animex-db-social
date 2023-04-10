@@ -6,7 +6,8 @@
 	border-radius: 12px;
 	border: 2px solid $black-main;
 	margin-right: 20px;
-	width: 350px;
+	max-width: 350px;
+	width: 100%;
 	.rating {
 		p {
 			font-size: 1.8rem;
@@ -88,6 +89,32 @@
 				-webkit-animation: swing-key 1s ease-in-out infinite both;
 				animation: swing-key 1s ease-in-out infinite both;
 			}
+		}
+	}
+
+	@media screen and (max-width: 920px) {
+		margin-top: 70px;
+	}
+	@media screen and (max-width: 700px) {
+		font-size: 1.6rem;
+		margin-top: 0px;
+		max-width: 500px;
+		margin-bottom: 20px;
+		margin-left: 20px;
+
+		.name {
+			font-size: 2rem;
+		}
+		.rating {
+			p {
+				font-size: 1.3rem;
+			}
+		}
+		.poster {
+			min-width: 200px;
+		}
+		.age {
+			font-size: 1.5rem;
 		}
 	}
 }

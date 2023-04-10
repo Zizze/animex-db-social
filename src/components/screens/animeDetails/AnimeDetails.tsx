@@ -80,24 +80,26 @@ const AnimeDetails: FC<{ animeId: number }> = ({ animeId }) => {
 			{ctxMessage}
 			{anime && (
 				<div className={classes.container}>
-					<ul className={classes.category}>
-						<span className={classes.addTo}>ADD TO:</span>
-						{animeUserCategories.map((category) => (
-							<li key={category}>
-								<CategoryBtn
-									isActive={
-										category.toLowerCase() === animeInUserDb?.animeState.toLowerCase() && true
-									}
-									onClickHandler={() => onClickHandler(category)}
-								>
-									{category}
-								</CategoryBtn>
-							</li>
-						))}
-						<DefaultBtn classMode="clear" onClickHandler={onClickClearHandler}>
-							Clear
-						</DefaultBtn>
-					</ul>
+					<div className={classes.categoriesWrapper}>
+						<span className={classes.addTo}>ANIME STATUS:</span>
+						<ul className={classes.categories}>
+							{animeUserCategories.map((category) => (
+								<li key={category}>
+									<CategoryBtn
+										isActive={
+											category.toLowerCase() === animeInUserDb?.animeState.toLowerCase() && true
+										}
+										onClickHandler={() => onClickHandler(category)}
+									>
+										{category}
+									</CategoryBtn>
+								</li>
+							))}
+							<DefaultBtn classMode="clear" onClickHandler={onClickClearHandler}>
+								Clear
+							</DefaultBtn>
+						</ul>
+					</div>
 
 					<div className={classes.mainInfo}>
 						<LeftDetails anime={anime} animeInUserDb={animeInUserDb} />
