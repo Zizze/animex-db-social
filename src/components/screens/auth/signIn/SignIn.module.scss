@@ -18,6 +18,7 @@
 		padding: 25px 50px;
 		border-radius: 10px;
 		border: 1px solid $black-main;
+		z-index: 1;
 
 		.inputValid {
 			background-color: $sidebar-bg;
@@ -101,8 +102,6 @@
 
 @media (max-width: 600px) {
 	.wrapper {
-		padding: 10px;
-
 		form {
 			width: 100%;
 			height: 100vh;

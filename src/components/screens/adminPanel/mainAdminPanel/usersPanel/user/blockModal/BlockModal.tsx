@@ -73,7 +73,7 @@ const BlockModal: FC<IProps> = ({ setVisibleBlockModal, currUserId, visibleBlock
 								type="submit"
 								classMode="clear"
 								title="Chanhe profile"
-								disabled={comment.length < 10}
+								disabled={comment.trim().length < 10}
 							>
 								Ok
 							</DefaultBtn>

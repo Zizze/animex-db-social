@@ -54,7 +54,7 @@ export const useTextField = ({
 		allowEmail ? "Must be a valid email address." : ""
 	}`;
 	const errLength = `${
-		value.length < minLength ? ` Minimum field length ${minLength} characters` : ""
+		value.trim().length < minLength ? ` Minimum field length ${minLength} characters` : ""
 	}`;
 
 	return {
@@ -62,10 +62,6 @@ export const useTextField = ({
 		setValue,
 		onChange: handleChange,
 		setFirstChange,
-		error: firstChange
-			? `${(!isValid(value) && errorNumEmail) || ""}${
-					(value.length < minLength && errLength) || ""
-			  }`
-			: null,
+		error: firstChange ? `${(!isValid(value) && errorNumEmail) || ""}${errLength || ""}` : null,
 	};
 };
