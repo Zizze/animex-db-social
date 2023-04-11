@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { IUserFirebase } from "@/types/types";
+import { Timestamp } from "firebase/firestore";
 
 export async function middleware(request: NextRequest) {
 	const userCookie = request.cookies.get("userDB")?.value;
@@ -8,30 +9,33 @@ export async function middleware(request: NextRequest) {
 	const user: IUserFirebase | null = decoder ? JSON.parse(decoder) : null;
 
 	const pathRegExp =
-		/^\/(completed|admin-panel|watching|postponed|dropped|profile|profile\/[^/]*|profile-edit|messages|friends)(\/|$)/;
+		/^\/(|admin-panel|my-list|profile|profile\/[^/]*|profile-edit|messages|friends)(\/|$)/;
 
 	if (!userCookie && pathRegExp.test(request.nextUrl.pathname)) {
 		return NextResponse.redirect(new URL("/auth/signin", request.url));
 	}
 
-	if (userCookie && request.nextUrl.pathname.startsWith("/auth")) {
-		return NextResponse.redirect(new URL("/", request.url));
-	}
-
-	if (user && request.nextUrl.pathname.startsWith("/admin-panel")) {
-		if (!user.access || user.access < 1) {
+	if (user) {
+		if (request.nextUrl.pathname.startsWith("/auth")) {
+			return NextResponse.redirect(new URL("/", request.url));
+		}
+		if (request.nextUrl.pathname.startsWith("/admin-panel") && (!user.access || user.access < 1)) {
 			return NextResponse.redirect(new URL("/no-rights", request.url));
+		}
+
+		if (pathRegExp.test(request.nextUrl.pathname) && user.blocked?.endBan) {
+			const userEndBan = user.blocked.endBan.seconds;
+			const dateNow = Timestamp.now().seconds;
+			if (userEndBan > dateNow) {
+				return NextResponse.redirect(new URL(`/ban-details/${user.name}`, request.url));
+			}
 		}
 	}
 }
 
 export const config = {
 	matcher: [
-		"/completed",
-		"/watching",
-		"/postponed",
-		"/dropped",
-		"/profile",
+		"/my-list/:path*",
 		"/profile/:path*",
 		"/profile-edit",
 		"/messages",

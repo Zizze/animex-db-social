@@ -40,10 +40,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
 				if (getUserCookies && !isEqual(sortBy(userData), sortBy(cookieData))) {
 					Cookies.set("userDB", encodeURIComponent(JSON.stringify(doc.data())));
-				} else {
-					Cookies.set("userDB", encodeURIComponent(JSON.stringify(doc.data())));
 				}
-
 				setUserStorage(userData);
 			});
 
