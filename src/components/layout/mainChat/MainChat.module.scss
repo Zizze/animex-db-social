@@ -98,8 +98,8 @@
 
 	&.full {
 		position: static;
-		max-height: 90%;
-		max-width: 90%;
+		max-height: 99%;
+		max-width: 99%;
 	}
 	// .chatList {}
 
@@ -151,6 +151,19 @@
 			}
 		}
 	}
+
+	@media screen and (max-width: 460px) {
+		right: 0;
+
+		.footerBtns {
+			gap: 5px;
+
+			.Morebtn,
+			.Hidebtn {
+				font-size: 2.3rem;
+			}
+		}
+	}
 }
 
 .mainBtn {
@@ -160,7 +173,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border-radius: 100%;
+	border-radius: 50%;
 	width: 70px;
 	height: 70px;
 	color: $light-blue;
@@ -191,6 +204,22 @@
 			color: $light-blue;
 			-webkit-animation: none;
 			animation: none;
+		}
+	}
+
+	@media screen and (max-width: 800px) {
+		width: 60px;
+		height: 60px;
+		svg {
+			font-size: 3rem;
+		}
+	}
+
+	@media screen and (max-width: 500px) {
+		width: 50px;
+		height: 50px;
+		svg {
+			font-size: 2.5rem;
 		}
 	}
 }

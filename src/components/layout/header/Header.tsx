@@ -13,8 +13,10 @@ const Header: FC = () => {
 	return (
 		<header className={classes.header} id="header">
 			<Search />
-			<Notification />
-			<UserControl setActiveSetings={setActiveSetings} />
+			<div className={classes.userWrapper}>
+				<Notification />
+				<UserControl setActiveSetings={setActiveSetings} />
+			</div>
 			{activeSetings && user && <UserSettings setActiveSetings={setActiveSetings} />}
 		</header>
 	);

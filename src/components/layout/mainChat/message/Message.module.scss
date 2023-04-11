@@ -29,6 +29,14 @@
 					color: $light-blue;
 					letter-spacing: 1px;
 				}
+
+				@media screen and (max-width: 500px) {
+					font-size: 1.8rem;
+					img {
+						width: 35px;
+						height: 35px;
+					}
+				}
 			}
 		}
 
@@ -55,6 +63,13 @@
 					transform: scale(1.1);
 					color: $light-blue;
 					border-color: $light-blue;
+				}
+			}
+			@media screen and (max-width: 400px) {
+				gap: 5px;
+				button {
+					padding: 4px;
+					height: 25px;
 				}
 			}
 		}

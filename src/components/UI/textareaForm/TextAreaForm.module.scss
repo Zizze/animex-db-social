@@ -40,6 +40,9 @@
 					}
 				}
 			}
+			@media screen and (max-width: 500px) {
+				padding: 10px 75px 10px 10px;
+			}
 		}
 		.emoji {
 			position: absolute;
@@ -67,6 +70,16 @@
 			}
 			.smiles {
 				margin-right: 20px;
+			}
+			@media screen and (max-width: 500px) {
+				right: 5px;
+				.sent,
+				.smiles {
+					font-size: 3rem;
+				}
+				.smiles {
+					margin-right: 10px;
+				}
 			}
 		}
 	}

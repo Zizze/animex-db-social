@@ -10,7 +10,6 @@
 	border-radius: 10px;
 	height: 45px;
 	width: 100px;
-	margin-left: 50px;
 	transition: all 0.3s ease-in-out;
 	background-color: $sidebar-bg;
 	-webkit-animation: scale-fwd 1s ease-in-out infinite both;
@@ -25,7 +24,6 @@
 .userControl {
 	position: relative;
 	min-height: 60px;
-	margin-left: 50px;
 	min-width: 105px;
 	z-index: 2;
 

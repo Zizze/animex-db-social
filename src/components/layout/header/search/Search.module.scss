@@ -2,7 +2,8 @@
 
 .container {
 	height: 50px;
-	width: 370px;
+	max-width: 370px;
+	width: 100%;
 	position: relative;
 
 	.searchValid {

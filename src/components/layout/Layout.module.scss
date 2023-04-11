@@ -4,7 +4,8 @@
 	.mainInfo {
 		width: 100%;
 		height: 100vh;
-		overflow: auto;
+		// overflow: auto;
+		overflow: hidden;
 
 		.main {
 			height: calc(100% - 120px);

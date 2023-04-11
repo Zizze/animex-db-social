@@ -6,6 +6,31 @@
 	align-items: center;
 	background-color: $main-bg;
 	padding-right: 50px;
-	height: 120px;
+	height: auto;
+	padding: 30px 50px;
 	z-index: 2;
+	gap: 50px;
+
+	.userWrapper {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 50px;
+		align-self: flex-end;
+	}
+	@media screen and (max-width: 750px) {
+		padding: 30px 15px;
+	}
+	@media screen and (max-width: 450px) {
+		padding: 30px 5px;
+	}
+	@media screen and (max-width: 550px) {
+		flex-direction: column-reverse;
+		padding: 15px 5px 25px;
+		gap: 0px;
+
+		.userWrapper {
+			gap: 30px;
+		}
+	}
 }
