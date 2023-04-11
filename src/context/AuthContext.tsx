@@ -38,9 +38,10 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 				const cookieData = getUserCookies && JSON.parse(decodeURIComponent(getUserCookies));
 				const userData = doc.data() as IUserFirebase;
 
-				if (getUserCookies && !isEqual(sortBy(userData), sortBy(cookieData))) {
+				if (!getUserCookies || !isEqual(sortBy(userData), sortBy(cookieData))) {
 					Cookies.set("userDB", encodeURIComponent(JSON.stringify(doc.data())));
 				}
+
 				setUserStorage(userData);
 			});
 
