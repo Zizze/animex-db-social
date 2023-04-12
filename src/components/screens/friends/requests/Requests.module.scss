@@ -23,6 +23,9 @@
 		letter-spacing: 2px;
 		margin-bottom: 20px;
 		color: $white-main;
+		@media screen and (max-width: 400px) {
+			font-size: 2rem;
+		}
 	}
 	// .users {
 	// }

@@ -7,8 +7,9 @@
 	background-color: $main-bg;
 	border-radius: 12px;
 	padding: 10px 100px;
-	margin-right: 20px;
-	margin-left: 20px;
+	margin: 0 20px;
+	gap: 20px;
+
 	&:not(:last-child) {
 		margin-bottom: 10px;
 	}
@@ -34,16 +35,17 @@
 			}
 			.image {
 				margin-right: 10px;
-				max-width: 50px;
-				max-height: 50px;
+				width: 50px;
+				height: 50px;
 				overflow: hidden;
 				border-radius: 100%;
 				border: 1px solid $black-main;
 				transition: all 0.3s ease-in-out;
 
 				img {
-					width: 50px;
-					height: 50px;
+					width: 100%;
+					height: 100%;
+
 					object-fit: cover;
 				}
 			}
@@ -51,6 +53,7 @@
 	}
 	.btns {
 		display: flex;
+		gap: 10px;
 
 		button {
 			display: flex;
@@ -58,15 +61,52 @@
 			justify-content: center;
 			align-items: center;
 			font-size: 2.5rem;
-			&:not(:last-child) {
-				margin-right: 10px;
-			}
+			// &:not(:last-child) {
+			// 	margin-right: 10px;
+			// }
 		}
 		p {
 			font-weight: 800;
 			font-size: 1.5rem;
 			color: $light-blue;
 			letter-spacing: 1px;
+			text-align: right;
+		}
+	}
+
+	@media screen and (max-width: 700px) {
+		padding: 10px 20px;
+		margin: 0 10px;
+	}
+
+	@media screen and (max-width: 400px) {
+		padding: 10px;
+		margin: 0 5px;
+		&:not(:last-child) {
+			margin-bottom: 5px;
+		}
+
+		.info {
+			a {
+				font-size: 1.8rem;
+				.name {
+					letter-spacing: 1px;
+				}
+				.image {
+					margin-right: 5px;
+					width: 40px;
+					height: 40px;
+				}
+			}
+		}
+
+		.btns {
+			display: flex;
+			gap: 5px;
+			button {
+				padding: 5px;
+				font-size: 2.5rem;
+			}
 		}
 	}
 }

@@ -123,4 +123,38 @@
 			font-size: 2.5rem;
 		}
 	}
+
+	@media screen and (max-width: 520px) {
+		.header {
+			padding-bottom: 20px;
+			flex-direction: column-reverse;
+			gap: 5px;
+
+			.search {
+				width: auto;
+				input {
+					font-size: 1.8rem;
+				}
+			}
+			.requests {
+				align-self: flex-end;
+				margin-right: 20px;
+				button {
+					position: relative;
+					min-width: auto;
+					min-height: auto;
+					padding: 5px;
+					font-size: 1.8rem;
+					span {
+						top: -11px;
+						right: -11px;
+						font-weight: 800;
+						font-size: 1.2rem;
+						width: 25px;
+						height: 25px;
+					}
+				}
+			}
+		}
+	}
 }
