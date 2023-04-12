@@ -2,7 +2,8 @@
 
 .wrapper {
 	position: relative;
-	width: 60vw;
+	max-width: 800px;
+	width: 100%;
 	border-radius: 12px;
 	border: 2px solid $light-blue;
 	background-color: $main-bg;
@@ -24,7 +25,35 @@
 			gap: 20px;
 			align-items: center;
 			justify-content: flex-end;
-			padding: 25px;
+			margin: 20px 0;
+		}
+	}
+
+	@media screen and (max-width: 500px) {
+		padding: 0 10px;
+		overflow: auto;
+
+		h5 {
+			margin-top: 15px;
+			font-size: 2rem;
+		}
+
+		form {
+			div {
+				font-size: 1.8rem;
+				padding: 15px 0 10px;
+				p {
+					margin: 0;
+				}
+			}
+			.btns {
+				margin: 10px 0;
+				button {
+					min-width: auto;
+					padding: 0 15px;
+					font-size: 1.8rem;
+				}
+			}
 		}
 	}
 }

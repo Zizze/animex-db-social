@@ -49,6 +49,12 @@
 .wrapper {
 	font-weight: 400;
 	transition: 0.25s all ease;
+	@media screen and (max-width: 400px) {
+		font-size: 1.7rem;
+	}
+	@media screen and (max-width: 340px) {
+		font-size: 1.5rem;
+	}
 }
 
 .wrapper {

@@ -63,6 +63,19 @@
 		right: 0;
 		top: 105%;
 	}
+
+	@media screen and (max-width: 500px) {
+		.btn {
+			.ava {
+				width: 40px;
+				height: 40px;
+			}
+
+			svg {
+				font-size: 4rem;
+			}
+		}
+	}
 }
 
 .btn:hover,
