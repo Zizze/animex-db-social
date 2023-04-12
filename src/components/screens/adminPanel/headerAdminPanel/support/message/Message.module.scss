@@ -135,4 +135,13 @@
 			}
 		}
 	}
+
+	@media screen and (max-width: 420px) {
+		.flex {
+			button {
+				font-size: 1.2rem !important;
+				font-weight: 500;
+			}
+		}
+	}
 }
