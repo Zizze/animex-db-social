@@ -9,7 +9,7 @@ const Messages: FC = () => {
 	return (
 		<div className={classes.wrapper}>
 			<Users setSelectedUser={setSelectedUser} selectedUser={selectedUser} />
-			<PersonalChat selectedUser={selectedUser} />
+			<PersonalChat selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
 		</div>
 	);
 };

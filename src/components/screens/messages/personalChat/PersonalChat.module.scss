@@ -8,6 +8,56 @@
 	justify-content: flex-end;
 	position: relative;
 
+	.chatHeader {
+		display: flex;
+		align-items: center;
+		flex-direction: row-reverse;
+		justify-content: center;
+		padding: 5px 20px;
+		background-color: $modal-back;
+		font-size: 1.8rem;
+		color: $white-main;
+		gap: 10px;
+
+		a {
+			font-size: inherit;
+			color: inherit;
+			font-weight: inherit;
+		}
+
+		button {
+			display: none;
+			color: $light-blue;
+			background-color: transparent;
+			font-size: inherit;
+			font-weight: 600;
+		}
+		img {
+			border-radius: 50%;
+			height: 40px;
+			width: 40px;
+			object-fit: cover;
+		}
+
+		@media screen and (max-width: 700px) {
+			flex-direction: row;
+			justify-content: space-between;
+			font-size: 1.6rem;
+			button {
+				display: block;
+			}
+
+			img {
+				height: 35px;
+				width: 35px;
+			}
+		}
+	}
+	@media screen and (max-width: 700px) {
+		&.none {
+			display: none;
+		}
+	}
 	.chatList {
 		padding-top: 10px;
 		display: flex;
@@ -37,6 +87,16 @@
 				overflow-wrap: break-word;
 				white-space: pre-wrap;
 			}
+
+			@media screen and (max-width: 700px) {
+				max-width: 50vw;
+				margin: 0 10px 10px;
+			}
+			@media screen and (max-width: 400px) {
+				max-width: 60vw;
+				font-size: 1.7rem;
+				margin: 0 5px 10px;
+			}
 		}
 		.currUser {
 			align-self: flex-end;
@@ -56,6 +116,10 @@
 			justify-content: center;
 			background-color: transparent;
 			font-size: 2rem;
+			@media screen and (max-width: 700px) {
+				font-size: 1.6rem;
+				padding: 5px 10px;
+			}
 		}
 	}
 
@@ -66,11 +130,16 @@
 		border-radius: 20px;
 		background-color: $gray-main;
 		color: $main-bg;
+		font-size: 1.8rem;
 		opacity: 0.8;
 		top: 10%;
 		right: 50%;
 		text-align: center;
 		transform: translateX(50%);
 		font-weight: 500;
+
+		@media screen and (max-width: 900px) {
+			font-size: 1.6rem;
+		}
 	}
 }

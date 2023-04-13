@@ -125,8 +125,9 @@
 	}
 
 	@media screen and (max-width: 520px) {
+		padding-top: 15px;
 		.header {
-			padding-bottom: 20px;
+			padding-bottom: 10px;
 			flex-direction: column-reverse;
 			gap: 5px;
 

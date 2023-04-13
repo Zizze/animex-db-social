@@ -73,7 +73,7 @@ const Users: FC<IProps> = ({ setSelectedUser, selectedUser }) => {
 			{isLoading ? (
 				<Loading />
 			) : (
-				<div className={classes.wrapper}>
+				<div className={cn(classes.wrapper, selectedUser.length && classes.none)}>
 					<div className={classes.search}>
 						<input type="text" placeholder="Enter user" value={search} onChange={onChangeSearch} />
 						<span
