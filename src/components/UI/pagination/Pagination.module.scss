@@ -2,9 +2,8 @@
 .pagination {
 	display: flex;
 	align-items: center;
-
 	flex-direction: column;
-	width: 100%;
+
 	user-select: none;
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -17,9 +16,10 @@
 		color: $light-blue;
 		font-weight: 400;
 		margin-bottom: 10px;
+		flex-wrap: wrap;
+		gap: 10px;
 
 		.li {
-			margin-right: 10px;
 			min-width: 35px;
 			z-index: 15;
 
@@ -36,31 +36,16 @@
 				background-color: transparent;
 			}
 		}
-		.liPrev {
-			margin-right: 10px;
-			width: 35px;
-			.aPrev {
-				display: block;
-				width: 100%;
-				cursor: pointer;
-				padding: 4px 0;
-				font-size: 2rem;
-				font-weight: 900;
-				border-radius: 6px;
-				background-color: transparent;
-				border: 2px solid $light-blue;
-				text-align: center;
-			}
-		}
+		.liPrev,
 		.liNext {
 			width: 35px;
-
+			.aPrev,
 			.aNext {
 				display: block;
 				width: 100%;
 				cursor: pointer;
 				padding: 4px 0;
-				font-size: 2rem;
+				font-size: inherit;
 				font-weight: 900;
 				border-radius: 6px;
 				background-color: transparent;
@@ -110,6 +95,18 @@
 				border-color: $light-blue;
 			}
 		}
+	}
+
+	@media screen and (max-width: 500px) {
+		font-size: 1.6rem;
+		.container {
+			@media screen and (max-width: 400px) {
+				gap: 5px;
+			}
+		}
+	}
+	@media screen and (max-width: 350px) {
+		font-size: 1.3rem;
 	}
 }
 

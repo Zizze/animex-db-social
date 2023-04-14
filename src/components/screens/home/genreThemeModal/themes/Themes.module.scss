@@ -7,27 +7,19 @@
 		text-align: center;
 		color: $light-blue;
 		margin-bottom: 20px;
+		@media screen and (max-width: 400px) {
+			font-size: 2rem;
+		}
 	}
 	.list {
-		display: inline-flex;
+		display: flex;
 		flex-wrap: wrap;
+		justify-content: center;
 		align-items: center;
+		gap: 10px;
 
 		li {
-			flex: 0 0 calc(98% / 4);
-			&:not(:last-child) {
-				margin-bottom: 10px;
-			}
-
-			@media (max-width: 1400px) {
-				flex-basis: calc(98% / 3);
-			}
-			@media (max-width: 1050px) {
-				flex-basis: calc(98% / 2);
-			}
-			@media (max-width: 700px) {
-				flex-basis: calc(98% / 1);
-			}
+			font-size: 1.9rem;
 		}
 	}
 }

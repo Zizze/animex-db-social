@@ -2,7 +2,7 @@
 
 .anime {
 	position: relative;
-	height: 285px;
+	height: 320px;
 	overflow: hidden;
 	border-radius: 10px;
 	border: 1px solid $sidebar-bg;
@@ -40,9 +40,9 @@
 			}
 			img {
 				border-radius: 10px;
+				object-fit: cover;
 				height: 100%;
 				width: 100%;
-				max-height: 285px;
 				filter: blur(3px);
 				background-color: rgba(109, 0, 121, 0.5);
 			}
@@ -50,22 +50,35 @@
 		.mainBlock {
 			display: flex;
 			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+
 			position: absolute;
-			padding: 20px 20px 10px 20px;
+			padding: 20px;
 			font-size: 2rem;
 			color: $white-main;
 			top: 0;
 			left: 0;
-
-			img {
-				width: 180px;
-				height: 180px;
+			.image {
+				width: 100%;
+				height: 215px;
 				border-radius: 12px;
-				object-fit: cover;
 				border: $black-main solid 1px;
-				background: rgb(27, 156, 158);
-				background: linear-gradient(0deg, rgba(27, 156, 158, 1) 0%, rgba(212, 156, 38, 1) 100%);
+				overflow: hidden;
+				position: relative;
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+				}
+				.loadImage {
+					position: absolute;
+					top: 0;
+					left: 0;
+				}
 			}
+
 			.flex {
 				height: 100%;
 				margin-top: 10px;
@@ -74,6 +87,7 @@
 				justify-content: space-between;
 				height: 60px;
 				position: relative;
+				width: 100%;
 
 				.name {
 					display: -webkit-box;

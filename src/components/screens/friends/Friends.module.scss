@@ -2,11 +2,19 @@
 
 .wrapper {
 	padding-top: 20px;
+	margin-bottom: 5px;
 	background-color: $sidebar-bg;
 	border-radius: 12px;
 	border: 1px solid $black-main;
-	height: 85vh;
+	height: calc(100vh - 125px);
 	overflow: hidden;
+
+	@media screen and (max-width: 550px) {
+		height: calc(100vh - 155px);
+		@media screen and (max-width: 500px) {
+			height: calc(100vh - 145px);
+		}
+	}
 
 	.header {
 		padding-bottom: 20px;
