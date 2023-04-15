@@ -2,18 +2,22 @@
 
 .right {
 	padding: 0 0 25px;
+	display: flex;
+	flex-direction: column;
 
 	.head {
+		align-self: center;
 		display: inline-flex;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: center;
+		flex-wrap: wrap;
 		padding: 10px 20px;
 		border-radius: 10px;
 		background-color: $sidebar-bg;
-		margin-bottom: 40px;
+		margin-bottom: 20px;
 		border: 1px solid $black-main;
-
-		overflow: hidden;
+		font-size: 1.9rem;
+		gap: 20px;
 
 		li {
 			position: relative;
@@ -24,21 +28,6 @@
 			font-weight: 700;
 			gap: 2px;
 
-			&:not(:last-child) {
-				flex-shrink: 0;
-				padding-right: 21px;
-				margin-right: 20px;
-
-				&::after {
-					content: "";
-					position: absolute;
-					background-color: $black-main;
-					right: 0;
-					top: -200%;
-					width: 1px;
-					height: 500px;
-				}
-			}
 			span {
 				color: $light-blue;
 			}
@@ -167,32 +156,11 @@
 		}
 	}
 
-	@media screen and (max-width: 920px) {
+	@media screen and (max-width: 770px) {
 		.head {
-			position: absolute;
-			left: 0%;
-			max-width: 345px;
-			font-size: 1.9rem;
+			max-width: 500px;
 			width: 100%;
-
-			padding: 10px 5px;
-			li {
-				&:not(:last-child) {
-					padding-right: 6px;
-					margin-right: 5px;
-				}
-			}
-		}
-	}
-
-	@media screen and (max-width: 700px) {
-		font-size: 1.8rem;
-
-		.head {
-			position: absolute;
-			top: 0;
-			left: 50%;
-			transform: translateX(-50%);
+			justify-content: space-around;
 		}
 		.backWrapper {
 			.btns {
@@ -211,15 +179,22 @@
 		}
 	}
 
-	@media screen and (max-width: 370px) {
+	@media screen and (max-width: 520px) {
 		.head {
-			font-size: 1.5rem;
-			max-width: 290px;
+			font-size: 1.7rem;
 			.rateblock {
 				.rateBy {
-					font-size: 1.2rem;
+					font-size: 1.3rem;
 				}
 			}
+		}
+	}
+
+	@media screen and (max-width: 400px) {
+		.head {
+			flex-direction: column;
+			gap: 7px;
+			width: 100%;
 		}
 	}
 }

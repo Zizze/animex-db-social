@@ -5,7 +5,7 @@
 	display: flex;
 	height: 20px;
 	border: 1px solid $black-main;
-	border-radius: 5px;
+	border-radius: 7px;
 	overflow: hidden;
 	cursor: help;
 
@@ -14,8 +14,11 @@
 		align-items: center;
 		justify-content: center;
 		color: $statisticsColor;
-		font-size: 1.5rem;
-		font-weight: 500;
+		font-size: 1.4rem;
+		font-weight: 700;
+		@media screen and (max-width: 500px) {
+			font-size: 1.3rem;
+		}
 	}
 
 	.completed {

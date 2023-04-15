@@ -66,8 +66,8 @@ const LeftDetails: FC<IProps> = ({ anime, animeInUserDb }) => {
 					<Image
 						priority={true}
 						src={anime.images.jpg.large_image_url}
-						width={300}
-						height={400}
+						width={500}
+						height={800}
 						alt={`${name} poster`}
 					/>
 				</div>

@@ -3,6 +3,7 @@
 	flex-direction: column;
 	justify-content: space-between;
 	min-height: 100%;
+	padding-bottom: 20px;
 
 	.emptyList {
 		margin-top: 100px;
@@ -12,9 +13,17 @@
 	}
 
 	.btns {
-		margin-bottom: 20px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		@media screen and (max-width: 600px) {
+			font-size: 1.7rem;
+			button {
+				font-size: inherit;
+				min-width: auto;
+				min-height: auto;
+				padding: 5px 10px;
+			}
+		}
 	}
 }

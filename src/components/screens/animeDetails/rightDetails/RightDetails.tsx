@@ -26,26 +26,30 @@ const RightDetails: FC<IProps> = ({ anime }) => {
 
 	return (
 		<div className={classes.right}>
-			<ul className={classes.head}>
-				{rank && (
-					<li>
-						Rank: <span>{rank}</span>
-					</li>
-				)}
-				{rate && (
-					<li className={classes.rateblock}>
-						<span className={classes.rate}>
-							Rate: <span>{rate}</span>
-						</span>
-						<span className={classes.rateBy}>
-							Rate by: <span>{rateBy}</span>
-						</span>
-					</li>
-				)}
-				<li>
-					Popularity: <span>{popularity}</span>
-				</li>
-			</ul>
+			{!!popularity && !!rank && !!rate && (
+				<ul className={classes.head}>
+					{!!rank && (
+						<li>
+							Rank: <span>{rank}</span>
+						</li>
+					)}
+					{!!rate && (
+						<li className={classes.rateblock}>
+							<span className={classes.rate}>
+								Rate: <span>{rate}</span>
+							</span>
+							<span className={classes.rateBy}>
+								Rate by: <span>{rateBy}</span>
+							</span>
+						</li>
+					)}
+					{!!popularity && (
+						<li>
+							Popularity: <span>{popularity}</span>
+						</li>
+					)}
+				</ul>
+			)}
 			{description && (
 				<div className={classes.descr}>
 					<div className={classes.title}>
