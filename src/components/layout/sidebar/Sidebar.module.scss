@@ -11,7 +11,7 @@
 	user-select: none;
 	-webkit-user-select: none;
 	-moz-user-select: none;
-	transition: margin-left 1s ease-in-out, z-index 1s ease-in-out;
+	transition: margin-left 0.8s ease-in-out, z-index 0.8s ease-in-out;
 	z-index: 9;
 
 	&::before {
@@ -70,13 +70,10 @@
 		}
 	}
 
-	@media screen and (max-width: 1160px) {
+	@media screen and (max-width: 1071px) {
 		position: fixed;
 		top: 0;
 		left: 0;
-	}
-
-	@media screen and (max-width: 900px) {
 	}
 }
 

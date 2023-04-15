@@ -15,9 +15,10 @@ interface IListProps {
 	item: INavList;
 	listName: string;
 	animeFirebase?: IAnimeFirebase[];
+	onClickHandler: () => void;
 }
 
-const UserNav: FC<IListProps> = ({ item, listName }) => {
+const UserNav: FC<IListProps> = ({ item, listName, onClickHandler }) => {
 	const { user } = useAuthContext();
 	const dispatch = useAppDispatch();
 	const [animeFirebase, setAnimeFirebase] = useState<number>(0);
@@ -35,9 +36,14 @@ const UserNav: FC<IListProps> = ({ item, listName }) => {
 		return () => unsubscribe();
 	}, [user]);
 
+	const onSelectMenu = () => {
+		dispatch(changeHomeMode(name));
+		onClickHandler();
+	};
+
 	const active = cn(classes.list, listName === name && "active-nav");
 	return (
-		<li className={`${active}`} key={name} onClick={() => dispatch(changeHomeMode(name))}>
+		<li className={`${active}`} key={name} onClick={onSelectMenu}>
 			<Link href={href} className={classes.linkblock}>
 				<div className={classes.linkInfo}>
 					{img}

@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import Logo from "./logo/Logo";
 import Navigation from "./navigation/Navigation";
 import classes from "./Sidebar.module.scss";
@@ -8,6 +8,11 @@ import SupportBtn from "./supportBtn/SupportBtn";
 
 const Sidebar: FC = () => {
 	const [hideSidebar, setHideSidebar] = useState(false);
+
+	useEffect(() => {
+		const screenWidth = window.screen.width <= 1071;
+		if (screenWidth) setHideSidebar(true);
+	}, []);
 
 	return (
 		<div className={cn(classes.sidebar, hideSidebar && classes.hiden)}>
@@ -22,7 +27,7 @@ const Sidebar: FC = () => {
 			</button>
 			<div>
 				<Logo />
-				<Navigation />
+				<Navigation setHideSidebar={setHideSidebar} />
 			</div>
 			<div className={classes.bottom}>
 				<SupportBtn />

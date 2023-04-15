@@ -9,15 +9,21 @@ import { changeHomeMode } from "@Store/animeJikan/animeJikanSlice";
 interface IListProps {
 	item: INavList;
 	listName: string;
+	onClickHandler: () => void;
 }
 
-const MainNav: FC<IListProps> = ({ item, listName }) => {
+const MainNav: FC<IListProps> = ({ item, listName, onClickHandler }) => {
 	const dispatch = useAppDispatch();
 	const { href, name, img } = item;
 
+	const onSelectMenu = () => {
+		dispatch(changeHomeMode(name));
+		onClickHandler();
+	};
+
 	const active = cn(classes.list, listName === name && "active-nav");
 	return (
-		<li className={active} key={name} onClick={() => dispatch(changeHomeMode(name))}>
+		<li className={active} key={name} onClick={onSelectMenu}>
 			<Link href={href} className={classes.linkblock}>
 				<div className={classes.linkInfo}>
 					{img}

@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, Dispatch, SetStateAction, useCallback } from "react";
 import classes from "./Navigation.module.scss";
 import { mainNavData, userNavData } from "./navList.data";
 import MainNav from "./mainNav/MainNav";
@@ -8,7 +8,11 @@ import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useRouter } from "next/router";
 import { changeHomeMode } from "@Store/animeJikan/animeJikanSlice";
 
-const Navigation: FC = () => {
+interface IProps {
+	setHideSidebar: Dispatch<SetStateAction<boolean>>;
+}
+
+const Navigation: FC<IProps> = ({ setHideSidebar }) => {
 	const router = useRouter();
 	const currentPath = router.asPath;
 	const dispatch = useAppDispatch();
@@ -22,18 +26,37 @@ const Navigation: FC = () => {
 		});
 	}, []);
 
+	const onClickHandler = useCallback(() => {
+		const screenWidth = window.screen.width <= 1071;
+		if (screenWidth) setHideSidebar(true);
+	}, []);
+
 	return (
 		<nav className={classes.navigation}>
 			<ul>
 				<>
 					{mainNavData.map((item) => {
-						return <MainNav item={item} key={item.name} listName={mainHomeMode} />;
+						return (
+							<MainNav
+								onClickHandler={onClickHandler}
+								item={item}
+								key={item.name}
+								listName={mainHomeMode}
+							/>
+						);
 					})}
 
 					<div className={classes.line} />
 
 					{userNavData.map((item) => {
-						return <UserNav item={item} key={item.name} listName={mainHomeMode} />;
+						return (
+							<UserNav
+								onClickHandler={onClickHandler}
+								item={item}
+								key={item.name}
+								listName={mainHomeMode}
+							/>
+						);
 					})}
 
 					<div className={"menuIndicator"} />
