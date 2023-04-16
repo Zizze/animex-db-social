@@ -5,13 +5,15 @@ import Pagination from "@Components/UI/pagination/Pagination";
 import { useGetAnimeJikanQuery } from "@Store/animeJikan/animeJikan.api";
 import { changePageHome } from "@Store/animeJikan/animeJikanSlice";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Items from "../home/items/Items";
 import classes from "./TopAnime.module.scss";
 
 const TopAnimes = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
+	const topRef = useRef<HTMLDivElement>(null);
+
 	const { activePage, search } = useAppSelector((state) => state.animeJikan);
 	const { error, data, isLoading } = useGetAnimeJikanQuery({
 		orderBy: "score",
@@ -22,6 +24,7 @@ const TopAnimes = () => {
 
 	const onChangePage = (currPage: number) => {
 		dispatch(changePageHome(currPage));
+		topRef.current?.scrollIntoView({ behavior: "smooth" });
 	};
 
 	useEffect(() => {
@@ -30,7 +33,7 @@ const TopAnimes = () => {
 
 	return (
 		<>
-			<div className={classes.wrapper}>
+			<div className={classes.wrapper} ref={topRef}>
 				{isLoading ? (
 					<Loading />
 				) : (
