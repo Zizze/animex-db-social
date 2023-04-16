@@ -12,6 +12,7 @@ import { useOutside } from "@/hooks/useOutside";
 import Loading from "@Components/UI/loading/Loading";
 import cn from "classnames";
 import { AiOutlineFullscreen, AiOutlineFullscreenExit, AiOutlineClose } from "react-icons/ai";
+import { MdClose } from "react-icons/md";
 import ModalWrapper from "@Components/UI/modal/ModalWrapper";
 import { useCollectionRealtime } from "@/hooks/firebase/useCollectionRealtime";
 import { useCollectionSize } from "@/hooks/firebase/useCollectionSize";
@@ -24,6 +25,7 @@ const MainChat: FC = () => {
 	const { user } = useAuthContext();
 	const { popError, popSuccess, ctxMessage } = popMessage();
 	const [fullscreenActive, setFullscreenActive] = useState(false);
+	const [isHideChat, setIsHideChat] = useState(false);
 	const { isShow, setIsShow, ref } = useOutside(false);
 
 	const [answerToUser, setAnswerToUser] = useState<string[]>([]);
@@ -77,15 +79,26 @@ const MainChat: FC = () => {
 	return (
 		<>
 			{!isShow && (
-				<DefaultBtn
-					classMode="clear"
-					className={classes.mainBtn}
-					title="Open chat"
-					onClickHandler={openChat}
-				>
-					<BsChatDotsFill />
-					{notifCount > 0 && <span>new</span>}
-				</DefaultBtn>
+				<div className={classes.chatBtns}>
+					<button
+						className={cn(classes.hideShowBtn, isHideChat && classes.hiden)}
+						title={isHideChat ? "Show chat button" : "Hide chat button"}
+						onClick={() => setIsHideChat((prev) => !prev)}
+					>
+						{isHideChat ? "show" : <MdClose />}
+					</button>
+					{!isHideChat && (
+						<DefaultBtn
+							classMode="clear"
+							className={classes.mainBtn}
+							title="Open chat"
+							onClickHandler={openChat}
+						>
+							<BsChatDotsFill />
+							{notifCount > 0 && <span>new</span>}
+						</DefaultBtn>
+					)}
+				</div>
 			)}
 			{isShow && (
 				<>
