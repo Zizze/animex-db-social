@@ -12,34 +12,42 @@ body {
 	overflow: hidden;
 }
 
-//scrollbar
-.active-nav {
-	color: $light-blue;
-	font-weight: 500;
-	transition: all 0.3 ease-in-out;
+body::-webkit-progress-bar {
+	background-color: $light-blue;
 }
 
+//scrollbar styles
 * {
 	scrollbar-width: thin;
 	scrollbar-color: $light-blue $main-bg;
+
+	&::-webkit-scrollbar {
+		width: 5px;
+		height: 5px;
+
+		@media screen and (max-width: 1000px) {
+			width: 4px;
+		}
+		@media screen and (max-width: 800px) {
+			width: 3px;
+		}
+		@media screen and (max-width: 550px) {
+			width: 2px;
+		}
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: $light-blue;
+		border-radius: 10px;
+		border: none;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: transparent;
+	}
 }
 
-/* Chrome, Edge, and Safari */
-*::-webkit-scrollbar {
-	width: 10px;
-	height: 5px;
-}
-
-*::-webkit-scrollbar-track {
-	background: transparent;
-}
-
-*::-webkit-scrollbar-thumb {
-	background-color: $light-blue;
-	border-radius: 10px;
-	border: 2px solid $main-bg;
-}
-
+//emoji variables and styles
 em-emoji-picker {
 	--border-radius: 24px;
 	--category-icon-size: 24px;
@@ -60,11 +68,8 @@ em-emoji-picker {
 	}
 }
 
+//reset styles
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
 	-webkit-appearance: none;
-}
-
-input[type="number"] {
-	-moz-appearance: textfield;
 }

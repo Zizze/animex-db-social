@@ -1,28 +1,20 @@
+export interface IGetParams {
+	selectedGenres: string[];
+	mainHomeMode: string;
+	mainHomeCategoryActive: string;
+	search: string;
+	activePage: number;
+	sort: string;
+	orderBy: string;
+	id?: number;
+	status: string;
+	type: string;
+	startDate: string;
+}
+
 export interface IAnimeJikan {
 	data: IDataAnime[];
-
-	pagination: {
-		last_visible_page: number | string;
-		has_next_page: boolean;
-		current_page: number | string;
-	};
-}
-
-export interface ITrailerJikan {
-	youtube_id: string;
-	url: string;
-	embed_url: string;
-	images: {
-		image_url: string;
-		small_image_url: string;
-		medium_image_url: string;
-		large_image_url: string;
-		maximum_image_url: string;
-	};
-}
-
-export interface IJitakFullAnime {
-	data: IDataAnime;
+	pagination: IDataPagination;
 }
 
 export interface IDataAnime {
@@ -43,13 +35,6 @@ export interface IDataAnime {
 	trailer: ITrailerJikan;
 	approved: boolean;
 
-	titles: [
-		{
-			0: { type: string; title: string };
-			1: { type: string; title: string };
-			2: { type: string; title: string };
-		}
-	];
 	title: string;
 	title_english: string;
 	title_japanese: string;
@@ -116,18 +101,14 @@ export interface IDataAnime {
 	demographics: [];
 }
 
-export interface IGetParams {
-	selectedGenres: string[];
-	mainHomeMode: string;
-	mainHomeCategoryActive: string;
-	search: string;
-	activePage: number;
-	sort: string;
-	orderBy: string;
-	id?: number;
-	status: string;
-	type: string;
-	startDate: string;
+export interface IJitakFullAnime {
+	data: IDataAnime;
+}
+
+interface IDataPagination {
+	last_visible_page: number | string;
+	has_next_page: boolean;
+	current_page: number | string;
 }
 
 interface IGenreThemeData {
@@ -139,4 +120,17 @@ interface IGenreThemeData {
 
 export interface IGenreTheme {
 	data: IGenreThemeData[];
+}
+
+export interface ITrailerJikan {
+	youtube_id: string;
+	url: string;
+	embed_url: string;
+	images: {
+		image_url: string;
+		small_image_url: string;
+		medium_image_url: string;
+		large_image_url: string;
+		maximum_image_url: string;
+	};
 }

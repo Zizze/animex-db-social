@@ -1,3 +1,9 @@
+.active-nav {
+	color: $light-blue;
+	font-weight: 500;
+	transition: all 0.3 ease-in-out;
+}
+
 .menuIndicator {
 	position: absolute;
 	top: 0%;
@@ -28,8 +34,6 @@
 		right: 1%;
 		width: 80px;
 		height: 75px;
-		// background: blue;
-		// box-shadow: 15px -10px 0px 0px #fff;
 		border-radius: 0 45px 0px 0;
 		background: $sidebar-bg;
 		box-shadow: 15px -10px 0px 0px $main-bg;
