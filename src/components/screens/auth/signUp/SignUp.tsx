@@ -9,6 +9,7 @@ import { auth, db } from "@Project/firebase";
 import { useTextField } from "@/hooks/useTextField";
 import { checkExistingUser } from "@/services/firebase/checkExistingUser";
 import cn from "classnames";
+import Meta from "@Components/seo/Meta";
 
 const SignUp = () => {
 	const [userExist, setUserExist] = useState<string | null>(null);
@@ -71,60 +72,63 @@ const SignUp = () => {
 	};
 
 	return (
-		<div className={classes.wrapper}>
-			<form onSubmit={submitHandler} autoComplete="off">
-				<p className={cn(classes.userExist, userExist && classes.active)}>{userExist}</p>
+		<>
+			<Meta title="Sign up" description={`Sign up | AnimeX`} />
+			<div className={classes.wrapper}>
+				<form onSubmit={submitHandler} autoComplete="off">
+					<p className={cn(classes.userExist, userExist && classes.active)}>{userExist}</p>
 
-				<p className={cn(classes.inputValid, errorName && classes.on)}>{errorName}</p>
-				<input
-					autoComplete="off"
-					className={classes.input}
-					type="text"
-					placeholder="Display name"
-					value={name}
-					onChange={nameOnChange}
-				/>
-				<p className={cn(classes.inputValid, errorEmail && classes.on)}>{errorEmail}</p>
-				<input
-					type="text"
-					placeholder="Email"
-					value={email}
-					onChange={emailOnChange}
-					autoComplete="off"
-				/>
-				<p className={cn(classes.inputValid, errorPassword && classes.on)}>{errorPassword}</p>
-				<input
-					autoComplete="new-password"
-					type="password"
-					placeholder="Password"
-					value={password}
-					onChange={passwordOnChange}
-				/>
-				<p className={cn(classes.inputValid, errorConfPassword && classes.on)}>
-					{errorConfPassword}
-				</p>
-				<p className={cn(classes.inputValid, passMiss && classes.on)}>
-					{passMiss && "Password mismatch!"}
-				</p>
-				<input
-					autoComplete="new-password"
-					type="password"
-					placeholder="Confirm password"
-					value={confPassword}
-					onChange={confPasswordOnChange}
-				/>
+					<p className={cn(classes.inputValid, errorName && classes.on)}>{errorName}</p>
+					<input
+						autoComplete="off"
+						className={classes.input}
+						type="text"
+						placeholder="Display name"
+						value={name}
+						onChange={nameOnChange}
+					/>
+					<p className={cn(classes.inputValid, errorEmail && classes.on)}>{errorEmail}</p>
+					<input
+						type="text"
+						placeholder="Email"
+						value={email}
+						onChange={emailOnChange}
+						autoComplete="off"
+					/>
+					<p className={cn(classes.inputValid, errorPassword && classes.on)}>{errorPassword}</p>
+					<input
+						autoComplete="new-password"
+						type="password"
+						placeholder="Password"
+						value={password}
+						onChange={passwordOnChange}
+					/>
+					<p className={cn(classes.inputValid, errorConfPassword && classes.on)}>
+						{errorConfPassword}
+					</p>
+					<p className={cn(classes.inputValid, passMiss && classes.on)}>
+						{passMiss && "Password mismatch!"}
+					</p>
+					<input
+						autoComplete="new-password"
+						type="password"
+						placeholder="Confirm password"
+						value={confPassword}
+						onChange={confPasswordOnChange}
+					/>
 
-				<div className={classes.btns}>
-					<DefaultBtn classMode="main" type="submit">
-						Sign Up
-					</DefaultBtn>
-					<DefaultBtn onClickHandler={onClickHandler}>Home</DefaultBtn>
-				</div>
-				<p>
-					Do you already have? <Link href={"/auth/signin"}>Sign in</Link>
-				</p>
-			</form>
-		</div>
+					<div className={classes.btns}>
+						<DefaultBtn classMode="main" type="submit">
+							Sign Up
+						</DefaultBtn>
+						<DefaultBtn onClickHandler={onClickHandler}>Home</DefaultBtn>
+					</div>
+					<p>
+						Do you already have? <Link href={"/auth/signin"}>Sign in</Link>
+					</p>
+				</form>
+			</div>
+		</>
 	);
 };
 

@@ -3,6 +3,7 @@ import stopImage from "@Public/stop.png";
 import Image from "next/image";
 import classes from "./NoRights.module.scss";
 import { useRouter } from "next/router";
+import Meta from "@Components/seo/Meta";
 
 const REDIRECT_TIME = 10;
 
@@ -23,15 +24,18 @@ const NoRights: FC = () => {
 	}, [seconds]);
 
 	return (
-		<div className={classes.wrapper}>
-			<div className={classes.container}>
-				<h4>You do not have sufficient rights to visit this page.</h4>
-				<Image src={stopImage} width={500} height={500} priority alt="Error image" />
-				<p>
-					Redirect to home page after <span>{seconds}</span> seconds.
-				</p>
+		<>
+			<Meta title="No rights" />
+			<div className={classes.wrapper}>
+				<div className={classes.container}>
+					<h4>You do not have sufficient rights to visit this page.</h4>
+					<Image src={stopImage} width={500} height={500} priority alt="Error image" />
+					<p>
+						Redirect to home page after <span>{seconds}</span> seconds.
+					</p>
+				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 

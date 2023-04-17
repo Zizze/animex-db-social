@@ -12,6 +12,7 @@ import { popMessage } from "@/utils/popMessage/popMessage";
 import { userNavData } from "@Components/layout/sidebar/navigation/navList.data";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { changeHomeMode } from "@Store/animeJikan/animeJikanSlice";
+import Meta from "@Components/seo/Meta";
 
 const PAGE_LIMIT = 15;
 
@@ -55,6 +56,7 @@ const UserList: FC = () => {
 		<>
 			{ctxMessage}
 			{isLoading && <Loading />}
+			{listName && <Meta title={`${listName[0].toUpperCase() + listName.slice(1)}`} />}
 			{!isLoading && <Statistics />}
 			<div className={classes.container}>
 				{userAnimeData && <Items animeFirebase={userAnimeData} />}

@@ -10,6 +10,7 @@ import { changePageHome } from "@Store/animeJikan/animeJikanSlice";
 import { useOutside } from "@/hooks/useOutside";
 import Loading from "@Components/UI/loading/Loading";
 import GenreThemeModal from "./genreThemeModal/GenreThemeModal";
+import Meta from "@Components/seo/Meta";
 
 const Home: FC = () => {
 	const dispatch = useAppDispatch();
@@ -47,6 +48,10 @@ const Home: FC = () => {
 
 	return (
 		<>
+			<Meta
+				title="Home"
+				description="AnimeX is an anime database with the ability to add anime to your lists, search, filter and communicate between users."
+			/>
 			{isLoading && <Loading />}
 			<div className={classes.container} ref={topRef}>
 				<Categories setIsShow={setIsShow} />

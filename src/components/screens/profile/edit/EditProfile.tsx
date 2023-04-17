@@ -15,6 +15,7 @@ import { changeProfilePhoto } from "@/services/firebase/changePhoto";
 import { useTextField } from "@/hooks/useTextField";
 import { checkExistingUser } from "@/services/firebase/checkExistingUser";
 import Reauthorization from "./reauthorization/Reauthorization";
+import Meta from "@Components/seo/Meta";
 
 const EditProfile: FC = () => {
 	const router = useRouter();
@@ -136,6 +137,7 @@ const EditProfile: FC = () => {
 	return (
 		<>
 			{ctxMessage}
+			<Meta title="Edit profile" />
 			{user && !isOpemConfirmModal && (
 				<>
 					{existEmailName && <p className={classes.notValid}>{existEmailName}</p>}

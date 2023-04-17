@@ -26,6 +26,7 @@ import { useRealtimeDoc } from "@/hooks/firebase/useRealtimeDoc";
 import { useCollectionRealtime } from "@/hooks/firebase/useCollectionRealtime";
 import Loading from "@Components/UI/loading/Loading";
 import { popMessage } from "@/utils/popMessage/popMessage";
+import Meta from "@Components/seo/Meta";
 
 const UserProfile: FC = () => {
 	const router = useRouter();
@@ -102,6 +103,10 @@ const UserProfile: FC = () => {
 			) : (
 				<>
 					{ctxMessage}
+					<Meta
+						title={userProfile[0].name}
+						description={`${userProfile[0].name} profile and statistics | AnimeX`}
+					/>
 					<div className={classes.profile}>
 						<span className={classes.role}>{userAccessInString(userProfile[0].access || 0)}</span>
 						{isBanned && (

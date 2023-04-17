@@ -14,15 +14,11 @@ const Meta: FC<PropsWithChildren<IMeta>> = ({ title, description }) => {
 					<meta property="og:title" content={titleWithSiteName(title)} />
 					<meta name="description" content={description} />
 					<meta property="og:description" content={description} />
+					<meta property="og:image" content={mainLogo} />
 				</>
 			) : (
 				<meta name="robots" content={"noindex"} />
 			)}
-
-			<meta property="og:image" content={mainLogo} />
-
-			{/* <link rel="canonical" href={url} /> */}
-			{/* <meta name="keywords" content={keywords} /> */}
 		</Head>
 	);
 };

@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import Loading from "@Components/UI/loading/Loading";
 import { popMessage } from "@/utils/popMessage/popMessage";
 import { useRealtimeDoc } from "@/hooks/firebase/useRealtimeDoc";
+import Meta from "@Components/seo/Meta";
 
 const animeUserCategories = ["Completed", "Watching", "Postponed", "Dropped"];
 
@@ -78,6 +79,12 @@ const AnimeDetails: FC<{ animeId: number }> = ({ animeId }) => {
 	return (
 		<>
 			{ctxMessage}
+			{anime && (
+				<Meta
+					title={anime.title}
+					description={`Detailed information about ${anime.title} anime at AnimeX.`}
+				/>
+			)}
 			{anime && (
 				<div className={classes.container}>
 					<div className={classes.categoriesWrapper}>

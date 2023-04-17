@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import Items from "../home/items/Items";
 import classes from "./TopAnime.module.scss";
+import Meta from "@Components/seo/Meta";
 
 const TopAnimes = () => {
 	const dispatch = useAppDispatch();
@@ -33,6 +34,7 @@ const TopAnimes = () => {
 
 	return (
 		<>
+			<Meta title="Top anime" description="The best anime of all time." />
 			<div className={classes.wrapper} ref={topRef}>
 				{isLoading ? (
 					<Loading />

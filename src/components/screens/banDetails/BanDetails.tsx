@@ -10,6 +10,7 @@ import defaultImage from "@Public/testava.jpg";
 import SupportForm from "@Components/UI/supportForm/SupportForm";
 import { useRealtimeDoc } from "@/hooks/firebase/useRealtimeDoc";
 import Loading from "@Components/UI/loading/Loading";
+import Meta from "@Components/seo/Meta";
 
 const BanDetails: FC = () => {
 	const router = useRouter();
@@ -28,6 +29,7 @@ const BanDetails: FC = () => {
 
 	return (
 		<>
+			<Meta title="Block details" />
 			{loading ? (
 				<Loading />
 			) : (
