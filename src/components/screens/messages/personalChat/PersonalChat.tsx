@@ -27,6 +27,7 @@ const PersonalChat: FC<IProps> = ({ selectedUser, setSelectedUser }) => {
 	const [messTxt, setMessTxt] = useState("");
 	const { popError, ctxMessage } = popMessage();
 	const [isSending, setIsSending] = useState(false);
+	const [files, setFiles] = useState<File[]>([]);
 
 	const {
 		data: messages,
@@ -53,7 +54,9 @@ const PersonalChat: FC<IProps> = ({ selectedUser, setSelectedUser }) => {
 	const onSubmitHandler = useCallback(
 		async (e: FormEvent) => {
 			e.preventDefault();
-			if (user && userProfile && messTxt.trim().length > 1) {
+			if (!messTxt.trim().length && !files.length) return;
+
+			if (user && userProfile) {
 				try {
 					setIsSending(true);
 					await sendPersonalMessage({
@@ -122,6 +125,9 @@ const PersonalChat: FC<IProps> = ({ selectedUser, setSelectedUser }) => {
 						text={messTxt}
 						setText={setMessTxt}
 						placeholder="Your message..."
+						uploadFisible={true}
+						files={files}
+						setFiles={setFiles}
 					/>
 				) : (
 					selectedUser !== "AnimeX" && (

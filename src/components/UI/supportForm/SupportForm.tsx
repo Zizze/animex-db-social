@@ -20,6 +20,7 @@ const SupportForm: FC<ISupportForm> = ({ setIsActiveSupport, isActiveSupport }) 
 	const { popSuccess, popError, ctxMessage } = popMessage();
 	const [emailChekbox, setEmailChekbox] = useState<string | boolean>(false);
 	const [message, setMessage] = useState("");
+	const [files, setFiles] = useState<File[]>([]);
 
 	const {
 		value: title,
@@ -88,6 +89,9 @@ const SupportForm: FC<ISupportForm> = ({ setIsActiveSupport, isActiveSupport }) 
 							placeholder="Enter message..."
 							onSubmitHandler={onSubmitHandler}
 							minLenght={20}
+							uploadFisible={true}
+							files={files}
+							setFiles={setFiles}
 						>
 							<div className={classes.titleWrapper}>
 								<p className={classes.textField}>{titleError}</p>

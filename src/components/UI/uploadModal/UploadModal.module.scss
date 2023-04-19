@@ -1,0 +1,100 @@
+@import "@Assets/styles/variables";
+
+.wrapper {
+	background-color: $sidebar-bg;
+	border: 1px solid $black-main;
+	padding: 10px 20px;
+	border-radius: 10px;
+	max-width: 600px;
+	width: 100%;
+
+	h4 {
+		text-align: center;
+		margin-bottom: 10px;
+		font-weight: 600;
+		color: $white-main;
+	}
+	label {
+		cursor: grab;
+		display: block;
+		width: 100%;
+		min-height: 150px;
+		background-color: $main-bg;
+		border: 1px solid $light-blue;
+		border-radius: 10px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 10px;
+
+		.fileIco {
+			font-size: 6rem;
+			color: $light-blue;
+		}
+		input {
+			display: none;
+		}
+	}
+
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: flex-start;
+		color: $main-bg;
+		gap: 5px;
+
+		li {
+			display: flex;
+			align-items: center;
+			background-color: $light-blue;
+			opacity: 0.8;
+			padding: 2px 5px 2px 2px;
+			border-radius: 15px;
+			gap: 5px;
+			transition: opacity 0.3s ease-in-out;
+
+			&.valid {
+				background-color: $not-valid;
+			}
+
+			.preview {
+				display: flex;
+				align-items: center;
+				gap: 5px;
+
+				img,
+				svg {
+					width: 35px;
+					height: 35px;
+					object-fit: cover;
+				}
+				img {
+					border-radius: 50%;
+				}
+				svg {
+					padding: 3px;
+				}
+
+				span {
+					font-size: 1.6rem;
+					font-weight: 500;
+					max-width: 150px;
+					overflow: hidden;
+					white-space: nowrap;
+					text-overflow: ellipsis;
+				}
+			}
+			.deleteBtn {
+				line-height: 0;
+				font-size: 2.5rem;
+				background-color: transparent;
+				color: inherit;
+			}
+
+			&:hover {
+				opacity: 1;
+			}
+		}
+	}
+}
