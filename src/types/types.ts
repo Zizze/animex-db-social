@@ -65,6 +65,7 @@ export interface IMessageFirebase {
 	message: string;
 	sender: boolean;
 	messageId?: string;
+	files: { id: string; name: string; type: string }[];
 }
 
 export interface ICommentFirebase {

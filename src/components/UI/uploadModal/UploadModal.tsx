@@ -3,7 +3,6 @@ import classes from "./UploadModal.module.scss";
 import { BsFillCloudArrowUpFill } from "react-icons/bs";
 import Image from "next/image";
 import { RiMovieLine, RiFile2Line, RiCloseFill } from "react-icons/ri";
-import { uploadFilesInStorage } from "@/services/firebase/uploadFilesInStorage";
 import ModalWrapper from "../modal/ModalWrapper";
 import cn from "classnames";
 

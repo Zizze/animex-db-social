@@ -14,6 +14,8 @@ import Loading from "@Components/UI/loading/Loading";
 import Image from "next/image";
 import defaultImage from "@Public/testava.jpg";
 import Link from "next/link";
+import { uploadFilesInStorage } from "@/services/firebase/uploadFilesInStorage";
+import Message from "./message/Message";
 
 const MESSAGES_LIMIT = 15;
 
@@ -54,7 +56,7 @@ const PersonalChat: FC<IProps> = ({ selectedUser, setSelectedUser }) => {
 	const onSubmitHandler = useCallback(
 		async (e: FormEvent) => {
 			e.preventDefault();
-			if (!messTxt.trim().length && !files.length) return;
+			if (!messTxt.trim().length && files.length < 1) return;
 
 			if (user && userProfile) {
 				try {
@@ -63,7 +65,18 @@ const PersonalChat: FC<IProps> = ({ selectedUser, setSelectedUser }) => {
 						senderId: user.uid,
 						receiverId: userProfile.id,
 						message: messTxt,
+						files: files.map((file) => ({
+							id: user.uid + file.size + file.name,
+							type: file.type,
+							name: file.name,
+						})),
 					});
+					if (files.length) {
+						for (const file of files) {
+							uploadFilesInStorage(file, user.uid + file.size + file.name);
+						}
+						setFiles([]);
+					}
 					setMessTxt("");
 				} catch {
 					popError("Error sending message.");
@@ -97,13 +110,10 @@ const PersonalChat: FC<IProps> = ({ selectedUser, setSelectedUser }) => {
 			)}
 			{!!selectedUser.length && (
 				<ul className={classes.chatList}>
-					{messages?.map(({ sender, message, timestamp }, index) => {
-						return (
-							<li className={cn(sender && classes.currUser)} key={timestamp?.toString() + index}>
-								<p>{message}</p>
-							</li>
-						);
-					})}
+					{messages?.map((message, index) => (
+						<Message messageObj={message} key={message.timestamp?.toString() + index} />
+					))}
+
 					{!isLastDocs && selectedUser.length && (
 						<DefaultBtn
 							classMode="clear"

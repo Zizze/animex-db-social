@@ -67,46 +67,6 @@
 		overflow-y: auto;
 		overflow-x: hidden;
 
-		li {
-			align-self: flex-start;
-			flex-shrink: 0;
-			margin: 0 20px 20px;
-			color: $light-blue;
-			max-width: 30vw;
-			font-weight: 400;
-			font-size: 1.8rem;
-			overflow: hidden;
-			background-color: $sidebar-bg;
-			border: 1px solid $light-blue;
-			border-radius: 20px;
-			padding: 10px;
-			overflow: hidden;
-
-			p {
-				word-wrap: normal;
-				overflow-wrap: break-word;
-				white-space: pre-wrap;
-			}
-
-			@media screen and (max-width: 700px) {
-				max-width: 50vw;
-				margin: 0 10px 10px;
-			}
-			@media screen and (max-width: 400px) {
-				max-width: 60vw;
-				font-size: 1.7rem;
-				margin: 0 5px 10px;
-			}
-		}
-		.currUser {
-			align-self: flex-end;
-			background-color: $light-blue;
-			border: 1px solid $light-blue;
-			color: $main-bg;
-			// p {
-
-			// }
-		}
 		.btnMore {
 			margin: 0 auto 20px;
 			padding: 10px 15px;

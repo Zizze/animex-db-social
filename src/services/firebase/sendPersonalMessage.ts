@@ -13,18 +13,24 @@ interface IPersonalMessage {
 	senderId: string;
 	receiverId: string;
 	message: string;
+	files: { name: string; type: string; id: string }[];
 }
 
-export const sendPersonalMessage = async ({ senderId, receiverId, message }: IPersonalMessage) => {
-	await sendBuilder({ senderId, receiverId, message, senderStatus: true });
-	await sendBuilder({ senderId, receiverId, message, senderStatus: false });
+export const sendPersonalMessage = async ({
+	senderId,
+	receiverId,
+	message,
+	files,
+}: IPersonalMessage) => {
+	await sendBuilder({ senderId, receiverId, message, senderStatus: true, files });
+	await sendBuilder({ senderId, receiverId, message, senderStatus: false, files });
 };
 
 interface ISendBuilder extends IPersonalMessage {
 	senderStatus: boolean;
 }
 
-async function sendBuilder({ senderId, receiverId, message, senderStatus }: ISendBuilder) {
+async function sendBuilder({ senderId, receiverId, message, senderStatus, files }: ISendBuilder) {
 	const sender = senderStatus ? senderId : receiverId;
 	const receiver = senderStatus ? receiverId : senderId;
 
@@ -43,5 +49,6 @@ async function sendBuilder({ senderId, receiverId, message, senderStatus }: ISen
 		timestamp: serverTimestamp(),
 		message: message.trim(),
 		sender: senderStatus ? true : false,
+		files,
 	});
 }
