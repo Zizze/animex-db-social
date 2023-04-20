@@ -36,20 +36,38 @@ const Message: FC<{ messageObj: IMessageFirebase }> = ({ messageObj }) => {
 			});
 	}, []);
 
+	const onlyImageFiles = filesPlusUrls?.filter((file) => file.type.includes("image"));
+
 	return (
 		<li className={cn(classes.message, sender && classes.currUser)}>
-			{filesPlusUrls && (
-				<ul className={classes.imagesList}>
-					{filesPlusUrls.map((file) => {
-						if (file.type.includes("image")) {
-							return (
-								<li>
-									<Image src={file.url} width={100} height={100} alt="" />
-								</li>
-							);
-						}
-					})}
-				</ul>
+			{onlyImageFiles && onlyImageFiles.length > 0 && (
+				<div className={classes.images}>
+					<Link href={onlyImageFiles[0].url} target="_blank" download>
+						<Image
+							className={classes.firstImage}
+							src={onlyImageFiles[0].url}
+							width={300}
+							height={300}
+							alt=""
+						/>
+					</Link>
+
+					{onlyImageFiles.length > 1 && (
+						<ul className={classes.imagesList}>
+							{onlyImageFiles.slice(1).map((file) => {
+								if (file.type.includes("image")) {
+									return (
+										<li>
+											<Link href={file.url} target="_blank" download>
+												<Image src={file.url} width={300} height={300} alt="" />
+											</Link>
+										</li>
+									);
+								}
+							})}
+						</ul>
+					)}
+				</div>
 			)}
 
 			<p>{message}</p>
