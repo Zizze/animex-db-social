@@ -1,3 +1,4 @@
+import { IFileFirebase } from "@/types/types";
 import { db } from "@Project/firebase";
 import {
 	addDoc,
@@ -13,7 +14,7 @@ interface IPersonalMessage {
 	senderId: string;
 	receiverId: string;
 	message: string;
-	files: { name: string; type: string; id: string }[];
+	files: IFileFirebase[];
 }
 
 export const sendPersonalMessage = async ({

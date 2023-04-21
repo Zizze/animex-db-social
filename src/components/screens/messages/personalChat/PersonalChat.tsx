@@ -2,7 +2,7 @@ import { FC, FormEvent, useState, useMemo, useCallback, SetStateAction, Dispatch
 import classes from "./PersonalChat.module.scss";
 import cn from "classnames";
 import { useAuthContext } from "@/context/useAuthContext";
-import { IMessageFirebase, IUserFirebase, IFriendFirebase } from "@/types/types";
+import { IMessageFirebase, IUserFirebase, IFriendFirebase, IFileFirebase } from "@/types/types";
 import DefaultBtn from "@Components/UI/btn/DefaultBtn";
 import TextAreaForm from "@Components/UI/textareaForm/TextAreaForm";
 import { messagesSettingsOptions } from "@Components/layout/header/userSettings/settingsOptions.data";
@@ -61,22 +61,26 @@ const PersonalChat: FC<IProps> = ({ selectedUser, setSelectedUser }) => {
 			if (user && userProfile) {
 				try {
 					setIsSending(true);
+
+					const filesMainInfo: IFileFirebase[] = [];
+					if (files.length) {
+						for (const file of files) {
+							const fileObj = await uploadFilesInStorage(
+								file,
+								user.uid + userProfile.id + file.size + file.name
+							);
+							fileObj && filesMainInfo.push(fileObj);
+						}
+						setFiles([]);
+					}
+
 					await sendPersonalMessage({
 						senderId: user.uid,
 						receiverId: userProfile.id,
 						message: messTxt,
-						files: files.map((file) => ({
-							id: user.uid + file.size + file.name,
-							type: file.type,
-							name: file.name,
-						})),
+						files: filesMainInfo,
 					});
-					if (files.length) {
-						for (const file of files) {
-							uploadFilesInStorage(file, user.uid + file.size + file.name);
-						}
-						setFiles([]);
-					}
+
 					setMessTxt("");
 				} catch {
 					popError("Error sending message.");
@@ -85,7 +89,7 @@ const PersonalChat: FC<IProps> = ({ selectedUser, setSelectedUser }) => {
 				}
 			}
 		},
-		[user?.uid, userProfile?.id, messTxt]
+		[user?.uid, userProfile?.id, messTxt, files]
 	);
 
 	const friendStatus = useMemo(() => userInFriends?.friend || null, [userInFriends]);
@@ -108,6 +112,7 @@ const PersonalChat: FC<IProps> = ({ selectedUser, setSelectedUser }) => {
 					</Link>
 				</div>
 			)}
+
 			{!!selectedUser.length && (
 				<ul className={classes.chatList}>
 					{messages?.map((message, index) => (
