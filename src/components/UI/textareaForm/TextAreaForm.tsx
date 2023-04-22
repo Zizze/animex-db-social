@@ -29,7 +29,7 @@ interface IProps {
 	onEnter?: boolean;
 	children?: ReactNode;
 	minLenght?: number;
-	filesProps: {
+	filesProps?: {
 		files: File[];
 		setFiles: Dispatch<SetStateAction<File[]>>;
 		onlyImage?: boolean;

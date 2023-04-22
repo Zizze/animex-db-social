@@ -21,7 +21,6 @@ const Item: FC<IProps> = ({ anime, personalRate }) => {
 	const [image, setImage] = useState<string | StaticImageData>(images.jpg.large_image_url);
 	const [smallImage, setSmallImage] = useState<string | StaticImageData>(images.jpg.image_url);
 
-	console.log("render");
 	return (
 		<li className={classes.anime}>
 			{personalRate && asPath.includes("my-list") && (

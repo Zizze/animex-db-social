@@ -107,6 +107,7 @@ export interface ISupportFirebase {
 	closed: boolean;
 	answers?: ISupportAnswerFirebase[];
 	docId: string;
+	files: IFileFirebase[];
 }
 
 export interface ISupportAnswerFirebase {

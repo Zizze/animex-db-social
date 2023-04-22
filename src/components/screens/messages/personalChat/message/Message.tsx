@@ -11,7 +11,7 @@ const Message: FC<{ messageObj: IMessageFirebase }> = ({ messageObj }) => {
 	const { message, sender, files } = messageObj;
 
 	const onlyImageFiles = files?.filter((file) => file.type.includes("image"));
-	console.log(files);
+
 	return (
 		<li className={cn(classes.message, sender && classes.currUser)}>
 			{onlyImageFiles && !!onlyImageFiles.length && (
@@ -29,15 +29,13 @@ const Message: FC<{ messageObj: IMessageFirebase }> = ({ messageObj }) => {
 					{onlyImageFiles.length > 1 && (
 						<ul className={classes.imagesList}>
 							{onlyImageFiles.slice(1).map((file, index) => {
-								if (file.type.includes("image")) {
-									return (
-										<li key={file.name + index}>
-											<Link href={file.downloadURL} target="_blank" download>
-												<Image src={file.downloadURL} width={500} height={300} alt="" />
-											</Link>
-										</li>
-									);
-								}
+								return (
+									<li key={file.name + index}>
+										<Link href={file.downloadURL} target="_blank" download>
+											<Image src={file.downloadURL} width={500} height={300} alt="" />
+										</Link>
+									</li>
+								);
 							})}
 						</ul>
 					)}

@@ -3,7 +3,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## Anime Database
 
 This project is a database of anime that was created for practice and as an interesting project for me to develop for almost three and a half months.
-During this project, I became familiar with rtk query, Next.js, Firebase, and other libraries. The following technologies were used: Next.js, Redux Toolkit (rtk query), Firebase (back-end), SCSS modules, and TypeScript. The project includes features such as registration, adding friends, a general chat, personal watched lists, personal rating, comments, messages, profile, admin panel, personal settings, and many other features.
+During this project, I became familiar with rtk query, Next.js, Firebase, and other libraries. The following technologies were used: Next.js, Redux Toolkit (rtk query), Firebase (back-end), SCSS modules, and TypeScript. The project includes features such as registration, adding friends, a general chat, personal watched lists, personal rating, comments, messages, profile, admin panel, mass mailing, support, block - unblock users, admins action, personal settings, and many other features.
 
 As you can see, there are no commits for the first 2-3 months, all because of the operating system failure, and since the project was locally stored, the commits were lost and couldn't be restored.
 

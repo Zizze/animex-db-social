@@ -18,6 +18,8 @@ import { sendEmail } from "@/services/emailJS";
 import { popMessage } from "@/utils/popMessage/popMessage";
 import Loading from "@Components/UI/loading/Loading";
 import { useRealtimeDoc } from "@/hooks/firebase/useRealtimeDoc";
+import ModalWrapper from "@Components/UI/modal/ModalWrapper";
+import BigImage from "./bigImage/BigImage";
 
 interface UserWithSupportMess {
 	info: IUserFirebase;
@@ -38,6 +40,8 @@ const Message: FC<{ message: ISupportFirebase }> = ({ message }) => {
 	const { popError, popSuccess, ctxMessage } = popMessage();
 	const [isLoading, setIsLoading] = useState(true);
 	const [hideMess, setHideMess] = useState(false);
+
+	const [showFullImage, setShowFullImage] = useState({ url: "", visible: false });
 
 	useEffect(() => {
 		const getAdminProfileWithMessage = async () => {
@@ -104,10 +108,22 @@ const Message: FC<{ message: ISupportFirebase }> = ({ message }) => {
 		setHideMess(true);
 	};
 
+	const imageFullScreen = (imageUrl: string) => {
+		setShowFullImage({ url: imageUrl, visible: true });
+	};
+
 	return (
 		<>
 			{ctxMessage}
 			{isLoading && <Loading />}
+			{showFullImage.visible && (
+				<ModalWrapper
+					onClickHandler={() => setShowFullImage((prev) => ({ ...prev, visible: false }))}
+				>
+					<BigImage imageUrl={showFullImage.url} />
+				</ModalWrapper>
+			)}
+
 			{!hideMess && (
 				<li className={cn(classes.message, showInfo && classes.visible)}>
 					<div className={classes.theme}>
@@ -140,6 +156,21 @@ const Message: FC<{ message: ISupportFirebase }> = ({ message }) => {
 					</div>
 					<div className={classes.main}>
 						<p className={classes.userText}>{message.message}</p>
+
+						{mess?.files && mess?.files.length && (
+							<ul className={classes.imagesList}>
+								{mess.files.map((file) => {
+									return (
+										<li key={file.downloadURL}>
+											<button onClick={() => imageFullScreen(file.downloadURL)}>
+												<Image src={file.downloadURL} width={500} height={300} alt="" />
+											</button>
+										</li>
+									);
+								})}
+							</ul>
+						)}
+
 						{!message.closed && (
 							<TextAreaForm
 								classes={{ cnForm: classes.textAreaForm, cnEmoji: classes.emojiWindow }}

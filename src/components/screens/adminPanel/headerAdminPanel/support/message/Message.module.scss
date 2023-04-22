@@ -44,6 +44,51 @@
 		opacity: 0;
 		transition: all 0.3s ease-in-out;
 
+		.imagesList {
+			display: inline-flex;
+			align-items: center;
+
+			background-color: $modal-back;
+			border-radius: 10px;
+			border: 1px solid $black-main;
+			padding: 10px;
+			gap: 10px;
+			margin-bottom: 10px;
+
+			@media screen and (max-width: 650px) {
+				flex-wrap: wrap;
+
+				li {
+					flex-grow: 1;
+					flex-basis: calc(50% - 5px);
+					button {
+						// height: auto;
+						width: 100%;
+					}
+				}
+			}
+
+			li {
+				border-radius: 5px;
+				border: 1px solid $white-main;
+				overflow: hidden;
+
+				button {
+					display: block;
+					height: 150px;
+					max-width: 300px;
+					@media screen and (max-width: 800px) {
+						height: 100px;
+					}
+
+					img {
+						width: 100%;
+						height: 100%;
+						object-fit: cover;
+					}
+				}
+			}
+		}
 		.userText {
 			overflow-wrap: anywhere;
 			margin-bottom: 10px;
