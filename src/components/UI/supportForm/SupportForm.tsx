@@ -9,6 +9,9 @@ import { useTextField } from "@/hooks/useTextField";
 import { popMessage } from "@/utils/popMessage/popMessage";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@Project/firebase";
+import { IFileFirebase } from "@/types/types";
+import { uploadFilesInStorage } from "@/services/firebase/uploadFilesInStorage";
+import Loading from "../loading/Loading";
 
 interface ISupportForm {
 	setIsActiveSupport: Dispatch<SetStateAction<boolean>>;
@@ -17,10 +20,13 @@ interface ISupportForm {
 
 const SupportForm: FC<ISupportForm> = ({ setIsActiveSupport, isActiveSupport }) => {
 	const { user } = useAuthContext();
-	const { popSuccess, popError, ctxMessage } = popMessage();
+
 	const [emailChekbox, setEmailChekbox] = useState<string | boolean>(false);
 	const [message, setMessage] = useState("");
 	const [files, setFiles] = useState<File[]>([]);
+
+	const { popSuccess, popError, ctxMessage } = popMessage();
+	const [isLoading, setIsLoading] = useState(false);
 
 	const {
 		value: title,
@@ -44,6 +50,18 @@ const SupportForm: FC<ISupportForm> = ({ setIsActiveSupport, isActiveSupport }) 
 
 		if ((emailError === "" || emailChekbox) && titleError === "" && message.length >= 20) {
 			try {
+				setIsLoading(true);
+
+				const filesMainInfo: IFileFirebase[] = [];
+				if (files.length) {
+					for (const file of files) {
+						const uniqFileName = user.uid + Math.random() + file.size + file.name;
+						const fileObj = await uploadFilesInStorage(file, uniqFileName);
+						fileObj && filesMainInfo.push(fileObj);
+					}
+					setFiles([]);
+				}
+
 				await addDoc(collection(db, "support"), {
 					email: emailChekbox ? user.email : email,
 					title,
@@ -52,7 +70,9 @@ const SupportForm: FC<ISupportForm> = ({ setIsActiveSupport, isActiveSupport }) 
 					closed: false,
 					answer: [],
 					timestamp: serverTimestamp(),
+					files: filesMainInfo,
 				});
+
 				popSuccess("Message sent successfully.");
 
 				setFirstChangeEmail(false);
@@ -64,6 +84,8 @@ const SupportForm: FC<ISupportForm> = ({ setIsActiveSupport, isActiveSupport }) 
 				setEmailChekbox(false);
 			} catch {
 				popError("Sent error.");
+			} finally {
+				setIsLoading(false);
 			}
 		}
 	};
@@ -75,8 +97,10 @@ const SupportForm: FC<ISupportForm> = ({ setIsActiveSupport, isActiveSupport }) 
 	return (
 		<>
 			{ctxMessage}
+
 			{isActiveSupport && (
 				<ModalWrapper onClickHandler={() => setIsActiveSupport(false)}>
+					{isLoading && <Loading />}
 					<div className={classes.container}>
 						<p className={classes.descr}>
 							If you encounter a problem, write to us and we will answer you by
@@ -89,9 +113,7 @@ const SupportForm: FC<ISupportForm> = ({ setIsActiveSupport, isActiveSupport }) 
 							placeholder="Enter message..."
 							onSubmitHandler={onSubmitHandler}
 							minLenght={20}
-							uploadFisible={true}
-							files={files}
-							setFiles={setFiles}
+							filesProps={{ files, setFiles, onlyImage: true }}
 						>
 							<div className={classes.titleWrapper}>
 								<p className={classes.textField}>{titleError}</p>

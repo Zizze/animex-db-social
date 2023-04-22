@@ -20,7 +20,7 @@ const Message: FC<{ messageObj: IMessageFirebase }> = ({ messageObj }) => {
 						<Image
 							className={classes.firstImage}
 							src={onlyImageFiles[0].downloadURL}
-							width={300}
+							width={1000}
 							height={300}
 							alt=""
 						/>
@@ -33,7 +33,7 @@ const Message: FC<{ messageObj: IMessageFirebase }> = ({ messageObj }) => {
 									return (
 										<li key={file.name + index}>
 											<Link href={file.downloadURL} target="_blank" download>
-												<Image src={file.downloadURL} width={300} height={300} alt="" />
+												<Image src={file.downloadURL} width={500} height={300} alt="" />
 											</Link>
 										</li>
 									);

@@ -140,9 +140,7 @@ const PersonalChat: FC<IProps> = ({ selectedUser, setSelectedUser }) => {
 						text={messTxt}
 						setText={setMessTxt}
 						placeholder="Your message..."
-						uploadFisible={true}
-						files={files}
-						setFiles={setFiles}
+						filesProps={{ files, setFiles }}
 					/>
 				) : (
 					selectedUser !== "AnimeX" && (

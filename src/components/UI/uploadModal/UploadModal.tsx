@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, FormEvent, useState, DragEvent, Dispatch, SetStateAction } from "react";
+import { ChangeEvent, FC, DragEvent, Dispatch, SetStateAction } from "react";
 import classes from "./UploadModal.module.scss";
 import { BsFillCloudArrowUpFill } from "react-icons/bs";
 import Image from "next/image";
@@ -10,9 +10,10 @@ interface IProps {
 	files: File[];
 	setFiles: Dispatch<SetStateAction<File[]>>;
 	setIsShowUpload: Dispatch<SetStateAction<boolean>>;
+	onlyImage?: boolean;
 }
 
-const UploadModal: FC<IProps> = ({ files, setFiles, setIsShowUpload }) => {
+const UploadModal: FC<IProps> = ({ files, setFiles, setIsShowUpload, onlyImage = false }) => {
 	const imagesChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files.length > 0) {
 			const fileList = e.target.files;
@@ -47,7 +48,7 @@ const UploadModal: FC<IProps> = ({ files, setFiles, setIsShowUpload }) => {
 					<BsFillCloudArrowUpFill className={classes.fileIco} />
 					<input
 						multiple={true}
-						accept="*/*"
+						accept={onlyImage ? "image/*" : "*/*"}
 						type="file"
 						name="upload file"
 						onChange={(e) => imagesChange(e)}

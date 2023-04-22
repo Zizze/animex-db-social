@@ -29,9 +29,11 @@ interface IProps {
 	onEnter?: boolean;
 	children?: ReactNode;
 	minLenght?: number;
-	uploadFisible?: boolean;
-	files?: File[];
-	setFiles?: Dispatch<SetStateAction<File[]>>;
+	filesProps: {
+		files: File[];
+		setFiles: Dispatch<SetStateAction<File[]>>;
+		onlyImage?: boolean;
+	};
 }
 interface classnames {
 	cnForm: string;
@@ -53,9 +55,7 @@ const TextAreaForm: FC<IProps> = ({
 	onEnter = true,
 	children,
 	minLenght = 0,
-	uploadFisible = false,
-	files,
-	setFiles,
+	filesProps,
 }) => {
 	const formRef = useRef<HTMLFormElement>(null);
 	const [pressEnter, setPressEnter] = useState<boolean>(false);
@@ -106,7 +106,7 @@ const TextAreaForm: FC<IProps> = ({
 				<div className={styles.textAreaWrapper}>
 					{messErr && <p className={styles.textField}>{messErr}</p>}
 					<ReactTextareaAutosize
-						className={cn(checkedClass.cnTextarea, uploadFisible && styles.upload)}
+						className={cn(checkedClass.cnTextarea, filesProps && styles.upload)}
 						value={text}
 						onChange={(e) => onChangeText(e)}
 						placeholder={placeholder}
@@ -115,7 +115,7 @@ const TextAreaForm: FC<IProps> = ({
 						onKeyDown={onPressEnter}
 					/>
 					<div className={checkedClass.cnBtns}>
-						{uploadFisible && (
+						{filesProps && (
 							<button
 								className={checkedClass.cnBtnSmile}
 								type="button"
@@ -151,8 +151,13 @@ const TextAreaForm: FC<IProps> = ({
 					)}
 				</div>
 			</form>
-			{isShowUpload && files && setFiles && (
-				<UploadModal setFiles={setFiles} files={files} setIsShowUpload={setIsShowUpload} />
+			{isShowUpload && filesProps && (
+				<UploadModal
+					setFiles={filesProps.setFiles}
+					files={filesProps.files}
+					setIsShowUpload={setIsShowUpload}
+					onlyImage={filesProps.onlyImage}
+				/>
 			)}
 		</>
 	);

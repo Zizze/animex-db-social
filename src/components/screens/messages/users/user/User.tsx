@@ -120,7 +120,9 @@ const User: FC<IProps> = ({
 							{latestMessage && <span>{lastSentDate}</span>}
 						</div>
 						<div className={classes.complement}>
-							{latestMessage && latestMessage[0] && <p>{latestMessage[0].message}</p>}
+							{latestMessage && latestMessage[0] && (
+								<p>{latestMessage[0].message.length ? latestMessage[0].message : "Files"}</p>
+							)}
 							{newMessCounter && selectedUser !== userProfile?.id && <span>{newMessCounter}</span>}
 						</div>
 					</div>
