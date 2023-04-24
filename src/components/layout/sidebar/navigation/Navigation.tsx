@@ -24,7 +24,12 @@ const Navigation: FC<IProps> = ({ setHideSidebar }) => {
 				dispatch(changeHomeMode(mainItem.name));
 			}
 		});
-	}, []);
+		userNavData.forEach((mainItem) => {
+			if (currentPath === mainItem.href) {
+				dispatch(changeHomeMode(mainItem.name));
+			}
+		});
+	}, [currentPath]);
 
 	const onClickHandler = useCallback(() => {
 		const screenWidth = window.screen.width <= 1071;

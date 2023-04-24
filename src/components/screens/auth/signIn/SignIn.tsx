@@ -31,7 +31,7 @@ const SignIn = () => {
 
 		try {
 			const signIn = await signInWithEmailAndPassword(auth, email, pass);
-			onClickHandler();
+			location.reload();
 		} catch {
 			setUserError(true);
 		}

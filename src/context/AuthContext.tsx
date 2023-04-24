@@ -5,7 +5,6 @@ import { doc, onSnapshot } from "firebase/firestore";
 import Cookies from "js-cookie";
 import isEqual from "lodash.isequal";
 import sortBy from "lodash.sortby";
-import { useRouter } from "next/router";
 import {
 	createContext,
 	FC,
@@ -28,28 +27,31 @@ export const AuthContext = createContext<IContext>({} as IContext);
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 	const [user, setUser] = useState<User | null>(null);
 	const [userStorage, setUserStorage] = useState<IUserFirebase | null>(null);
-	const router = useRouter();
 	const getUserCookies = Cookies.get("userDB");
 
 	useEffect(() => {
-		if (user) {
-			const userRef = doc(db, `users/${user.uid}`);
-			const unsub = onSnapshot(userRef, (doc) => {
-				const cookieData = getUserCookies && JSON.parse(decodeURIComponent(getUserCookies));
-				const userData = doc.data() as IUserFirebase;
+		if (!user) return;
 
-				if (!getUserCookies || !isEqual(sortBy(userData), sortBy(cookieData))) {
-					Cookies.set("userDB", encodeURIComponent(JSON.stringify(doc.data())));
-				}
-
-				setUserStorage(userData);
+		const userRef = doc(db, `users/${user.uid}`);
+		const unsub = onSnapshot(userRef, (doc) => {
+			const cookieData = getUserCookies && JSON.parse(decodeURIComponent(getUserCookies));
+			const userData = doc.data() as IUserFirebase;
+			const dataForCookie = JSON.stringify({
+				access: userData.access,
+				blocked: userData.blocked,
 			});
 
-			return () => unsub();
-		} else {
-			userStorage && setUserStorage(null);
-			getUserCookies && Cookies.remove("userDB");
-		}
+			const date = new Date();
+			date.setMonth(date.getMonth() + 1);
+
+			if (!getUserCookies || !isEqual(sortBy(userData), sortBy(cookieData))) {
+				Cookies.set("userDB", encodeURIComponent(dataForCookie), { expires: date });
+			}
+
+			setUserStorage(userData);
+		});
+
+		return () => unsub();
 	}, [user]);
 
 	useEffect(() => {
@@ -58,8 +60,9 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 			if (authUser) {
 				setUser(authUser);
 			} else {
-				router.push("/");
 				setUser(null);
+				setUserStorage(null);
+				Cookies.remove("userDB");
 			}
 		});
 		return () => {

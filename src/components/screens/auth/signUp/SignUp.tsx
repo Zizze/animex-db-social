@@ -58,8 +58,8 @@ const SignUp = () => {
 				email: email.toLowerCase(),
 			});
 
-			onClickHandler();
 			setUserExist(null);
+			location.reload();
 		} catch {}
 	};
 
