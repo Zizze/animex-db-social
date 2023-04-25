@@ -8,11 +8,10 @@ import cn from "classnames";
 import { auth } from "@Project/firebase";
 import { useTextField } from "@/hooks/useTextField";
 import Meta from "@Components/seo/Meta";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { changeHomeMode } from "@Store/animeJikan/animeJikanSlice";
+import { useAuthContext } from "@/context/useAuthContext";
 
 const SignIn = () => {
-	const dispatch = useAppDispatch();
+	const { user } = useAuthContext();
 
 	const {
 		value: email,
@@ -36,8 +35,6 @@ const SignIn = () => {
 		try {
 			const signIn = await signInWithEmailAndPassword(auth, email, pass);
 
-			dispatch(changeHomeMode("Home"));
-			await router.push("/");
 			location.reload();
 		} catch {
 			setUserError(true);
@@ -51,6 +48,10 @@ const SignIn = () => {
 	const onClickHandler = () => {
 		router.push("/");
 	};
+
+	useEffect(() => {
+		if (user) onClickHandler();
+	}, []);
 
 	return (
 		<>

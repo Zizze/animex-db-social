@@ -10,13 +10,12 @@ import { useTextField } from "@/hooks/useTextField";
 import { checkExistingUser } from "@/services/firebase/checkExistingUser";
 import cn from "classnames";
 import Meta from "@Components/seo/Meta";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { changeHomeMode } from "@Store/animeJikan/animeJikanSlice";
+import { useAuthContext } from "@/context/useAuthContext";
 
 const SignUp = () => {
 	const [userExist, setUserExist] = useState<string | null>(null);
 	const [passMiss, setPassMiss] = useState(false);
-	const dispatch = useAppDispatch();
+	const { user } = useAuthContext();
 
 	const {
 		value: name,
@@ -63,8 +62,6 @@ const SignUp = () => {
 
 			setUserExist(null);
 
-			dispatch(changeHomeMode("Home"));
-			await router.push("/");
 			location.reload();
 		} catch {}
 	};
@@ -76,6 +73,10 @@ const SignUp = () => {
 	const onClickHandler = () => {
 		router.push("/");
 	};
+
+	useEffect(() => {
+		if (user) onClickHandler();
+	}, []);
 
 	return (
 		<>
