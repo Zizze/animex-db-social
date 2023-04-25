@@ -1,12 +1,17 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { IUserFirebase } from "@/types/types";
 import { Timestamp } from "firebase/firestore";
+
+interface ICookieProps {
+	name: string;
+	access: number;
+	blocked: { endBan: Timestamp } | null;
+}
 
 export function middleware(request: NextRequest) {
 	const userCookie = request.cookies.get("userDB")?.value;
 	const decoder = userCookie && decodeURIComponent(userCookie);
-	const user: IUserFirebase | null = decoder ? JSON.parse(decoder) : null;
+	const user: ICookieProps | null = decoder ? JSON.parse(decoder) : null;
 
 	const pathRegExp =
 		/^\/(|admin-panel|my-list|profile|profile\/[^/]*|profile-edit|messages|friends)(\/|$)/;
