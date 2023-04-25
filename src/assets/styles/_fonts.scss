@@ -1,0 +1,62 @@
+@font-face {
+	font-family: "Nunito";
+	font-style: normal;
+	font-weight: 300;
+	src: local("Nunito Light"), local("Nunito-Light"),
+		url("../../../public/fonts/Nunito/Nunito-Light.woff2") format("woff2"),
+		url("../../../public/fonts/Nunito/Nunito-Light.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Nunito";
+	font-style: normal;
+	font-weight: 400;
+	src: local("Nunito Regular"), local("Nunito-Regular"),
+		url("../../../public/fonts/Nunito/Nunito-Regular.woff2") format("woff2"),
+		url("../../../public/fonts/Nunito/Nunito-Regular.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Nunito";
+	font-style: normal;
+	font-weight: 500;
+	src: local("Nunito Medium"), local("Nunito-Medium"),
+		url("../../../public/fonts/Nunito/Nunito-Medium.woff2") format("woff2"),
+		url("../../../public/fonts/Nunito/Nunito-Medium.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Nunito";
+	font-style: normal;
+	font-weight: 600;
+	src: local("Nunito SemiBold"), local("Nunito-SemiBold"),
+		url("../../../public/fonts/Nunito/Nunito-SemiBold.woff2") format("woff2"),
+		url("../../../public/fonts/Nunito/Nunito-SemiBold.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Nunito";
+	font-style: normal;
+	font-weight: 700;
+	src: local("Nunito Bold"), local("Nunito-Bold"),
+		url("../../../public/fonts/Nunito/Nunito-Bold.woff2") format("woff2"),
+		url("../../../public/fonts/Nunito/Nunito-Bold.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Nunito";
+	font-style: normal;
+	font-weight: 800;
+	src: local("Nunito ExtraBold"), local("Nunito-ExtraBold"),
+		url("../../../public/fonts/Nunito/Nunito-ExtraBold.woff2") format("woff2"),
+		url("../../../public/fonts/Nunito/Nunito-ExtraBold.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Nunito";
+	font-style: normal;
+	font-weight: 900;
+	src: local("Nunito Black"), local("Nunito-Black"),
+		url("../../../public/fonts/Nunito/Nunito-Black.woff2") format("woff2"),
+		url("../../../public/fonts/Nunito/Nunito-Black.woff") format("woff");
+}
