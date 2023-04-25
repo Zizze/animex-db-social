@@ -8,8 +8,12 @@ import cn from "classnames";
 import { auth } from "@Project/firebase";
 import { useTextField } from "@/hooks/useTextField";
 import Meta from "@Components/seo/Meta";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { changeHomeMode } from "@Store/animeJikan/animeJikanSlice";
 
 const SignIn = () => {
+	const dispatch = useAppDispatch();
+
 	const {
 		value: email,
 		onChange: emailOnChange,
@@ -31,6 +35,9 @@ const SignIn = () => {
 
 		try {
 			const signIn = await signInWithEmailAndPassword(auth, email, pass);
+
+			dispatch(changeHomeMode("Home"));
+			await router.push("/");
 			location.reload();
 		} catch {
 			setUserError(true);
