@@ -1,14 +1,13 @@
 @import "@Assets/styles/variables";
-
-.singin {
+.signin {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	color: $light-blue;
 	border: 1px solid $light-blue;
 	font-weight: 500;
-	border-radius: 10px;
-	height: 45px;
+	border-radius: 9px;
+	height: 50px;
 	width: 100px;
 	transition: all 0.3s ease-in-out;
 	background-color: $sidebar-bg;
@@ -18,6 +17,18 @@
 		color: $black-main;
 		background-color: $light-blue;
 		border-color: $black-main;
+	}
+	@media screen and (max-width: 550px) {
+		margin-bottom: 10px;
+		font-size: 1.8rem;
+		height: auto;
+		width: auto;
+		padding: 10px 15px;
+		border-radius: 7px;
+		@media screen and (max-width: 500px) {
+			padding: 5px 10px;
+			font-size: 1.7rem;
+		}
 	}
 }
 

@@ -49,7 +49,7 @@ const UserControl: FC<IProps> = ({ setActiveSetings }) => {
 					</MiniModal>
 				</div>
 			) : (
-				<Link href="/auth/signin" className={classes.singin}>
+				<Link href="/auth/signin" className={classes.signin}>
 					Sign In
 				</Link>
 			)}
