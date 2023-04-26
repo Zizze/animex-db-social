@@ -37,7 +37,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 			const cookieData = getUserCookies && JSON.parse(decodeURIComponent(getUserCookies));
 			const userData = doc.data() as IUserFirebase;
 			const dataForCookie = JSON.stringify({
-				name: userData.name,
+				name: user.displayName,
 				access: userData.access || 0,
 				blocked: { endBan: userData.blocked?.endBan } || null,
 			});

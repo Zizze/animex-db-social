@@ -18,7 +18,7 @@ interface IUseTextFieldReturn {
 }
 
 const numLettOnlyRegExp = /^[a-zA-Z0-9]+$/i;
-const emailValidationRegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const emailValidationRegExp = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const whiteSpacesRegExp = /\s/g;
 
 export const useTextField = ({
