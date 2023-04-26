@@ -40,7 +40,9 @@ const AnimeDetails: FC<{ animeId: number }> = ({ animeId }) => {
 	} = useRealtimeDoc<IAnimeFirebase>(animeinUserDbPath, !user);
 
 	const onClickHandler = async (category: string) => {
-		if (!user || !anime) return;
+		if (!anime) return;
+		if (!user) return router.push("/auth/signin");
+
 		try {
 			if (animeInUserDb) {
 				await updateDoc(doc(db, animeinUserDbPath), { animeState: category.toLowerCase() });
@@ -61,7 +63,8 @@ const AnimeDetails: FC<{ animeId: number }> = ({ animeId }) => {
 	};
 
 	const onClickClearHandler = async () => {
-		if (!user || !anime) return;
+		if (!anime) return;
+		if (!user) return router.push("/auth/signin");
 		try {
 			await deleteDoc(doc(db, animeinUserDbPath));
 			popSuccess("Anime deleted.");
