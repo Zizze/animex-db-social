@@ -1,6 +1,5 @@
 import { FC, useState, useEffect } from "react";
 import classes from "./AnimeDetails.module.scss";
-import Layout from "@Components/layout/Layout";
 import CategoryBtn from "@Components/UI/btn/CategoryBtn";
 import { doc, setDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { useAuthContext } from "@/context/useAuthContext";

@@ -69,13 +69,15 @@ const Comments: FC<{ animeId: number }> = ({ animeId }) => {
 		<div className={classes.wrapper}>
 			{ctxMessage}
 			{isLoading && <Loading />}
-			<TextAreaForm
-				onSubmitHandler={onSubmitHandler}
-				text={commentTxt}
-				setText={setCommentTxt}
-				placeholder="Your comment..."
-				classes={{ cnForm: classes.textForm }}
-			/>
+			{user && (
+				<TextAreaForm
+					onSubmitHandler={onSubmitHandler}
+					text={commentTxt}
+					setText={setCommentTxt}
+					placeholder="Your comment..."
+					classes={{ cnForm: classes.textForm }}
+				/>
+			)}
 			{commentTxt.length > 0 && (
 				<Checkbox
 					name="Is your comment a spoiler?"

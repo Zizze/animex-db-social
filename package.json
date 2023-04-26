@@ -28,7 +28,6 @@
 		"@types/react-highlight-words": "^0.16.4",
 		"@types/react-star-rating-component": "^1.4.1",
 		"antd": "^5.1.5",
-		"axios": "^1.2.3",
 		"classnames": "^2.3.2",
 		"emoji-mart": "^5.5.2",
 		"firebase": "^9.16.0",
