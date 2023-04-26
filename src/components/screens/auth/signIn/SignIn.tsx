@@ -51,7 +51,7 @@ const SignIn = () => {
 
 	useEffect(() => {
 		if (user) onClickHandler();
-	}, []);
+	}, [user]);
 
 	return (
 		<>

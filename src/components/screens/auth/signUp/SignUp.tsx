@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { FormEvent, useState, useEffect } from "react";
 import classes from "./SignUp.module.scss";
 import Link from "next/link";
-import { doc, setDoc } from "firebase/firestore";
+import { addDoc, collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { auth, db } from "@Project/firebase";
 import { useTextField } from "@/hooks/useTextField";
 import { checkExistingUser } from "@/services/firebase/checkExistingUser";
@@ -51,6 +51,7 @@ const SignUp = () => {
 
 		try {
 			const { user } = await createUserWithEmailAndPassword(auth, email, password);
+			const userMessagePathForAnimex = `users/${user.uid}/messages/AnimeX`;
 			if (auth.currentUser) await updateProfile(auth.currentUser, { displayName: name });
 
 			await setDoc(doc(db, "users", user.uid), {
@@ -58,6 +59,20 @@ const SignUp = () => {
 				name: user.displayName,
 				name_lowercase: user.displayName?.toLowerCase(),
 				email: email.toLowerCase(),
+				access: 1, //each user is a moderator (if not needed, enter 0)
+			});
+
+			await setDoc(doc(db, userMessagePathForAnimex), {
+				id: "AnimeX",
+				lastUpdate: serverTimestamp(),
+			});
+
+			await addDoc(collection(db, userMessagePathForAnimex + "/data"), {
+				checked: false,
+				sender: false,
+				timestamp: serverTimestamp(),
+				message:
+					"Hello and welcome! Thank you for joining us. We're glad to have you here and look forward to your contributions. If you have any questions or need any assistance, feel free to reach out to support.",
 			});
 
 			setUserExist(null);
@@ -76,7 +91,7 @@ const SignUp = () => {
 
 	useEffect(() => {
 		if (user) onClickHandler();
-	}, []);
+	}, [user]);
 
 	return (
 		<>
