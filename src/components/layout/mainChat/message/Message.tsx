@@ -51,6 +51,8 @@ const Message: FC<IProps> = ({ message, setAnswerToUser, popError, popSuccess })
 		setAnswerToUser((prev) => [...prev.filter((user) => user.trim() !== author.name), author.name]);
 	};
 
+	const checkUserAccess = userStorage?.access && userStorage.access >= (author?.access || 0);
+
 	return (
 		<>
 			{!isDeleted && (
@@ -74,8 +76,7 @@ const Message: FC<IProps> = ({ message, setAnswerToUser, popError, popSuccess })
 								</button>
 							)}
 
-							{(user?.uid === author?.id ||
-								(userStorage?.access || 0) >= (author?.access || 0)) && (
+							{(user?.uid === author?.id || checkUserAccess) && (
 								<button title="delete" onClick={onDeleteHandler}>
 									<MdDelete />
 								</button>
