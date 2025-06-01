@@ -28,7 +28,7 @@ const Home: FC = () => {
 		sort: "asc",
 		activePage,
 		status,
-		type: "movie tv ",
+		// type: "movie tv ",
 		startDate,
 	});
 
