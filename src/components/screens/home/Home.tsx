@@ -58,12 +58,18 @@ const Home: FC = () => {
 				{error && <p className={classes.errLoading}>Error loading anime.</p>}
 				{!error && <Items allAnimeJikan={data?.data} />}
 			</div>
-			<Pagination
-				onChangePage={onChangePage}
-				pageCount={pagination.last}
-				thisPage={pagination.current}
-				existNextPage={existNextPageConditions}
-			/>
+			{data?.pagination && (
+	       <Pagination
+		onChangePage={onChangePage}
+		pageCount={Number(data.pagination.last_visible_page)}
+		thisPage={Number(data.pagination.current_page)}
+		existNextPage={
+			data.pagination.has_next_page ||
+			(activePage === Number(data.pagination.last_visible_page) &&
+				Number(data.pagination.last_visible_page) !== 1)
+		}
+	/>
+)}
 
 			<GenreThemeModal isShow={isShow} setIsShow={setIsShow} />
 		</>
