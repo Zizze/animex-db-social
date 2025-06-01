@@ -37,10 +37,11 @@ const Home: FC = () => {
 		topRef.current?.scrollIntoView({ behavior: "smooth" });
 	};
 
+	// Безопасная проверка
 	const pagination = {
-		last: Number(data?.pagination.last_visible_page),
-		current: Number(data?.pagination.current_page),
-		hasNext: data?.pagination.has_next_page,
+		last: Number(data?.pagination?.last_visible_page ?? 1),
+		current: Number(data?.pagination?.current_page ?? 1),
+		hasNext: data?.pagination?.has_next_page ?? false,
 	};
 
 	const existNextPageConditions =
@@ -59,18 +60,13 @@ const Home: FC = () => {
 				{!error && <Items allAnimeJikan={data?.data} />}
 			</div>
 			{data?.pagination && (
-	       <Pagination
-		onChangePage={onChangePage}
-		pageCount={Number(data.pagination.last_visible_page)}
-		thisPage={Number(data.pagination.current_page)}
-		existNextPage={
-			data.pagination.has_next_page ||
-			(activePage === Number(data.pagination.last_visible_page) &&
-				Number(data.pagination.last_visible_page) !== 1)
-		}
-	/>
-)}
-
+				<Pagination
+					onChangePage={onChangePage}
+					pageCount={pagination.last}
+					thisPage={pagination.current}
+					existNextPage={existNextPageConditions}
+				/>
+			)}
 			<GenreThemeModal isShow={isShow} setIsShow={setIsShow} />
 		</>
 	);
