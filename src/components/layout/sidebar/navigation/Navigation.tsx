@@ -7,6 +7,9 @@ import { useAppSelector } from "@/hooks/useAppSelector";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useRouter } from "next/router";
 import { changeHomeMode } from "@Store/animeJikan/animeJikanSlice";
+import { useAuthContext } from "@/context/useAuthContext";
+	
+	
 
 interface IProps {
 	setHideSidebar: Dispatch<SetStateAction<boolean>>;
@@ -17,6 +20,7 @@ const Navigation: FC<IProps> = ({ setHideSidebar }) => {
 	const currentPath = router.asPath;
 	const dispatch = useAppDispatch();
 	const { mainHomeMode } = useAppSelector((state) => state.animeJikan);
+	const { user } = useAuthContext();
 
 	useEffect(() => {
 		mainNavData.forEach((mainItem) => {
@@ -53,7 +57,7 @@ const Navigation: FC<IProps> = ({ setHideSidebar }) => {
 
 					<div className={classes.line} />
 
-					{userNavData.map((item) => {
+					{user && userNavData.map((item) => {
 						return (
 							<UserNav
 								onClickHandler={onClickHandler}
